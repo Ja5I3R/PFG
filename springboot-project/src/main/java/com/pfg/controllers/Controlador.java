@@ -22,12 +22,14 @@ public class Controlador {
     @Autowired
     private IUserService servicio;
 
+    //Listado de usuarios
     @GetMapping({ "/usuarios", "/" })
     public String listUsers(Model modelo) {
         modelo.addAttribute("usuarios", servicio.listAllUsers());
         return "usuarios";
     }
 
+    //Creacion de nuevos usuarios
     @GetMapping("/usuarios/nuevo")
     public String showRegistration(Model modelo) {
         User usuario = new User();
@@ -41,13 +43,14 @@ public class Controlador {
         return "redirect:/usuarios";
     }
 
+    //Borrado de usuarios
     @GetMapping("/usuarios/{id}")
     public String deleteUser(@PathVariable Long id) {
         servicio.deleteUser(id);
         return "redirect:/usuarios";
     }
 
-    //POR PROBAR
+    //Actualizacion de usuarios
     @GetMapping("/usuarios/editar/{id}")
     public String showRegistration(@PathVariable Long id, Model modelo) {
         User usuario = servicio.readUserId(id);
