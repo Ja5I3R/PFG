@@ -13,6 +13,7 @@ Aplicacion basada en el descubrimiento de gente y grupos en base a los intereses
 - [Javier Trujillo](https://www.github.com/Ja5I3R)
 - [Pilar Soriano](https://www.github.com/octokatherine)
 - [Miguel Yglesias](https://www.github.com/octokatherine)
+
 ## Lessons Learned
 
 What did you learn while building this project? What challenges did you face and how did you overcome them?
