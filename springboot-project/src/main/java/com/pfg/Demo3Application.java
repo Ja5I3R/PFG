@@ -16,16 +16,16 @@ public class Demo3Application implements CommandLineRunner{
 	}
 
 	@Autowired
-	private IUser repositorio;
+	private IUser repository;
 	
 	@Override
 	public void run(String... args) throws Exception {
 		/*
 		Estudiante estudiante1 = new Estudiante("Federico", "Ara", "fede@gmail.com");
-		repositorio.save(estudiante1);
+		repository.save(estudiante1);
 		
 		Estudiante estudiante2 = new Estudiante("Jorge", "Gomez", "jorge@gmail.com");
-		repositorio.save(estudiante2);
+		repository.save(estudiante2);
 		*/
 	}
 }
