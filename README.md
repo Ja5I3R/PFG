@@ -11,7 +11,7 @@ Aplicacion basada en el descubrimiento de gente y grupos en base a los intereses
 ## Authors
 
 - [Javier Trujillo](https://www.github.com/Ja5I3R)
-- [Pilar Soriano](https://www.github.com/octokatherine)
+- [Pilar Soriano](https://github.com/Pinekos)
 - [Miguel Yglesias](https://www.github.com/octokatherine)
 
 ## Lessons Learned
