@@ -29,6 +29,18 @@ public class UserService implements IUserService {
 	public User readUserId(Long id) {
 		return repository.findById(id).get();
 	}
+	
+	@Override
+	public User readUserName(String name) {
+		User result = null;
+        List<User> userList = repository.findAll();
+        for (User user : userList) {
+            if (user.getUsername().equals(name)) {
+                result = user;
+            }
+        }
+		return result;
+    }
 
 	@Override
 	public User updateUser(User user) {

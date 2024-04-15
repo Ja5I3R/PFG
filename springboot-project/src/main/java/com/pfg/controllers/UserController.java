@@ -22,8 +22,14 @@ public class UserController {
     @Autowired
     private IUserService service;
 
+    //Pagina de inicio
+    @GetMapping({ "/" })
+    public String redirect(Model model) {
+        return "try_session";
+    }
+
     //Listado de usuarios
-    @GetMapping({ "/usuarios", "/" })
+    @GetMapping({ "/usuarios" })
     public String listUsers(Model model) {
         model.addAttribute("usuarios", service.listAllUsers());
         return "usuarios";
@@ -59,7 +65,7 @@ public class UserController {
     }
 
     @PostMapping("/usuarios/actualizar")
-    public String updateUser(@ModelAttribute("usuario") User user, BindingResult bindingResult, Model model) {
+    public String updateUser(@ModelAttribute("usuario") User user, BindingResult bindingResult) {
         
         User existingUser = service.readUserId(user.getId());
         existingUser.setName(user.getName());
@@ -69,6 +75,19 @@ public class UserController {
         existingUser.setGender(user.getGender());
         service.updateUser(user);
         return "redirect:/usuarios";
+    }
+
+    @PostMapping("/usuarios/checkuser")
+    public String checkUser(@ModelAttribute("usuario") User user, BindingResult bindingResult) {
+        User userC = service.readUserName(user.getUsername());
+        if (bindingResult.hasErrors()) {
+            return "redirect:/try_session";
+        }
+        if (userC != null && user.getPassword().equals(userC.getPassword())) {
+            return "redirect:/usuarios";
+        } else {
+            return "redirect:/try_session"; 
+        }
     }
     
 }
