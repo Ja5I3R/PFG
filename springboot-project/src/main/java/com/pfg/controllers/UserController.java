@@ -1,5 +1,7 @@
 package com.pfg.controllers;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,8 @@ import com.pfg.models.User;
 import com.pfg.service.UserService;
 
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 
 @Controller
@@ -85,7 +89,19 @@ public class UserController {
             return "redirect:/try_session";
         }
         if (userC != null && user.getPassword().equals(userC.getPassword())) {
-            return "redirect:/users";
+            ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+
+            HttpSession session = attr.getRequest().getSession(true);
+
+            session.setAttribute("username", userC.getUsername());
+
+            if(userC.getId_rol().equals(2L)){
+                return "redirect:/users";
+            }
+            else{
+                return "redirect:/test.html";
+            }
+
         } else {
             return "redirect:/try_session"; 
         }
