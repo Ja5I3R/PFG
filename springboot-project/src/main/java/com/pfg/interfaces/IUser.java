@@ -8,5 +8,4 @@ import com.pfg.models.User;
 
 @Repository
 public interface IUser extends JpaRepository<User, Long>{
-	
 }
