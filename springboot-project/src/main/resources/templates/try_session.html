@@ -15,7 +15,7 @@
 			<div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
 				<h1 class="text-center">Inicio de sesion</h1>
 				<div class="card-body">
-					<form th:action="@{/usuarios/checkuser}" method="POST">
+					<form th:action="@{/users/checkuser}" method="POST">
 
 						<div class="form-group">
 							<label>Nombre de usuario</label> <input type="text" name="username" class="form-control" placeholder="Escriba el nombre" required>
@@ -30,6 +30,7 @@
 						</div>
 
 					</form>
+					<a th:href="@{/users}" class="btn btn-info">Entrar PRUEBAS</a> 
 				</div>
 			</div>
 		</div>

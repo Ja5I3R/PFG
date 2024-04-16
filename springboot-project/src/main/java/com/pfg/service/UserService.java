@@ -22,6 +22,7 @@ public class UserService implements IUserService {
 
 	@Override
 	public User createUser(User user) {
+		user.setId_rol(1L);
 		return repository.save(user);
 	}
 
