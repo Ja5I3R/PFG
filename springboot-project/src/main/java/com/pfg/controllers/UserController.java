@@ -83,23 +83,22 @@ public class UserController {
 
     //Comprobacion para inicio de sesion
     @PostMapping("/users/checkuser")
-    public String checkUser(@ModelAttribute("user") User user, BindingResult bindingResult) {
+    public String checkUser(@ModelAttribute("user") User user, BindingResult bindingResult, Model model) {
         User userC = service.readUserName(user.getUsername());
         if (bindingResult.hasErrors()) {
             return "redirect:/try_session";
         }
         if (userC != null && user.getPassword().equals(userC.getPassword())) {
             ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-
             HttpSession session = attr.getRequest().getSession(true);
-
             session.setAttribute("username", userC.getUsername());
 
             if(userC.getId_rol().equals(2L)){
                 return "users";
             }
             else{
-                return "test";
+                model.addAttribute("user", userC);
+                return "user_page";
             }
 
         } else {
