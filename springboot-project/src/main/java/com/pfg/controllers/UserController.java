@@ -1,5 +1,7 @@
 package com.pfg.controllers;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,8 @@ import com.pfg.models.User;
 import com.pfg.service.UserService;
 
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 
 @Controller
@@ -29,43 +33,43 @@ public class UserController {
     }
 
     //Listado de usuarios
-    @GetMapping({ "/usuarios" })
+    @GetMapping({ "/users" })
     public String listUsers(Model model) {
-        model.addAttribute("usuarios", service.listAllUsers());
-        return "usuarios";
+        model.addAttribute("users", service.listAllUsers());
+        return "users";
     }
 
     //Creacion de nuevos usuarios
-    @GetMapping("/usuarios/nuevo")
+    @GetMapping("/users/new")
     public String showRegistration(Model model) {
         User user = new User();
-        model.addAttribute("usuario", user);
-        return "crear_usuario";
+        model.addAttribute("user", user);
+        return "create_user";
     }
 
-    @PostMapping("/usuarios")
-    public String createUser(@ModelAttribute("usuario") User user) {
+    @PostMapping("/users")
+    public String createUser(@ModelAttribute("user") User user) {
         service.createUser(user);
-        return "redirect:/usuarios";
+        return "redirect:/users";
     }
 
     //Borrado de usuarios
-    @GetMapping("/usuarios/{id}")
+    @GetMapping("/users/{id}")
     public String deleteUser(@PathVariable Long id) {
         service.deleteUser(id);
-        return "redirect:/usuarios";
+        return "redirect:/users";
     }
 
     //Actualizacion de usuarios
-    @GetMapping("/usuarios/editar/{id}")
+    @GetMapping("/users/edit/{id}")
     public String showRegistration(@PathVariable Long id, Model model) {
         User user = service.readUserId(id);
-        model.addAttribute("usuario", user);
-        return "editar_usuario";
+        model.addAttribute("user", user);
+        return "edit_user";
     }
 
-    @PostMapping("/usuarios/actualizar")
-    public String updateUser(@ModelAttribute("usuario") User user, BindingResult bindingResult) {
+    @PostMapping("/users/update")
+    public String updateUser(@ModelAttribute("user") User user, BindingResult bindingResult) {
         
         User existingUser = service.readUserId(user.getId());
         existingUser.setName(user.getName());
@@ -74,19 +78,32 @@ public class UserController {
         existingUser.setAge(user.getAge());
         existingUser.setGender(user.getGender());
         service.updateUser(user);
-        return "redirect:/usuarios";
+        return "redirect:/users";
     }
 
-    @PostMapping("/usuarios/checkuser")
-    public String checkUser(@ModelAttribute("usuario") User user, BindingResult bindingResult) {
+    //Comprobacion para inicio de sesion
+    @PostMapping("/users/checkuser")
+    public String checkUser(@ModelAttribute("user") User user, BindingResult bindingResult) {
         User userC = service.readUserName(user.getUsername());
         if (bindingResult.hasErrors()) {
             return "redirect:/try_session";
         }
         if (userC != null && user.getPassword().equals(userC.getPassword())) {
-            return "redirect:/usuarios";
+            ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+
+            HttpSession session = attr.getRequest().getSession(true);
+
+            session.setAttribute("username", userC.getUsername());
+
+            if(userC.getId_rol().equals(2L)){
+                return "users";
+            }
+            else{
+                return "test";
+            }
+
         } else {
-            return "redirect:/try_session"; 
+            return "try_session"; 
         }
     }
     
