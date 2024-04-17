@@ -96,14 +96,14 @@ public class UserController {
             session.setAttribute("username", userC.getUsername());
 
             if(userC.getId_rol().equals(2L)){
-                return "redirect:/users";
+                return "users";
             }
             else{
-                return "redirect:/test.html";
+                return "test";
             }
 
         } else {
-            return "redirect:/try_session"; 
+            return "try_session"; 
         }
     }
     
