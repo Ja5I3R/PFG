@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
-<title>Lista de usuarios</title>
+<title>Pagina de usuario</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
 	rel="stylesheet">
@@ -17,6 +17,6 @@
         </div>
     </nav>
 
-    <h1>Prueba de acceso</h1>
+    <h1>Bienvenido: </h1><h1 th:text="${user.name}"></h1>
 </body>
 </html>
