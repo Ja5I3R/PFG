@@ -35,11 +35,14 @@ public class User {
 
 	@Column(name = "gender", nullable = false)
 	private Long gender;
+
+	@Column(name = "id_rol", nullable = false)
+	private Long id_rol;
 	
 	public User() {		
 	}
 
-	public User(Long id, String username, String password, String name, String surname, String email, Long age, Long gender) {
+	public User(Long id, String username, String password, String name, String surname, String email, Long age, Long gender, Long id_rol) {
 		this.id = id;
 		this.username = username;
 		this.password = password;
@@ -48,9 +51,10 @@ public class User {
 		this.email = email;
 		this.age = age;
 		this.gender = gender;
+		this.id_rol = id_rol;
 	}
 
-	public User(String username, String password, String name, String surname, String email, Long age, Long gender) {
+	public User(String username, String password, String name, String surname, String email, Long age, Long gender, Long id_rol) {
 		this.username = username;
 		this.password = password;
 		this.name = name;
@@ -58,6 +62,7 @@ public class User {
 		this.email = email;
 		this.age = age;
 		this.gender = gender;
+		this.id_rol = id_rol;
 	}
 
 	public Long getId() {
@@ -129,4 +134,11 @@ public class User {
 		this.email = email;
 	}
 	
+	public Long getId_rol(){
+		return id_rol;
+	}
+
+	public void setId_rol(Long id_rol){
+		this.id_rol = id_rol;
+	}
 }
