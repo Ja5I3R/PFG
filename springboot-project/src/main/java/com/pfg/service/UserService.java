@@ -13,31 +13,44 @@ import com.pfg.models.User;
 public class UserService implements IUserService {
 
 	@Autowired
-	private IUser repositorio;
+	private IUser repository;
 
 	@Override
 	public List<User> listAllUsers() {
-		return repositorio.findAll();
+		return repository.findAll();
 	}
 
 	@Override
 	public User createUser(User user) {
-		return repositorio.save(user);
+		user.setId_rol(1L);
+		return repository.save(user);
 	}
 
 	@Override
 	public User readUserId(Long id) {
-		return repositorio.findById(id).get();
+		return repository.findById(id).get();
 	}
+	
+	@Override
+	public User readUserName(String name) {
+		User result = null;
+        List<User> userList = repository.findAll();
+        for (User user : userList) {
+            if (user.getUsername().equals(name)) {
+                result = user;
+            }
+        }
+		return result;
+    }
 
 	@Override
 	public User updateUser(User user) {
-		return repositorio.save(user);
+		return repository.save(user);
 	}
 
 	@Override
 	public void deleteUser(Long id) {
-		repositorio.deleteById(id);
+		repository.deleteById(id);
 	}
 
 }
