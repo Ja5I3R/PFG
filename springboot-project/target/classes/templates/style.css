@@ -1,0 +1,30 @@
+/**
+ * ESQUELETO DE LA PÁGINA
+ */
+
+/* Variables */
+:root {
+    /* Colores */
+    --danger-color: #ffff;
+    --danger-background: #dc3546;
+    --danger-border: #a50213;
+    --warning-color: #ffc107;
+    --warning-border: #b38600;
+    --success-color: #198754;
+    --success-border: #1a6040;
+    --info-color: #0dcaf0;
+    --info-border: #1e8ea4;
+    /* Body */
+    --body-background: #e21d1d;
+    --body-color: #585858;
+    --body-font: 'Poppins', sans-serif;
+    /* Header */
+    --header-background: #f1f1f1;
+    --header-color: #222222;
+    --header-hover: #ffffff;
+    --header-height: 4rem;
+    --toolbar-background: #ffffff;
+}
+body{
+    background-color: var(--body-background);
+}
