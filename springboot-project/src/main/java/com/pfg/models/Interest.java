@@ -15,16 +15,19 @@ public class Interest {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "name", nullable = false,length = 50,unique=true)
-	private String username;
+	@Column(name = "name", nullable = false,length = 50)
+	private String name;
 
-    public Interest(String username) {
-        this.username = username;
+    public Interest() {
     }
 
-    public Interest(Long id, String username) {
+    public Interest(String name) {
+        this.name = name;
+    }
+
+    public Interest(Long id, String name) {
         this.id = id;
-        this.username = username;
+        this.name = name;
     }
 
     public Long getId() {
@@ -35,12 +38,12 @@ public class Interest {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String name) {
+        this.name = name;
     }
 
 }

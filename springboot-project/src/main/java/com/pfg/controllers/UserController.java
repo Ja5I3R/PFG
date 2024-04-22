@@ -1,5 +1,9 @@
 package com.pfg.controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +15,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.pfg.interfaceService.IInterestService;
+import com.pfg.interfaceService.IUserDataService;
 import com.pfg.interfaceService.IUserService;
 import com.pfg.models.User;
+import com.pfg.models.UserData;
 import com.pfg.service.UserService;
 
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +32,12 @@ public class UserController {
 
     @Autowired
     private IUserService service;
+
+    @Autowired
+    private IInterestService intService;
+
+    @Autowired
+    private IUserDataService userDataService;
 
     //Pagina de inicio
     @GetMapping({ "/" })
@@ -44,12 +57,24 @@ public class UserController {
     public String showRegistration(Model model) {
         User user = new User();
         model.addAttribute("user", user);
+        model.addAttribute("interestList", intService.listAllInterest());
         return "create_user";
     }
 
     @PostMapping("/users")
-    public String createUser(@ModelAttribute("user") User user) {
+    public String createUser(@ModelAttribute("user") User user, BindingResult bindingResult, HttpServletRequest request) {
         service.createUser(user);
+        //GUARDAR DATOS EN LA TABLA INTERMEDIA - NO ES LO MAS OPTIMO
+        String[] interestList = request.getParameterValues("interests");
+        if(interestList != null){            
+            userDataService.saveUserPreferences(user.getId(), 
+            Long.valueOf(interestList[0]), 
+            Long.valueOf(interestList[1]), 
+            Long.valueOf(interestList[2]), 
+            Long.valueOf(interestList[3]), 
+            Long.valueOf(interestList[4]));
+        }
+        //-----------------------------------
         return "redirect:/users";
     }
 
@@ -98,6 +123,8 @@ public class UserController {
             }
             else{
                 model.addAttribute("user", userC);
+                List<Long> interestList = userDataService.getInterestList(userC.getId());
+                model.addAttribute("interestList", intService.listByIndexes(interestList));
                 return "user_page";
             }
 

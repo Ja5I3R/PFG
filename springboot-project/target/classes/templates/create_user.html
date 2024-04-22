@@ -20,7 +20,7 @@
 			<div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
 				<h1 class="text-center">Registro de usuario</h1>
 				<div class="card-body">
-					<form th:action="@{/users}" th:object="${user}" method="POST">
+					<form id="userForm" th:action="@{/users}" th:object="${user}" method="POST" onsubmit="return validateForm()">
 
 						<div class="form-group">
 							<label>Nombre de usuario:</label> <input type="text" name="username" th:field="*{username}" class="form-control" placeholder="Escriba el nombre" required>
@@ -50,9 +50,15 @@
 							<label>Género:</label> <input type="text" name="gender" th:field="*{gender}" class="form-control" placeholder="Escriba su género" required>
 						</div>
 						<br>
-						<input type="hidden" name="id_rol" th:field="*{id_rol}" value="1L" />
+						<div class="form-group">
+							<label>Intereses</label><br>
+							<input type="checkbox" name="interests" id="interests" th:each="interest : ${interestList}" 
+									th:value="${interest.id}" 
+									th:text="${interest.name}">
+						</div>
+						<!--<input type="hidden" name="id_rol" th:field="*{id_rol}" value="1L" />-->
 						<div class="box-footer">
-							<button class="btn btn-success">Guardar</button>
+							<button type="submit" class="btn btn-success">Guardar</button>
 						</div>
 
 					</form>
@@ -60,7 +66,26 @@
 			</div>
 		</div>
 	</div>
+	<!--<script src="js/create_userJS.js"></script>-->
+	<script>
+		function validateForm() {
+			var checkboxes = document.getElementsByName("interests");
+			var checkedCount = 0;
 
+			for (var i = 0; i < checkboxes.length; i++) {
+				if (checkboxes[i].checked) {
+					checkedCount++;
+				}
+			}
+
+			if (checkedCount < 5) {
+				alert("Debe seleccionar al menos 5 intereses.");
+				return false;
+			}
+
+			return true;
+		}
+	</script>
 
 </body>
 </html>
