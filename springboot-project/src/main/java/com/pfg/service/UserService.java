@@ -44,6 +44,18 @@ public class UserService implements IUserService {
     }
 
 	@Override
+	public User readEmail(String email) {
+		User result = null;
+        List<User> userList = repository.findAll();
+        for (User user : userList) {
+            if (user.getEmail().equals(email)) {
+                result = user;
+            }
+        }
+		return result;
+    }
+
+	@Override
 	public User updateUser(User user) {
 		return repository.save(user);
 	}

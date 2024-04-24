@@ -9,14 +9,56 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-md bg-dark navbar-dark">
-        <a class="navbar-brand" href="#">Control de usuarios</a>
+        <a class="navbar-brand" href="#">Friender</a>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-                <li class="nav-item"><a class="nav-link" th:href="@{/users}">Usuarios</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/users}">Datos de usuario</a></li>
             </ul>
         </div>
     </nav>
-
-    <h1>Bienvenido: </h1><h1 th:text="${user.name}"></h1>
+    <div class="container">
+      <h1>Bienvenido: <span th:text="${user.name}"></span></h1>
+      <div class="row">
+        <div class="col-4">
+          <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Datos del usuario</a>
+            <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Acciones</a>
+            <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Intereses</a>
+            <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Ajustes</a>
+          </div>
+        </div>
+        <div class="col-8">
+          <div class="tab-content" id="v-pills-tabContent">
+            <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                <ul class="list-group">
+                    <li class="list-group-item">Usuario: <span th:text="${user.username}"></span></li>
+                    <li class="list-group-item">Email: <span th:text="${user.email}"></span></li>
+                    <li class="list-group-item">Nombre: <span th:text="${user.name}"></span></li>
+                    <li class="list-group-item">Apellidos: <span th:text="${user.surname}"></span></li>
+                    <li class="list-group-item">Edad: <span th:text="${user.age}"></span></li>
+                </ul>
+            </div>
+            <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                <a th:href="@{/users/edit/{id}(id=${user.id})}" class="btn btn-info">Editar</a> 
+                <a th:href="@{/users/{id}(id=${user.id})}" class="btn btn-danger">Eliminar cuenta</a>
+            </div>
+            <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+              <ul th:each="interest : ${interestList}">
+                <li th:text="${interest.name}"></li>
+              </ul>
+            </div>
+            <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+      <script>
+        $(document).ready(function(){
+          $('#v-pills-tab a:first').tab('show');
+        });
+      </script>
 </body>
 </html>
