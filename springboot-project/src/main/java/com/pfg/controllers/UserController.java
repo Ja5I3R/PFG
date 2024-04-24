@@ -45,6 +45,15 @@ public class UserController {
         return "try_session";
     }
 
+    //Pagina de usuario
+    @GetMapping({ "/userpage/{id}" })
+    public String userPage(Model model, @PathVariable Long id) {
+        User userC = service.readUserId(id);
+        model.addAttribute("user", userC);
+        model.addAttribute("interestList", intService.listByIndexes(userDataService.getInterestList(userC.getId())));
+        return "user_page";
+    }
+
     //Listado de usuarios
     @GetMapping({ "/users" })
     public String listUsers(Model model) {
@@ -85,12 +94,19 @@ public class UserController {
 
                 ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
                 HttpSession session = attr.getRequest().getSession(false);
-                User sessionUser = (User)session.getAttribute("user");
-                if(sessionUser.getId_rol().equals(2L)){
-                    return "redirect:/users";
+
+                if(session == null){
+                    redirectAttributes.addAttribute("id", user.getId());
+                    return "/userpage/" + user.getId();
                 }
                 else{
-                    return "user_page";
+                    User sessionUser = (User)session.getAttribute("user");
+                    if(sessionUser.getId_rol().equals(2L)){
+                        return "redirect:/users";
+                    }
+                    else{
+                        return "user_page";
+                    }
                 }
                 
             }
