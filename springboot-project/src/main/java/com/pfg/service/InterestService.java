@@ -12,6 +12,7 @@ import com.pfg.models.Interest;
 
 @Service
 public class InterestService implements IInterestService{
+	
     @Autowired
 	private IInterest repository;
 

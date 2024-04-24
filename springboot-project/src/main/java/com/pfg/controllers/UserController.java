@@ -63,19 +63,39 @@ public class UserController {
 
     @PostMapping("/users")
     public String createUser(@ModelAttribute("user") User user, BindingResult bindingResult, HttpServletRequest request) {
-        service.createUser(user);
-        //GUARDAR DATOS EN LA TABLA INTERMEDIA - NO ES LO MAS OPTIMO
-        String[] interestList = request.getParameterValues("interests");
-        if(interestList != null){            
-            userDataService.saveUserPreferences(user.getId(), 
-            Long.valueOf(interestList[0]), 
-            Long.valueOf(interestList[1]), 
-            Long.valueOf(interestList[2]), 
-            Long.valueOf(interestList[3]), 
-            Long.valueOf(interestList[4]));
+        User userCreated = service.readUserName(user.getUsername());
+        if(userCreated == null){
+            userCreated = service.readEmail(user.getEmail());
         }
-        //-----------------------------------
-        return "redirect:/users";
+        if(userCreated != null){
+            return "redirect:/users/new";
+        }
+        else{
+            service.createUser(user);
+            String[] interestList = request.getParameterValues("interests");
+            if(interestList != null){            
+                UserData UD = new UserData();
+                UD.setUser_id(user.getId());
+                UD.setInterest1_id(Long.valueOf(interestList[0]));
+                UD.setInterest2_id(Long.valueOf(interestList[1]));
+                UD.setInterest3_id(Long.valueOf(interestList[2]));
+                UD.setInterest4_id(Long.valueOf(interestList[3]));
+                UD.setInterest5_id(Long.valueOf(interestList[4]));
+                userDataService.saveUserPreferences(UD);
+
+                ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+                HttpSession session = attr.getRequest().getSession(false);
+                User sessionUser = (User)session.getAttribute("user");
+                if(sessionUser.getId_rol().equals(2L)){
+                    return "redirect:/users";
+                }
+                else{
+                    return "user_page";
+                }
+                
+            }
+            return "redirect:/users";
+        }
     }
 
     //Borrado de usuarios
@@ -103,7 +123,17 @@ public class UserController {
         existingUser.setAge(user.getAge());
         existingUser.setGender(user.getGender());
         service.updateUser(user);
-        return "redirect:/users";
+
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpSession session = attr.getRequest().getSession(false);
+        User sessionUser = (User)session.getAttribute("user");
+        if(sessionUser.getId_rol().equals(2L)){
+            return "redirect:/users";
+        }
+        else{
+            return "user_page";
+        }
+        
     }
 
     //Comprobacion para inicio de sesion
@@ -116,15 +146,14 @@ public class UserController {
         if (userC != null && user.getPassword().equals(userC.getPassword())) {
             ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
             HttpSession session = attr.getRequest().getSession(true);
-            session.setAttribute("username", userC.getUsername());
+            session.setAttribute("user", userC);
 
             if(userC.getId_rol().equals(2L)){
-                return "users";
+                return "redirect:/users";
             }
             else{
                 model.addAttribute("user", userC);
-                List<Long> interestList = userDataService.getInterestList(userC.getId());
-                model.addAttribute("interestList", intService.listByIndexes(interestList));
+                model.addAttribute("interestList", intService.listByIndexes(userDataService.getInterestList(userC.getId())));
                 return "user_page";
             }
 

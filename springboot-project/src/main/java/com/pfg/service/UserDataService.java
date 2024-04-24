@@ -8,14 +8,15 @@ import org.springframework.stereotype.Service;
 
 import com.pfg.interfaceService.IUserDataService;
 import com.pfg.interfaces.IUserData;
-import com.pfg.models.User;
 import com.pfg.models.UserData;
 
 @Service
 public class UserDataService implements IUserDataService{
+
     @Autowired
 	private IUserData repository;
 
+    /* OTRA MANERA
     @Override
     public void saveUserPreferences(Long userID, Long intID1, Long intID2, Long intID3, Long intID4, Long intID5){
         UserData UD = new UserData();
@@ -26,6 +27,11 @@ public class UserDataService implements IUserDataService{
         UD.setInterest4_id(intID4);
         UD.setInterest5_id(intID5);
         repository.save(UD);
+    } */
+
+    @Override
+    public UserData saveUserPreferences(UserData UD){
+        return repository.save(UD);
     }
 
     @Override
