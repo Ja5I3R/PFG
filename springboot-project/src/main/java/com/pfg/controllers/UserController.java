@@ -1,5 +1,9 @@
 package com.pfg.controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +15,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.pfg.interfaceService.IInterestService;
+import com.pfg.interfaceService.IUserDataService;
 import com.pfg.interfaceService.IUserService;
 import com.pfg.models.User;
+import com.pfg.models.UserData;
 import com.pfg.service.UserService;
 
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,10 +33,25 @@ public class UserController {
     @Autowired
     private IUserService service;
 
+    @Autowired
+    private IInterestService intService;
+
+    @Autowired
+    private IUserDataService userDataService;
+
     //Pagina de inicio
     @GetMapping({ "/" })
     public String redirect(Model model) {
         return "try_session";
+    }
+
+    //Pagina de usuario
+    @GetMapping({ "/userpage/{id}" })
+    public String userPage(Model model, @PathVariable Long id) {
+        User userC = service.readUserId(id);
+        model.addAttribute("user", userC);
+        model.addAttribute("interestList", intService.listByIndexes(userDataService.getInterestList(userC.getId())));
+        return "user_page";
     }
 
     //Listado de usuarios
@@ -44,13 +66,52 @@ public class UserController {
     public String showRegistration(Model model) {
         User user = new User();
         model.addAttribute("user", user);
+        model.addAttribute("interestList", intService.listAllInterest());
         return "create_user";
     }
 
     @PostMapping("/users")
-    public String createUser(@ModelAttribute("user") User user) {
-        service.createUser(user);
-        return "redirect:/users";
+    public String createUser(@ModelAttribute("user") User user, BindingResult bindingResult, HttpServletRequest request) {
+        User userCreated = service.readUserName(user.getUsername());
+        if(userCreated == null){
+            userCreated = service.readEmail(user.getEmail());
+        }
+        if(userCreated != null){
+            return "redirect:/users/new";
+        }
+        else{
+            service.createUser(user);
+            String[] interestList = request.getParameterValues("interests");
+            if(interestList != null){            
+                UserData UD = new UserData();
+                UD.setUser_id(user.getId());
+                UD.setInterest1_id(Long.valueOf(interestList[0]));
+                UD.setInterest2_id(Long.valueOf(interestList[1]));
+                UD.setInterest3_id(Long.valueOf(interestList[2]));
+                UD.setInterest4_id(Long.valueOf(interestList[3]));
+                UD.setInterest5_id(Long.valueOf(interestList[4]));
+                userDataService.saveUserPreferences(UD);
+
+                ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+                HttpSession session = attr.getRequest().getSession(false);
+
+                if(session == null){
+                    redirectAttributes.addAttribute("id", user.getId());
+                    return "/userpage/" + user.getId();
+                }
+                else{
+                    User sessionUser = (User)session.getAttribute("user");
+                    if(sessionUser.getId_rol().equals(2L)){
+                        return "redirect:/users";
+                    }
+                    else{
+                        return "user_page";
+                    }
+                }
+                
+            }
+            return "redirect:/users";
+        }
     }
 
     //Borrado de usuarios
@@ -78,7 +139,17 @@ public class UserController {
         existingUser.setAge(user.getAge());
         existingUser.setGender(user.getGender());
         service.updateUser(user);
-        return "redirect:/users";
+
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpSession session = attr.getRequest().getSession(false);
+        User sessionUser = (User)session.getAttribute("user");
+        if(sessionUser.getId_rol().equals(2L)){
+            return "redirect:/users";
+        }
+        else{
+            return "user_page";
+        }
+        
     }
 
     //Comprobacion para inicio de sesion
@@ -91,13 +162,14 @@ public class UserController {
         if (userC != null && user.getPassword().equals(userC.getPassword())) {
             ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
             HttpSession session = attr.getRequest().getSession(true);
-            session.setAttribute("username", userC.getUsername());
+            session.setAttribute("user", userC);
 
             if(userC.getId_rol().equals(2L)){
-                return "users";
+                return "redirect:/users";
             }
             else{
                 model.addAttribute("user", userC);
+                model.addAttribute("interestList", intService.listByIndexes(userDataService.getInterestList(userC.getId())));
                 return "user_page";
             }
 

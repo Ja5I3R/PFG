@@ -17,4 +17,6 @@ public interface IUserService {
 	public void deleteUser(Long id) ;
 
 	public User readUserName(String name);
+
+	public User readEmail(String email);
 }
