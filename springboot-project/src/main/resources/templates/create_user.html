@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Registro de usuario</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+	<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+		<a class="navbar-brand" href="#">Control de estudiantes</a>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav">
+				<li class="nav-item"><a class="nav-link" th:href="@{/estudiantes}">Estudiantes</a></li>
+			</ul>
+		</div>
+	</nav>
+	<br>
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
+				<h1 class="text-center">Registro de usuario</h1>
+				<div class="card-body">
+					<form id="userForm" th:action="@{/users}" th:object="${user}" method="POST" onsubmit="return validateForm()">
+
+						<div class="form-group">
+							<label>Nombre de usuario:</label> <input type="text" name="username" th:field="*{username}" class="form-control" placeholder="Escriba el nombre" required>
+						</div>
+						<br>
+						<div class="form-group">
+							<label>Contraseña:</label> <input type="password" name="password" th:field="*{password}" class="form-control" placeholder="Escriba la contraseña" required>
+						</div>
+						<br>
+						<div class="form-group">
+							<label>Nombre:</label> <input type="text" name="name" th:field="*{name}" class="form-control" placeholder="Escriba el nombre" required>
+						</div>
+						<br>
+						<div class="form-group">
+							<label>Apellido:</label> <input type="text" name="surname" th:field="*{surname}" class="form-control" placeholder="Escriba sus apellidos" required>
+						</div>
+						<br>
+						<div class="form-group">
+							<label>Email:</label> <input type="email" name="email" th:field="*{email}" class="form-control" placeholder="Escriba su email" required>
+						</div>
+						<br>
+						<div class="form-group">
+							<label>Edad:</label> <input type="number" name="age" th:field="*{age}" class="form-control" placeholder="Escriba su edad" required>
+						</div>
+						<br>
+						<div class="form-group">
+							<label>Género:</label>
+							<select name="gender" th:field="*{gender}" class="form-control" required>
+								<option value="1">Hombre</option>
+								<option value="2">Mujer</option>
+								<option value="3">Otro</option>
+							</select>
+						</div>
+						<br>
+						<div class="form-group">
+							<label>Intereses</label><br>
+							<input type="checkbox" name="interests" id="interests" th:each="interest : ${interestList}" 
+									th:value="${interest.id}" 
+									th:text="${interest.name}">
+						</div>
+						<div class="box-footer">
+							<button type="submit" class="btn btn-success">Guardar</button>
+						</div>
+
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--<script src="js/create_userJS.js"></script>-->
+	<script>
+		function validateForm() {
+			var checkboxes = document.getElementsByName("interests");
+			var checkedCount = 0;
+
+			for (var i = 0; i < checkboxes.length; i++) {
+				if (checkboxes[i].checked) {
+					checkedCount++;
+				}
+			}
+
+			if (checkedCount < 5) {
+				alert("Debe seleccionar al menos 5 intereses.");
+				return false;
+			}
+
+			return true;
+		}
+	</script>
+
+</body>
+</html>
