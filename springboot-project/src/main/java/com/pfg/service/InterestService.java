@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pfg.interfaceService.IInterestService;
 import com.pfg.interfaces.IInterest;
@@ -17,11 +18,13 @@ public class InterestService implements IInterestService{
 	private IInterest repository;
 
     @Override
+	@Transactional(readOnly = true)
 	public List<Interest> listAllInterest() {
 		return repository.findAll();
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<Interest>listByIndexes(List<Long> list){
 		List<Interest> result = new ArrayList<>();
 

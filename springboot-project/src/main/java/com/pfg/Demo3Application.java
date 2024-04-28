@@ -6,7 +6,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.pfg.interfaces.IUser;
-import com.pfg.models.User;
 
 @SpringBootApplication
 public class Demo3Application implements CommandLineRunner{
@@ -20,12 +19,12 @@ public class Demo3Application implements CommandLineRunner{
 	
 	@Override
 	public void run(String... args) throws Exception {
-		/*
-		Estudiante estudiante1 = new Estudiante("Federico", "Ara", "fede@gmail.com");
-		repository.save(estudiante1);
+/* 	USUARIOS PRUEBA
+		User user = new User("pepa", "1111", "Pepa", "Garcia", "pepa@gmail.com", 34L, 1L, 0L);
+		repository.save(user);
 		
-		Estudiante estudiante2 = new Estudiante("Jorge", "Gomez", "jorge@gmail.com");
-		repository.save(estudiante2);
-		*/
+		User user2 = new User("paco", "2222", "Paco", "Garcia", "paco@gmail.com", 29L, 0L, 0L);
+		repository.save(user2);
+*/		
 	}
 }

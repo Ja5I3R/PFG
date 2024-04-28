@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pfg.interfaceService.IUserDataService;
 import com.pfg.interfaces.IUserData;
@@ -30,11 +31,13 @@ public class UserDataService implements IUserDataService{
     } */
 
     @Override
+    @Transactional
     public UserData saveUserPreferences(UserData UD){
         return repository.save(UD);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Long>getInterestList(Long userID){
         List<Long> list = new ArrayList<>();
 

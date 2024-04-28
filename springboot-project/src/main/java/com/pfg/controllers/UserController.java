@@ -1,8 +1,5 @@
 package com.pfg.controllers;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -20,9 +17,7 @@ import com.pfg.interfaceService.IUserDataService;
 import com.pfg.interfaceService.IUserService;
 import com.pfg.models.User;
 import com.pfg.models.UserData;
-import com.pfg.service.UserService;
 
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -96,7 +91,7 @@ public class UserController {
                 HttpSession session = attr.getRequest().getSession(false);
 
                 if(session == null){
-                    redirectAttributes.addAttribute("id", user.getId());
+                    //redirectAttributes.addAttribute("id", user.getId()); FALLA
                     return "/userpage/" + user.getId();
                 }
                 else{
