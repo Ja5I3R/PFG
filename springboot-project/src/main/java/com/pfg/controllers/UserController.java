@@ -96,7 +96,6 @@ public class UserController {
                 HttpSession session = attr.getRequest().getSession(false);
 
                 if(session == null){
-                    redirectAttributes.addAttribute("id", user.getId());
                     return "/userpage/" + user.getId();
                 }
                 else{
