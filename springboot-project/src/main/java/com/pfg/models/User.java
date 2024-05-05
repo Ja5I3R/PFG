@@ -1,5 +1,7 @@
 package com.pfg.models;
 
+import java.time.LocalDate;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,6 +35,9 @@ public class User {
 	@Column(name = "age", nullable = false)
 	private Long age;
 
+	@Column(name = "birthdate", nullable = false)
+	private LocalDate birthdate;
+
 	@Column(name = "gender", nullable = false)
 	private Long gender;
 
@@ -42,8 +47,7 @@ public class User {
 	public User() {		
 	}
 
-	public User(Long id, String username, String password, String name, String surname, String email, Long age, Long gender, Long id_rol) {
-		this.id = id;
+	public User(String username, String password, String name, String surname, String email, Long age, Long gender, Long id_rol, LocalDate birhDate) {
 		this.username = username;
 		this.password = password;
 		this.name = name;
@@ -52,17 +56,7 @@ public class User {
 		this.age = age;
 		this.gender = gender;
 		this.id_rol = id_rol;
-	}
-
-	public User(String username, String password, String name, String surname, String email, Long age, Long gender, Long id_rol) {
-		this.username = username;
-		this.password = password;
-		this.name = name;
-		this.surname = surname;
-		this.email = email;
-		this.age = age;
-		this.gender = gender;
-		this.id_rol = id_rol;
+		this.birthdate = birhDate;
 	}
 
 	public Long getId() {
@@ -141,4 +135,14 @@ public class User {
 	public void setId_rol(Long id_rol){
 		this.id_rol = id_rol;
 	}
+
+	public LocalDate getBirthdate() {
+		return birthdate;
+	}
+
+	public void setBirthdate(LocalDate birthdate) {
+		this.birthdate = birthdate;
+	}
+
+	
 }

@@ -8,14 +8,28 @@
 	rel="stylesheet">
 </head>
 <body>
-    <nav class="navbar navbar-expand-md bg-dark navbar-dark">
-        <a class="navbar-brand" href="#">Friender</a>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item"><a class="nav-link" th:href="@{/users}">Datos de usuario</a></li>
+  <header class="p-3 bg-dark text-white">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                <a class="navbar-brand" href="#">
+                    <img src="https://cdn-icons-png.freepik.com/512/12082/12082882.png?ga=GA1.1.647944042.1714035643" alt="logo" width="30" height="24" class="d-inline-block align-text-top">
+                </a>
+            </a>
+
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li><a th:href="@{/users/login}" class="nav-link px-2 text-secondary">Sobre nosotros</a></li>
+                <li><a th:href="@{/users/new}" class="nav-link px-2 text-white">Contacto</a></li>
             </ul>
+
+            <div class="text-end">
+                <a th:href="@{/users/login}" class="btn btn-outline-light me-2">Log In</a>
+                <a th:href="@{/users/new}" class="btn btn-warning">Sign Up</a>
+            </div>
         </div>
-    </nav>
+    </div>
+</header>
+
     <div class="container">
       <h1>Bienvenido: <span th:text="${user.name}"></span></h1>
       <div class="row">
@@ -24,7 +38,7 @@
             <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Datos del usuario</a>
             <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Acciones</a>
             <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Intereses</a>
-            <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Ajustes</a>
+            <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Eventos</a>
           </div>
         </div>
         <div class="col-8">
@@ -36,18 +50,22 @@
                     <li class="list-group-item">Nombre: <span th:text="${user.name}"></span></li>
                     <li class="list-group-item">Apellidos: <span th:text="${user.surname}"></span></li>
                     <li class="list-group-item">Edad: <span th:text="${user.age}"></span></li>
+                    <li class="list-group-item">Fecha de nacimiento: <span th:text="${user.birthdate}"></span></li>
                 </ul>
             </div>
             <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                 <a th:href="@{/users/edit/{id}(id=${user.id})}" class="btn btn-info">Editar</a> 
                 <a th:href="@{/users/{id}(id=${user.id})}" class="btn btn-danger">Eliminar cuenta</a>
+                <a th:href="@{/users/logout}" class="btn btn-danger">Cerrar sesion</a>
             </div>
             <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
               <ul th:each="interest : ${interestList}">
                 <li th:text="${interest.name}"></li>
               </ul>
             </div>
-            <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...</div>
+            <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+              <a th:href="@{/events/new}" class="btn btn-danger">Crear evento</a>
+            </div>
           </div>
         </div>
       </div>
