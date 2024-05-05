@@ -33,11 +33,14 @@ public class UserData {
     @Column(name = "id_interest5", nullable = false)
     private Long interest5_id;
 
+    @Column(name = "report_number", nullable = false, columnDefinition = "bigint default 0")
+    private Long report_number;
+
     public UserData() {
     }
 
     public UserData(Long id, Long user_id, Long interest1_id, Long interest2_id, Long interest3_id, Long interest4_id,
-            Long interest5_id) {
+            Long interest5_id, Long reportNumber) {
         this.id = id;
         this.user_id = user_id;
         this.interest1_id = interest1_id;
@@ -45,6 +48,7 @@ public class UserData {
         this.interest3_id = interest3_id;
         this.interest4_id = interest4_id;
         this.interest5_id = interest5_id;
+        this.report_number = reportNumber;
     }
 
     public Long getId() {
@@ -103,5 +107,11 @@ public class UserData {
         this.interest5_id = interest5_id;
     }
 
-    
+    public Long getReport_number() {
+        return report_number;
+    }
+
+    public void setReport_number(Long report_number) {
+        this.report_number = report_number;
+    }
 }
