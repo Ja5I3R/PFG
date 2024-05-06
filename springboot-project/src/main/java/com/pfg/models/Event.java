@@ -20,16 +20,16 @@ public class Event {
 	private String name;
 
     @Column(name = "initial_date", nullable = false)
-	private LocalDate initialDate;
+	private String initialDate;
 
     @Column(name = "end_date", nullable = false)
-	private LocalDate endDate;
+	private String endDate;
 
     @Column(name = "id_creator", nullable = false)
 	private Long idCreator;
 
     @Column(name = "create_date", nullable = false)
-	private LocalDate creationDate;
+	private String creationDate;
 
     @Column(name = "location", nullable = false,length = 50)
 	private String location;
@@ -43,7 +43,7 @@ public class Event {
     public Event() {
     }
 
-    public Event(String name, LocalDate initialDate, LocalDate endDate, Long idCreator, LocalDate creationDate,
+    public Event(String name, String initialDate, String endDate, Long idCreator, String creationDate,
             String location, String description, Long idInterest) {
         this.name = name;
         this.initialDate = initialDate;
@@ -71,19 +71,19 @@ public class Event {
         this.name = name;
     }
 
-    public LocalDate getInitialDate() {
+    public String getInitialDate() {
         return initialDate;
     }
 
-    public void setInitialDate(LocalDate initialDate) {
+    public void setInitialDate(String initialDate) {
         this.initialDate = initialDate;
     }
 
-    public LocalDate getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 
@@ -95,11 +95,11 @@ public class Event {
         this.idCreator = idCreator;
     }
 
-    public LocalDate getCreationDate() {
+    public String getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(LocalDate creationDate) {
+    public void setCreationDate(String creationDate) {
         this.creationDate = creationDate;
     }
 

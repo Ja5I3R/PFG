@@ -1,10 +1,11 @@
 package com.pfg.controllers;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.time.format.DateTimeFormatter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -18,14 +19,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.pfg.interfaceService.IEventDataService;
+import com.pfg.interfaceService.IEventService;
 import com.pfg.interfaceService.IInterestService;
 import com.pfg.interfaceService.IUserDataService;
 import com.pfg.interfaceService.IUserService;
 import com.pfg.models.User;
 import com.pfg.models.UserData;
-import com.pfg.service.UserService;
 
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -42,6 +43,12 @@ public class UserController {
 
     @Autowired
     private IUserDataService userDataService;
+
+    @Autowired
+    private IEventService eventService;
+
+    @Autowired
+    private IEventDataService eventDataService;
 
     //Pagina de inicio
     @GetMapping({ "/" })
@@ -70,6 +77,7 @@ public class UserController {
         User userC = service.readUserId(id);
         model.addAttribute("user", userC);
         model.addAttribute("interestList", intService.listByIndexes(userDataService.getInterestList(userC.getId())));
+        model.addAttribute("eventList", eventService.listByIndexes(eventDataService.getEventData(userC.getId())));
         return "user_page";
     }
 
@@ -99,10 +107,6 @@ public class UserController {
             return "redirect:/users/new";
         }
         else{
-            String birthdateString = request.getParameter("birthdate");
-            LocalDate birthdate = LocalDate.parse(birthdateString, DateTimeFormatter.ISO_DATE);
-            user.setBirthdate(birthdate);
-
             service.createUser(user);
             String[] interestList = request.getParameterValues("interests");
             if(interestList != null){            
@@ -150,11 +154,6 @@ public class UserController {
     @GetMapping("/users/edit/{id}")
     public String showRegistration(@PathVariable Long id, Model model) {
         User user = service.readUserId(id);
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String birthdateString = user.getBirthdate().format(formatter);
-        model.addAttribute("birthdateString", birthdateString);
-        
         model.addAttribute("user", user);
         return "edit_user";
     }
@@ -168,7 +167,8 @@ public class UserController {
         existingUser.setEmail(user.getEmail());
         existingUser.setAge(user.getAge());
         existingUser.setGender(user.getGender());
-        service.updateUser(user);
+        existingUser.setBirthdate(user.getBirthdate());
+        service.updateUser(existingUser);
 
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);
@@ -200,6 +200,7 @@ public class UserController {
             else{
                 model.addAttribute("user", userC);
                 model.addAttribute("interestList", intService.listByIndexes(userDataService.getInterestList(userC.getId())));
+                model.addAttribute("eventList", eventService.listByIndexes(eventDataService.getEventData(userC.getId())));
                 return "user_page";
             }
 
