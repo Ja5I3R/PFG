@@ -1,5 +1,11 @@
 package com.pfg.controllers;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.time.format.DateTimeFormatter;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -17,9 +23,12 @@ import com.pfg.interfaceService.IUserDataService;
 import com.pfg.interfaceService.IUserService;
 import com.pfg.models.User;
 import com.pfg.models.UserData;
+import com.pfg.service.UserService;
 
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+
 
 
 @Controller
@@ -37,7 +46,22 @@ public class UserController {
     //Pagina de inicio
     @GetMapping({ "/" })
     public String redirect(Model model) {
+        return "index";
+    }
+
+    //Pagina de inicio de sesion
+    @GetMapping({ "/users/login" })
+    public String redirectLogIn(Model model) {
         return "try_session";
+    }
+
+    //Cierre de sesion
+    @GetMapping({ "/users/logout" })
+    public String logout(Model model) {
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpSession session = attr.getRequest().getSession(false);
+        session.invalidate();
+        return "redirect:/";
     }
 
     //Pagina de usuario
@@ -75,6 +99,10 @@ public class UserController {
             return "redirect:/users/new";
         }
         else{
+            String birthdateString = request.getParameter("birthdate");
+            LocalDate birthdate = LocalDate.parse(birthdateString, DateTimeFormatter.ISO_DATE);
+            user.setBirthdate(birthdate);
+
             service.createUser(user);
             String[] interestList = request.getParameterValues("interests");
             if(interestList != null){            
@@ -85,14 +113,16 @@ public class UserController {
                 UD.setInterest3_id(Long.valueOf(interestList[2]));
                 UD.setInterest4_id(Long.valueOf(interestList[3]));
                 UD.setInterest5_id(Long.valueOf(interestList[4]));
+                UD.setReport_number(0L);
                 userDataService.saveUserPreferences(UD);
 
                 ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
                 HttpSession session = attr.getRequest().getSession(false);
 
-                if(session == null){
-                    //redirectAttributes.addAttribute("id", user.getId()); FALLA
-                    return "/userpage/" + user.getId();
+                if(session == null){ //CASO SI ES UN USUARIO NUEVO DESDE EL INDEX
+                    session = attr.getRequest().getSession(true);
+                    session.setAttribute("user", user);
+                    return "user_page";
                 }
                 else{
                     User sessionUser = (User)session.getAttribute("user");
@@ -120,6 +150,11 @@ public class UserController {
     @GetMapping("/users/edit/{id}")
     public String showRegistration(@PathVariable Long id, Model model) {
         User user = service.readUserId(id);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String birthdateString = user.getBirthdate().format(formatter);
+        model.addAttribute("birthdateString", birthdateString);
+        
         model.addAttribute("user", user);
         return "edit_user";
     }
