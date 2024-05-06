@@ -1,6 +1,8 @@
 package com.pfg.service;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +26,9 @@ public class EventService implements IEventService{
     @Override
 	public Event createEvent(Event event){
         LocalDate actualDate = LocalDate.now();
-        event.setCreationDate(actualDate);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedDate = actualDate.format(formatter);
+        event.setCreationDate(formattedDate);
         return repository.save(event);
     }
 	
@@ -39,4 +43,16 @@ public class EventService implements IEventService{
 	public void deleteEvent(Long id){
         repository.deleteById(id);
     }
+
+    @Override
+	public List<Event>listByIndexes(List<Long> list){
+		List<Event> result = new ArrayList<>();
+
+		for(Long id : list){
+			Event actualEvnt = repository.findById(id).get();
+			result.add(actualEvnt);
+		}
+
+		return result;
+	}
 }

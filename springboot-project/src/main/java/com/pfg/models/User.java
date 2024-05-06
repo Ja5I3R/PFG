@@ -1,6 +1,8 @@
 package com.pfg.models;
 
+import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +10,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 @Entity
 @Table(name = "t_users")
@@ -36,7 +43,7 @@ public class User {
 	private Long age;
 
 	@Column(name = "birthdate", nullable = false)
-	private LocalDate birthdate;
+	private String birthdate;
 
 	@Column(name = "gender", nullable = false)
 	private Long gender;
@@ -47,7 +54,7 @@ public class User {
 	public User() {		
 	}
 
-	public User(String username, String password, String name, String surname, String email, Long age, Long gender, Long id_rol, LocalDate birhDate) {
+	public User(String username, String password, String name, String surname, String email, Long age, Long gender, Long id_rol, String birhDate) {
 		this.username = username;
 		this.password = password;
 		this.name = name;
@@ -136,11 +143,11 @@ public class User {
 		this.id_rol = id_rol;
 	}
 
-	public LocalDate getBirthdate() {
+	public String getBirthdate() {
 		return birthdate;
 	}
 
-	public void setBirthdate(LocalDate birthdate) {
+	public void setBirthdate(String birthdate) {
 		this.birthdate = birthdate;
 	}
 

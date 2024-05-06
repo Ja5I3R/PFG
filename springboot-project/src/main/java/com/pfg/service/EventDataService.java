@@ -29,7 +29,7 @@ public class EventDataService implements IEventDataService{
 
         for(EventData eventD : listFor){
             if(eventD.getIdUser().equals(userID)){
-                list.add(eventD.getId());
+                list.add(eventD.getIdEvent());
             }
         }
 
