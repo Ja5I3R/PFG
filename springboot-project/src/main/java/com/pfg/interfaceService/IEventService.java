@@ -16,4 +16,6 @@ public interface IEventService {
 	
 	public void deleteEvent(Long id) ;
 
+	public List<Event>listByIndexes(List<Long> list);
+
 }

@@ -56,17 +56,14 @@ public class EventController {
         HttpSession session = attr.getRequest().getSession(false);
         User actualUser = (User) session.getAttribute("user");
 
-        String initialDateString = request.getParameter("initialDate");
+        /*String initialDateString = request.getParameter("initialDate");
         LocalDate initialDate = LocalDate.parse(initialDateString, DateTimeFormatter.ISO_DATE);
 
         String endDateString = request.getParameter("endDate");
         LocalDate endDate = LocalDate.parse(endDateString, DateTimeFormatter.ISO_DATE);
-
-        String[] interestList = request.getParameterValues("interests");
         
         event.setInitialDate(initialDate);
-        event.setEndDate(endDate);
-        event.setIdInterest(Long.valueOf(interestList[0]));
+        event.setEndDate(endDate);*/
         event.setIdCreator(actualUser.getId());
         service.createEvent(event);
         
