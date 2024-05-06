@@ -1,5 +1,9 @@
 package com.pfg.controllers;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,16 +19,17 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.pfg.interfaceService.IEventDataService;
+import com.pfg.interfaceService.IEventService;
 import com.pfg.interfaceService.IInterestService;
 import com.pfg.interfaceService.IUserDataService;
 import com.pfg.interfaceService.IUserService;
 import com.pfg.models.User;
 import com.pfg.models.UserData;
-import com.pfg.service.UserService;
 
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+
 
 
 @Controller
@@ -39,10 +44,31 @@ public class UserController {
     @Autowired
     private IUserDataService userDataService;
 
+    @Autowired
+    private IEventService eventService;
+
+    @Autowired
+    private IEventDataService eventDataService;
+
     //Pagina de inicio
     @GetMapping({ "/" })
     public String redirect(Model model) {
+        return "index";
+    }
+
+    //Pagina de inicio de sesion
+    @GetMapping({ "/users/login" })
+    public String redirectLogIn(Model model) {
         return "try_session";
+    }
+
+    //Cierre de sesion
+    @GetMapping({ "/users/logout" })
+    public String logout(Model model) {
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpSession session = attr.getRequest().getSession(false);
+        session.invalidate();
+        return "redirect:/";
     }
 
     //Pagina de usuario
@@ -51,6 +77,7 @@ public class UserController {
         User userC = service.readUserId(id);
         model.addAttribute("user", userC);
         model.addAttribute("interestList", intService.listByIndexes(userDataService.getInterestList(userC.getId())));
+        model.addAttribute("eventList", eventService.listByIndexes(eventDataService.getEventData(userC.getId())));
         return "user_page";
     }
 
@@ -90,14 +117,16 @@ public class UserController {
                 UD.setInterest3_id(Long.valueOf(interestList[2]));
                 UD.setInterest4_id(Long.valueOf(interestList[3]));
                 UD.setInterest5_id(Long.valueOf(interestList[4]));
+                UD.setReport_number(0L);
                 userDataService.saveUserPreferences(UD);
 
                 ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
                 HttpSession session = attr.getRequest().getSession(false);
 
-                if(session == null){
-                    redirectAttributes.addAttribute("id", user.getId());
-                    return "/userpage/" + user.getId();
+                if(session == null){ //CASO SI ES UN USUARIO NUEVO DESDE EL INDEX
+                    session = attr.getRequest().getSession(true);
+                    session.setAttribute("user", user);
+                    return "user_page";
                 }
                 else{
                     User sessionUser = (User)session.getAttribute("user");
@@ -138,7 +167,8 @@ public class UserController {
         existingUser.setEmail(user.getEmail());
         existingUser.setAge(user.getAge());
         existingUser.setGender(user.getGender());
-        service.updateUser(user);
+        existingUser.setBirthdate(user.getBirthdate());
+        service.updateUser(existingUser);
 
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);
@@ -170,6 +200,7 @@ public class UserController {
             else{
                 model.addAttribute("user", userC);
                 model.addAttribute("interestList", intService.listByIndexes(userDataService.getInterestList(userC.getId())));
+                model.addAttribute("eventList", eventService.listByIndexes(eventDataService.getEventData(userC.getId())));
                 return "user_page";
             }
 
