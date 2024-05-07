@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -15,8 +17,9 @@ public class UserData {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-    @Column(name = "id_user", nullable = false)
-    private Long user_id;
+    @OneToOne
+    @JoinColumn(name = "id_user", referencedColumnName = "id")
+    private User user;
 
     @Column(name = "id_interest1", nullable = false)
     private Long interest1_id;
@@ -39,16 +42,16 @@ public class UserData {
     public UserData() {
     }
 
-    public UserData(Long id, Long user_id, Long interest1_id, Long interest2_id, Long interest3_id, Long interest4_id,
-            Long interest5_id, Long reportNumber) {
+    public UserData(Long id, User user, Long interest1_id, Long interest2_id, Long interest3_id, Long interest4_id,
+            Long interest5_id, Long report_number) {
         this.id = id;
-        this.user_id = user_id;
+        this.user = user;
         this.interest1_id = interest1_id;
         this.interest2_id = interest2_id;
         this.interest3_id = interest3_id;
         this.interest4_id = interest4_id;
         this.interest5_id = interest5_id;
-        this.report_number = reportNumber;
+        this.report_number = report_number;
     }
 
     public Long getId() {
@@ -59,12 +62,12 @@ public class UserData {
 		this.id = id;
 	}
 
-    public Long getUser_id() {
-        return user_id;
+    public User getUser() {
+        return user;
     }
 
-    public void setUser_id(Long user_id) {
-        this.user_id = user_id;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Long getInterest1_id() {
@@ -114,4 +117,12 @@ public class UserData {
     public void setReport_number(Long report_number) {
         this.report_number = report_number;
     }
+
+    @Override
+    public String toString() {
+        return "UserData [id=" + id + ", interest1_id=" + interest1_id + ", interest2_id=" + interest2_id
+                + ", interest3_id=" + interest3_id + ", interest4_id=" + interest4_id + ", interest5_id=" + interest5_id
+                + ", report_number=" + report_number + "]";
+    }
+    
 }

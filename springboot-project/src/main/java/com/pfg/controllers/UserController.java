@@ -76,7 +76,7 @@ public class UserController {
     public String userPage(Model model, @PathVariable Long id) {
         User userC = service.readUserId(id);
         model.addAttribute("user", userC);
-        model.addAttribute("interestList", intService.listByIndexes(userDataService.getInterestList(userC.getId())));
+        model.addAttribute("interestList", intService.listByIndexes(userDataService.getInterestList(userC)));
         model.addAttribute("eventList", eventService.listByIndexes(eventDataService.getEventData(userC.getId())));
         return "user_page";
     }
@@ -111,7 +111,7 @@ public class UserController {
             String[] interestList = request.getParameterValues("interests");
             if(interestList != null){            
                 UserData UD = new UserData();
-                UD.setUser_id(user.getId());
+                UD.setUser(user);
                 UD.setInterest1_id(Long.valueOf(interestList[0]));
                 UD.setInterest2_id(Long.valueOf(interestList[1]));
                 UD.setInterest3_id(Long.valueOf(interestList[2]));
@@ -199,7 +199,7 @@ public class UserController {
             }
             else{
                 model.addAttribute("user", userC);
-                model.addAttribute("interestList", intService.listByIndexes(userDataService.getInterestList(userC.getId())));
+                model.addAttribute("interestList", intService.listByIndexes(userDataService.getInterestList(userC)));
                 model.addAttribute("eventList", eventService.listByIndexes(eventDataService.getEventData(userC.getId())));
                 return "user_page";
             }

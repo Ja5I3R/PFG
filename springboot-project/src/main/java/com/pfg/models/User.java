@@ -1,20 +1,14 @@
 package com.pfg.models;
 
-import java.sql.Date;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 @Entity
 @Table(name = "t_users")
@@ -50,6 +44,9 @@ public class User {
 
 	@Column(name = "id_rol", nullable = false)
 	private Long id_rol;
+
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
+    private UserData userData;
 	
 	public User() {		
 	}
@@ -122,11 +119,6 @@ public class User {
 		this.gender = gender;
 	}
 
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", password" + password + ", surname=" + surname + ", age=" + age + ", gender" + gender + "]";
-	}
-
 	public String getEmail() {
 		return email;
 	}
@@ -151,5 +143,20 @@ public class User {
 		this.birthdate = birthdate;
 	}
 
-	
+	public void setUserData(UserData userData) {
+        this.userData = userData;
+        userData.setUser(this);
+    }
+
+	public UserData getUserData() {
+		return userData;
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", username=" + username + ", password=" + password + ", name=" + name + ", surname="
+				+ surname + ", email=" + email + ", age=" + age + ", birthdate=" + birthdate + ", gender=" + gender
+				+ ", id_rol=" + id_rol + ", userData=" + userData + "]";
+	}
+
 }
