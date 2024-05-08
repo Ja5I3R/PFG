@@ -1,7 +1,5 @@
 package com.pfg.models;
 
-import java.time.LocalDate;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -40,11 +38,14 @@ public class Event {
     @Column(name = "id_interest", nullable = false)
 	private Long idInterest;
 
+    @Column(name = "image_url", nullable = false,length = 50)
+	private String image_url;
+
     public Event() {
     }
 
     public Event(String name, String initialDate, String endDate, Long idCreator, String creationDate,
-            String location, String description, Long idInterest) {
+            String location, String description, Long idInterest, String image_url) {
         this.name = name;
         this.initialDate = initialDate;
         this.endDate = endDate;
@@ -53,6 +54,7 @@ public class Event {
         this.location = location;
         this.description = description;
         this.idInterest = idInterest;
+        this.image_url = image_url;
     }
 
     public Long getId() {
@@ -125,6 +127,14 @@ public class Event {
 
     public void setIdInterest(Long idInterest) {
         this.idInterest = idInterest;
+    }
+
+    public String getImage_url() {
+        return image_url;
+    }
+
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
     }
 
     

@@ -1,5 +1,6 @@
 package com.pfg.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.pfg.interfaceService.IUserService;
 import com.pfg.interfaces.IUser;
+import com.pfg.models.EventData;
 import com.pfg.models.User;
 
 @Service
@@ -65,4 +67,16 @@ public class UserService implements IUserService {
 		repository.deleteById(id);
 	}
 
+	@Override
+    public List<User>getUserList(List<Long> idList){
+        List<User> list = new ArrayList<>();
+
+        for(Long userA : idList){
+			if(readUserId(userA) != null){
+				list.add(readUserId(userA));
+			}
+		}
+
+        return list;
+    }
 }

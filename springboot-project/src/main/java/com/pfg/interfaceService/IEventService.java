@@ -8,6 +8,8 @@ public interface IEventService {
 
     public List<Event>listAllEvents();
 
+	public List<Event>listAllEvents(String keyword);
+
 	public Event createEvent(Event event);
 	
 	public Event readEventId(Long id);

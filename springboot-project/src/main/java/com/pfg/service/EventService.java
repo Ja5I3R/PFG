@@ -24,6 +24,11 @@ public class EventService implements IEventService{
     }
 
     @Override
+    public List<Event>listAllEvents(String keyword){
+        return repository.findAllByName(keyword);
+    }
+
+    @Override
 	public Event createEvent(Event event){
         LocalDate actualDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");

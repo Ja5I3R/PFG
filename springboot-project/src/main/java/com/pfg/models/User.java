@@ -50,11 +50,17 @@ public class User {
 
 	@Column(name = "id_rol", nullable = false)
 	private Long id_rol;
+
+	@Column(name = "image_url", nullable = false)
+	private String image_url;
+
+	@Column(name = "profile_id", nullable = false)
+	private Long avatar_id;
 	
 	public User() {		
 	}
 
-	public User(String username, String password, String name, String surname, String email, Long age, Long gender, Long id_rol, String birhDate) {
+	public User(String username, String password, String name, String surname, String email, Long age, Long gender, Long id_rol, String birhDate, String image, Long avatar) {
 		this.username = username;
 		this.password = password;
 		this.name = name;
@@ -64,6 +70,8 @@ public class User {
 		this.gender = gender;
 		this.id_rol = id_rol;
 		this.birthdate = birhDate;
+		this.image_url = image;
+		this.avatar_id = avatar;
 	}
 
 	public Long getId() {
@@ -149,6 +157,22 @@ public class User {
 
 	public void setBirthdate(String birthdate) {
 		this.birthdate = birthdate;
+	}
+
+	public String getImage_url() {
+		return image_url;
+	}
+
+	public void setImage_url(String image_url) {
+		this.image_url = image_url;
+	}
+
+	public Long getAvatar_id() {
+		return avatar_id;
+	}
+
+	public void setAvatar_id(Long avatar_id) {
+		this.avatar_id = avatar_id;
 	}
 
 	
