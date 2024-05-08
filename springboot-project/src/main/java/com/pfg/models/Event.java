@@ -1,10 +1,15 @@
 package com.pfg.models;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -14,7 +19,14 @@ public class Event {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-    @Column(name = "name", nullable = false,length = 50)
+    @ManyToOne
+    @JoinColumn(name = "id_event")
+    private Interest interest;
+
+    @ManyToMany(mappedBy = "events")
+    private Set<User> users;
+
+    @Column(name = "name", nullable = false, length = 50)
 	private String name;
 
     @Column(name = "initial_date", nullable = false)
@@ -29,20 +41,19 @@ public class Event {
     @Column(name = "create_date", nullable = false)
 	private String creationDate;
 
-    @Column(name = "location", nullable = false,length = 50)
+    @Column(name = "location", nullable = false, length = 50)
 	private String location;
 
-    @Column(name = "description", nullable = false,length = 50)
+    @Column(name = "description", nullable = false, length = 50)
 	private String description;
-
-    @Column(name = "id_interest", nullable = false)
-	private Long idInterest;
 
     public Event() {
     }
 
-    public Event(String name, String initialDate, String endDate, Long idCreator, String creationDate,
-            String location, String description, Long idInterest) {
+    public Event(Long id, Interest interest, String name, String initialDate, String endDate, Long idCreator,
+            String creationDate, String location, String description) {
+        this.id = id;
+        this.interest = interest;
         this.name = name;
         this.initialDate = initialDate;
         this.endDate = endDate;
@@ -50,7 +61,6 @@ public class Event {
         this.creationDate = creationDate;
         this.location = location;
         this.description = description;
-        this.idInterest = idInterest;
     }
 
     public Long getId() {
@@ -117,13 +127,19 @@ public class Event {
         this.description = description;
     }
 
-    public Long getIdInterest() {
-        return idInterest;
+    public Interest getInterest() {
+        return interest;
     }
 
-    public void setIdInterest(Long idInterest) {
-        this.idInterest = idInterest;
+    public void setInterest(Interest interest) {
+        this.interest = interest;
     }
 
-    
+    @Override
+    public String toString() {
+        return "Event [id=" + id + ", interest=" + interest + ", name=" + name + ", initialDate=" + initialDate
+                + ", endDate=" + endDate + ", idCreator=" + idCreator + ", creationDate=" + creationDate + ", location="
+                + location + ", description=" + description + "]";
+    }
+
 }

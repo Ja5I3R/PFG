@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pfg.interfaceService.IUserService;
 import com.pfg.interfaces.IUser;
+import com.pfg.models.Rol;
 import com.pfg.models.User;
 
 @Service
@@ -20,7 +21,8 @@ public class UserService implements IUserService {
 	@Override
 	@Transactional
 	public User createUser(User user) {
-		user.setId_rol(1L);
+		Rol rol = new Rol(2L, "Usuario");
+		user.setRol(rol);
 		return repository.save(user);
 	}
 

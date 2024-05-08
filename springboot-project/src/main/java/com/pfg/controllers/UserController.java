@@ -130,7 +130,7 @@ public class UserController {
                 }
                 else{
                     User sessionUser = (User)session.getAttribute("user");
-                    if(sessionUser.getId_rol().equals(2L)){
+                    if(!sessionUser.getRol().isAdministrator()){
                         return "redirect:/users";
                     }
                     else{
@@ -173,7 +173,7 @@ public class UserController {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);
         User sessionUser = (User)session.getAttribute("user");
-        if(sessionUser.getId_rol().equals(2L)){
+        if(!sessionUser.getRol().isAdministrator()){
             return "redirect:/users";
         }
         else{
@@ -194,7 +194,7 @@ public class UserController {
             HttpSession session = attr.getRequest().getSession(true);
             session.setAttribute("user", userC);
 
-            if(userC.getId_rol().equals(2L)){
+            if(!userC.getRol().isAdministrator()){
                 return "redirect:/users";
             }
             else{

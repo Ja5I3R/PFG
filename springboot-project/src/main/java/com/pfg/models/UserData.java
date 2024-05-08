@@ -1,11 +1,15 @@
 package com.pfg.models;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -20,6 +24,12 @@ public class UserData {
     @OneToOne
     @JoinColumn(name = "id_user", referencedColumnName = "id")
     private User user;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="user1")
+    private Set<IndividualChat> indChat1;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="user2")
+    private Set<IndividualChat> indChat2;
 
     @Column(name = "id_interest1", nullable = false)
     private Long interest1_id;
@@ -120,9 +130,9 @@ public class UserData {
 
     @Override
     public String toString() {
-        return "UserData [id=" + id + ", interest1_id=" + interest1_id + ", interest2_id=" + interest2_id
-                + ", interest3_id=" + interest3_id + ", interest4_id=" + interest4_id + ", interest5_id=" + interest5_id
-                + ", report_number=" + report_number + "]";
+        return "UserData [id=" + id + ", indChat1=" + indChat1 + ", indChat2=" + indChat2 + ", interest1_id="
+                + interest1_id + ", interest2_id=" + interest2_id + ", interest3_id=" + interest3_id + ", interest4_id="
+                + interest4_id + ", interest5_id=" + interest5_id + ", report_number=" + report_number + "]";
     }
     
 }
