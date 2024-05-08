@@ -52,7 +52,6 @@ public class UserDataService implements IUserDataService{
                 list.add(userD.getInterest5_id());
             }
         }
-
         return list;
     }
 }

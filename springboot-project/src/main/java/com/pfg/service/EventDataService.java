@@ -38,4 +38,20 @@ public class EventDataService implements IEventDataService{
 
         return list;
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Long>getUsersToEvent(Long eventID){
+        List<Long> list = new ArrayList<>();
+
+        List<EventData> listFor = repository.findAll();
+
+        for(EventData eventD : listFor){
+            if(eventD.getIdEvent().equals(eventID)){
+                list.add(eventD.getIdUser());
+            }
+        }
+
+        return list;
+    }
 }

@@ -47,11 +47,14 @@ public class Event {
     @Column(name = "description", nullable = false, length = 50)
 	private String description;
 
+    @Column(name = "image_url", nullable = false,length = 50)
+	private String image_url;
+
     public Event() {
     }
 
     public Event(Long id, Interest interest, String name, String initialDate, String endDate, Long idCreator,
-            String creationDate, String location, String description) {
+            String creationDate, String location, String description, String image_url) {
         this.id = id;
         this.interest = interest;
         this.name = name;
@@ -61,6 +64,7 @@ public class Event {
         this.creationDate = creationDate;
         this.location = location;
         this.description = description;
+        this.image_url = image_url;
     }
 
     public Long getId() {
@@ -133,6 +137,15 @@ public class Event {
 
     public void setInterest(Interest interest) {
         this.interest = interest;
+    }
+
+
+    public String getImage_url() {
+        return image_url;
+    }
+
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
     }
 
     @Override

@@ -19,4 +19,6 @@ public interface IUserService {
 	public User readUserName(String name);
 
 	public User readEmail(String email);
+
+	public List<User>getUserList(List<Long> idList);
 }
