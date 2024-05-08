@@ -1,20 +1,22 @@
 package com.pfg.models;
 
-import java.sql.Date;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
+import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "t_users")
@@ -24,6 +26,13 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
+    private UserData userData;
+
+	@ManyToOne
+    @JoinColumn(name = "id_rol")
+    private Rol rol;
+
 	@Column(name = "username", nullable = false,length = 50)
 	private String username;
 	
@@ -36,7 +45,7 @@ public class User {
 	@Column(name = "surname", nullable = false,length = 50)
 	private String surname;
 
-	@Column(name = "email", nullable = false,length = 50,unique=true)
+	@Column(name = "email", nullable = false, length = 50, unique=true)
 	private String email;
 
 	@Column(name = "age", nullable = false)
@@ -48,22 +57,52 @@ public class User {
 	@Column(name = "gender", nullable = false)
 	private Long gender;
 
-	@Column(name = "id_rol", nullable = false)
-	private Long id_rol;
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinTable(
+		name = "t_group_chat_users", 
+		joinColumns = @JoinColumn(name = "id_user", referencedColumnName = "id"),
+		inverseJoinColumns = @JoinColumn(name = "id_group_chat", referencedColumnName = "id"),
+		uniqueConstraints = {@UniqueConstraint(columnNames = {"id_user", "id_group_chat"})})
+	private Set<GroupChat> groupchats;
+
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinTable(
+		name = "t_events_users", 
+		joinColumns = @JoinColumn(name = "id_user", referencedColumnName = "id"),
+		inverseJoinColumns = @JoinColumn(name = "id_event", referencedColumnName = "id"),
+		uniqueConstraints = {@UniqueConstraint(columnNames = {"id_user", "id_event"})})
+	private Set<Event> events;
 	
 	public User() {		
 	}
 
-	public User(String username, String password, String name, String surname, String email, Long age, Long gender, Long id_rol, String birhDate) {
+	public User(Long id, Rol rol, String username, String password, String name, String surname, String email, Long age,
+			String birthdate, Long gender) {
+		this.id = id;
+		this.rol = rol;
 		this.username = username;
 		this.password = password;
 		this.name = name;
 		this.surname = surname;
 		this.email = email;
 		this.age = age;
+		this.birthdate = birthdate;
 		this.gender = gender;
-		this.id_rol = id_rol;
-		this.birthdate = birhDate;
+	}
+
+	public User(Long id, UserData userData, Rol rol, String username, String password, String name, String surname,
+			String email, Long age, String birthdate, Long gender) {
+		this.id = id;
+		this.userData = userData;
+		this.rol = rol;
+		this.username = username;
+		this.password = password;
+		this.name = name;
+		this.surname = surname;
+		this.email = email;
+		this.age = age;
+		this.birthdate = birthdate;
+		this.gender = gender;
 	}
 
 	public Long getId() {
@@ -122,25 +161,12 @@ public class User {
 		this.gender = gender;
 	}
 
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", password" + password + ", surname=" + surname + ", age=" + age + ", gender" + gender + "]";
-	}
-
 	public String getEmail() {
 		return email;
 	}
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-	
-	public Long getId_rol(){
-		return id_rol;
-	}
-
-	public void setId_rol(Long id_rol){
-		this.id_rol = id_rol;
 	}
 
 	public String getBirthdate() {
@@ -151,5 +177,30 @@ public class User {
 		this.birthdate = birthdate;
 	}
 
-	
+	public void setUserData(UserData userData) {
+        this.userData = userData;
+        userData.setUser(this);
+    }
+
+	public UserData getUserData() {
+		return userData;
+	}
+
+	public Rol getRol() {
+		return rol;
+	}
+
+	public void setRol(Rol rol) {
+		this.rol = rol;
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", userData=" + userData + ", rol=" + rol + ", username=" + username + ", password="
+				+ password + ", name=" + name + ", surname=" + surname + ", email=" + email + ", age=" + age
+				+ ", birthdate=" + birthdate + ", gender=" + gender + "]";
+	}
+
+
+
 }

@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pfg.interfaceService.IEventService;
 import com.pfg.interfaces.IEvent;
@@ -19,11 +20,13 @@ public class EventService implements IEventService{
 	private IEvent repository;
 
     @Override
+    @Transactional(readOnly = true)
     public List<Event>listAllEvents(){
         return repository.findAll();
     }
 
     @Override
+    @Transactional
 	public Event createEvent(Event event){
         LocalDate actualDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -33,6 +36,7 @@ public class EventService implements IEventService{
     }
 	
     @Override
+    @Transactional(readOnly = true)
 	public Event readEventId(Long id){
         return repository.findById(id).get();
     }
@@ -40,11 +44,13 @@ public class EventService implements IEventService{
 	//public Event updateEvent(Event event);
 	
     @Override
+    @Transactional
 	public void deleteEvent(Long id){
         repository.deleteById(id);
     }
 
     @Override
+    @Transactional(readOnly = true)
 	public List<Event>listByIndexes(List<Long> list){
 		List<Event> result = new ArrayList<>();
 

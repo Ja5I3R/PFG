@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pfg.interfaceService.IEventDataService;
 import com.pfg.interfaces.IEventData;
@@ -17,11 +18,13 @@ public class EventDataService implements IEventDataService{
 	private IEventData repository;
 
     @Override
+    @Transactional
     public EventData saveEventData(EventData ED){
         return repository.save(ED);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Long>getEventData(Long userID){
         List<Long> list = new ArrayList<>();
 

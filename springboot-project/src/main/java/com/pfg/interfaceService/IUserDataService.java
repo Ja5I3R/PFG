@@ -2,6 +2,7 @@ package com.pfg.interfaceService;
 
 import java.util.List;
 
+import com.pfg.models.User;
 import com.pfg.models.UserData;
 
 public interface IUserDataService {
@@ -10,6 +11,6 @@ public interface IUserDataService {
 
     public UserData saveUserPreferences(UserData UD);
 
-    public List<Long>getInterestList(Long userID);
+    public List<Long> getInterestList(User user);
 
 }

@@ -1,10 +1,14 @@
 package com.pfg.models;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -15,8 +19,14 @@ public class Interest {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "name", nullable = false,length = 50)
+	@Column(name = "name", nullable = false, length = 50)
 	private String name;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="interest")
+    private Set<Event> events;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="groupInterest")
+    private Set<GroupChat> groupChats;
 
     public Interest() {
     }
@@ -44,6 +54,11 @@ public class Interest {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Interest [id=" + id + ", name=" + name + "]";
     }
 
 }
