@@ -57,6 +57,12 @@ public class User {
 	@Column(name = "gender", nullable = false)
 	private Long gender;
 
+	@Column(name = "image_url", nullable = false)
+	private String image_url;
+
+	@Column(name = "profile_id", nullable = false)
+	private Long avatar_id;
+
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinTable(
 		name = "t_group_chat_users", 
@@ -77,7 +83,7 @@ public class User {
 	}
 
 	public User(Long id, Rol rol, String username, String password, String name, String surname, String email, Long age,
-			String birthdate, Long gender) {
+			String birthdate, Long gender, String image, Long avatar) {
 		this.id = id;
 		this.rol = rol;
 		this.username = username;
@@ -88,10 +94,12 @@ public class User {
 		this.age = age;
 		this.birthdate = birthdate;
 		this.gender = gender;
+		this.image_url = image;
+		this.avatar_id = avatar;
 	}
 
 	public User(Long id, UserData userData, Rol rol, String username, String password, String name, String surname,
-			String email, Long age, String birthdate, Long gender) {
+			String email, Long age, String birthdate, Long gender, String image, Long avatar) {
 		this.id = id;
 		this.userData = userData;
 		this.rol = rol;
@@ -103,6 +111,8 @@ public class User {
 		this.age = age;
 		this.birthdate = birthdate;
 		this.gender = gender;
+		this.image_url = image;
+		this.avatar_id = avatar;
 	}
 
 	public Long getId() {
@@ -192,6 +202,22 @@ public class User {
 
 	public void setRol(Rol rol) {
 		this.rol = rol;
+	}
+
+	public String getImage_url() {
+		return image_url;
+	}
+
+	public void setImage_url(String image_url) {
+		this.image_url = image_url;
+	}
+
+	public Long getAvatar_id() {
+		return avatar_id;
+	}
+
+	public void setAvatar_id(Long avatar_id) {
+		this.avatar_id = avatar_id;
 	}
 
 	@Override

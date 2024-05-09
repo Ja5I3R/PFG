@@ -58,7 +58,7 @@ public class Rol {
     }
 
     public boolean isAdministrator() {
-        if (id.equals(1L)) {
+        if (id.equals(2L)) {
             return true;
         }
         return false;

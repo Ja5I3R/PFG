@@ -1,5 +1,6 @@
 package com.pfg.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -78,5 +79,19 @@ public class UserService implements IUserService {
 			repository.deleteById(id);
 		}
 	} 
+
+	@Override
+	@Transactional(readOnly = true)
+    public List<User>getUserList(List<Long> idList){
+        List<User> list = new ArrayList<>();
+
+        for(Long userA : idList){
+			if(readUserId(userA) != null){
+				list.add(readUserId(userA));
+			}
+		}
+
+        return list;
+    }
 
 }

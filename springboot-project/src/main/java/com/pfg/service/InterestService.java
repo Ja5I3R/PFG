@@ -17,6 +17,11 @@ public class InterestService implements IInterestService{
     @Autowired
 	private IInterest repository;
 
+	@Override
+	public Interest getInterestById(Long id){
+		return repository.getById(id);
+	}
+
     @Override
 	@Transactional(readOnly = true)
 	public List<Interest> listAllInterest() {
