@@ -48,7 +48,7 @@
 						<br>
 						<div class="form-group">
 							<label>Intereses</label><br>
-							<select class="form-control" name="interest" th:field="*{idInterest}" required>
+							<select class="form-control" id="interest" name="interest" th:field="*{interest}" required>
 								<option value="">Selecciona un interés</option>
 								<option th:each="interest : ${interestList}" th:value="${interest.id}" th:text="${interest.name}"></option>
 							</select>

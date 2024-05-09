@@ -24,7 +24,9 @@ import com.pfg.interfaceService.IInterestService;
 import com.pfg.interfaceService.IUserService;
 import com.pfg.models.Event;
 import com.pfg.models.EventData;
+import com.pfg.models.Interest;
 import com.pfg.models.User;
+import com.pfg.service.UploadFileService;
 
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -46,6 +48,9 @@ public class EventController {
     @Autowired
     private IUserService userService;
 
+    @Autowired
+    private UploadFileService uploadService;
+
     //CREAR EVENTO
     @GetMapping("/events/new")
     public String gotoeventCreation(Model model) {
@@ -56,31 +61,25 @@ public class EventController {
     }
 
     @PostMapping("/events/create")
-    public String postMethodName(@ModelAttribute("event") Event event, BindingResult bindingResult, HttpServletRequest request, @RequestParam("eventImage") MultipartFile file) {
+    public String postMethodName(@ModelAttribute("event") Event event, BindingResult bindingResult, HttpServletRequest request, @RequestParam("eventImage") MultipartFile file,
+    @RequestParam("interest") Long interest) {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);
         User actualUser = (User) session.getAttribute("user");
-        Path path = Paths.get("src//main//resources//static//img/events");
-        String absolutePath = path.toFile().getAbsolutePath();
 
-        try {
-                byte[] bytes = file.getBytes();
-                Path completePath = Paths.get(absolutePath + "//" + file.getOriginalFilename());
-                Files.write(completePath, bytes);
-                event.setImage_url(file.getOriginalFilename());
-                event.setIdCreator(actualUser.getId());
-                service.createEvent(event);
-                
-                EventData ED = new EventData();
-                ED.setIdUser(actualUser.getId());
-                ED.setIdEvent(event.getId());
-                eventDService.saveEventData(ED);
+        uploadService.saveEventImage(file);
+        event.setImage_url(file.getOriginalFilename());
+        event.setIdCreator(actualUser.getId());
+        Interest it = intService.getInterestById(interest);
+        event.setInterest(it);
+        service.createEvent(event);
+    
+        EventData ED = new EventData();
+        ED.setIdUser(actualUser.getId());
+        ED.setIdEvent(event.getId());
+        eventDService.saveEventData(ED);
         
-                return "index";
-        } catch (IOException e){
-            e.printStackTrace();
-            return "error";
-        }
+        return "index";
     }
 
     //VER EVENTO INDIVIDUAL

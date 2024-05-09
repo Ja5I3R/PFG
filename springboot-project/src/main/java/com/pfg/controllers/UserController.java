@@ -32,6 +32,7 @@ import com.pfg.interfaceService.IUserDataService;
 import com.pfg.interfaceService.IUserService;
 import com.pfg.models.User;
 import com.pfg.models.UserData;
+import com.pfg.service.UploadFileService;
 
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -56,6 +57,9 @@ public class UserController {
 
     @Autowired
     private IEventDataService eventDataService;
+
+    @Autowired
+    private UploadFileService uploadService;
 
     //Pagina de inicio
     @GetMapping({ "/" })
@@ -109,8 +113,6 @@ public class UserController {
     @PostMapping("/users")
     public String createUser(@ModelAttribute("user") User user, BindingResult bindingResult, HttpServletRequest request, @RequestParam("profileImage") MultipartFile file) {
         User userCreated = service.readUserName(user.getUsername());
-        Path path = Paths.get("src//main//resources//static/img");
-        String absolutePath = path.toFile().getAbsolutePath();
         if(userCreated == null){
             userCreated = service.readEmail(user.getEmail());
         }
@@ -118,10 +120,7 @@ public class UserController {
             return "redirect:/users/new";
         }
         else{
-            try {
-                byte[] bytes = file.getBytes();
-                Path completePath = Paths.get(absolutePath + "//" + file.getOriginalFilename());
-                Files.write(completePath, bytes);
+            uploadService.saveEventImage(file);
                 user.setImage_url(file.getOriginalFilename());
                 service.createUser(user);
             String[] interestList = request.getParameterValues("interests");
@@ -156,10 +155,6 @@ public class UserController {
                 
             }
             return "redirect:/users";
-            } catch (IOException e) {
-                e.printStackTrace();
-                return "error";
-            }
         }
     }
 
