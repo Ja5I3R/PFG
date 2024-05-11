@@ -29,9 +29,9 @@ public class EventService implements IEventService{
     @Transactional
 	public Event createEvent(Event event){
         LocalDate actualDate = LocalDate.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String formattedDate = actualDate.format(formatter);
-        event.setCreationDate(formattedDate);
+        //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        //String formattedDate = actualDate.format(formatter);
+        event.setCreationDate(actualDate);
         return repository.save(event);
     }
 	

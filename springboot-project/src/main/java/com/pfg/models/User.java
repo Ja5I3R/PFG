@@ -64,11 +64,11 @@ public class User {
 
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinTable(
-		name = "t_group_chat_users", 
+		name = "t_chat_users", 
 		joinColumns = @JoinColumn(name = "id_user", referencedColumnName = "id"),
-		inverseJoinColumns = @JoinColumn(name = "id_group_chat", referencedColumnName = "id"),
-		uniqueConstraints = {@UniqueConstraint(columnNames = {"id_user", "id_group_chat"})})
-	private Set<GroupChat> groupchats;
+		inverseJoinColumns = @JoinColumn(name = "id_chat", referencedColumnName = "id"),
+		uniqueConstraints = {@UniqueConstraint(columnNames = {"id_user", "id_chat"})})
+	private Set<Chat> chats;
 
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinTable(
@@ -78,7 +78,7 @@ public class User {
 		uniqueConstraints = {@UniqueConstraint(columnNames = {"id_user", "id_event"})})
 	private Set<Event> events;
 	
-	public User() {		
+	public User() {
 	}
 
 	public User(Long id, Rol rol, String username, String password, String name, String surname, String email, Long age,

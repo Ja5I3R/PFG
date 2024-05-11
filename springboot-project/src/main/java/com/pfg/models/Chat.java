@@ -14,39 +14,31 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "t_grupalchats")
-public class GroupChat {
+@Table(name = "t_chats")
+public class Chat {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@ManyToOne
-    @JoinColumn(name = "idInterest")
-    private Interest groupInterest;
+    @JoinColumn(name = "id_interest")
+    private Interest chatInterest;
 
-	@ManyToMany(mappedBy = "groupchats")
+	@ManyToMany(mappedBy = "chats")
     private Set<User> users;
 
-	@Column(name = "contentURL", nullable = false, length = 50)
+	@Column(name = "content_url", nullable = false, length = 50)
 	private String contentURL;
 
-    @Column(name = "creationDate", nullable = false, length = 50)
+    @Column(name = "creation_date", nullable = false, length = 50)
 	private LocalDateTime creationDate;
 
 	@ManyToOne
-	@JoinColumn(name = "idCreator")
+	@JoinColumn(name = "id_creator")
 	private User creator;
 
-	public GroupChat() {
-	}
-
-	public GroupChat(Long id, Interest groupInterest, String contentURL, User creator) {
-		this.id = id;
-		this.groupInterest = groupInterest;
-		this.contentURL = contentURL;
-		this.creator = creator;
-		this.creationDate = LocalDateTime.now();
+	public Chat() {
 	}
 
 	public Long getId() {
@@ -57,12 +49,21 @@ public class GroupChat {
 		this.id = id;
 	}
 
-	public Interest getGroupInterest() {
-		return groupInterest;
+
+	public Interest getChatInterest() {
+		return chatInterest;
 	}
 
-	public void setGroupInterest(Interest groupInterest) {
-		this.groupInterest = groupInterest;
+	public void setChatInterest(Interest chatInterest) {
+		this.chatInterest = chatInterest;
+	}
+
+	public Set<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(Set<User> users) {
+		this.users = users;
 	}
 
 	public String getContentURL() {
