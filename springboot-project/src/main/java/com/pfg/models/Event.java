@@ -1,5 +1,6 @@
 package com.pfg.models;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -21,7 +22,7 @@ public class Event {
 
     @ManyToOne
     @JoinColumn(name = "id_event")
-    private Interest interest;
+    private Interest eventInterest;
 
     @ManyToMany(mappedBy = "events")
     private Set<User> users;
@@ -30,16 +31,16 @@ public class Event {
 	private String name;
 
     @Column(name = "initial_date", nullable = false)
-	private String initialDate;
+	private LocalDate initialDate;
 
     @Column(name = "end_date", nullable = false)
-	private String endDate;
+	private LocalDate endDate;
 
     @Column(name = "id_creator", nullable = false)
 	private Long idCreator;
 
     @Column(name = "create_date", nullable = false)
-	private String creationDate;
+	private LocalDate creationDate;
 
     @Column(name = "location", nullable = false, length = 50)
 	private String location;
@@ -53,10 +54,11 @@ public class Event {
     public Event() {
     }
 
-    public Event(Long id, Interest interest, String name, String initialDate, String endDate, Long idCreator,
-            String creationDate, String location, String description, String image_url) {
+    public Event(Long id, Interest eventInterest, Set<User> users, String name, LocalDate initialDate, LocalDate endDate,
+            Long idCreator, LocalDate creationDate, String location, String description, String image_url) {
         this.id = id;
-        this.interest = interest;
+        this.eventInterest = eventInterest;
+        this.users = users;
         this.name = name;
         this.initialDate = initialDate;
         this.endDate = endDate;
@@ -65,6 +67,38 @@ public class Event {
         this.location = location;
         this.description = description;
         this.image_url = image_url;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
+
+    public LocalDate getInitialDate() {
+        return initialDate;
+    }
+
+    public void setInitialDate(LocalDate initialDate) {
+        this.initialDate = initialDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public LocalDate getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(LocalDate creationDate) {
+        this.creationDate = creationDate;
     }
 
     public Long getId() {
@@ -83,21 +117,6 @@ public class Event {
         this.name = name;
     }
 
-    public String getInitialDate() {
-        return initialDate;
-    }
-
-    public void setInitialDate(String initialDate) {
-        this.initialDate = initialDate;
-    }
-
-    public String getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
-    }
 
     public Long getIdCreator() {
         return idCreator;
@@ -105,14 +124,6 @@ public class Event {
 
     public void setIdCreator(Long idCreator) {
         this.idCreator = idCreator;
-    }
-
-    public String getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(String creationDate) {
-        this.creationDate = creationDate;
     }
 
     public String getLocation() {
@@ -132,11 +143,11 @@ public class Event {
     }
 
     public Interest getInterest() {
-        return interest;
+        return eventInterest;
     }
 
-    public void setInterest(Interest interest) {
-        this.interest = interest;
+    public void setInterest(Interest eventInterest) {
+        this.eventInterest = eventInterest;
     }
 
 
@@ -150,7 +161,7 @@ public class Event {
 
     @Override
     public String toString() {
-        return "Event [id=" + id + ", interest=" + interest + ", name=" + name + ", initialDate=" + initialDate
+        return "Event [id=" + id + ", interest=" + eventInterest + ", name=" + name + ", initialDate=" + initialDate
                 + ", endDate=" + endDate + ", idCreator=" + idCreator + ", creationDate=" + creationDate + ", location="
                 + location + ", description=" + description + "]";
     }

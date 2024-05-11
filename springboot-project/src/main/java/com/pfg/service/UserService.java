@@ -78,7 +78,7 @@ public class UserService implements IUserService {
 		if (userDB.isPresent()) {
 			repository.deleteById(id);
 		}
-	} 
+	}
 
 	@Override
 	@Transactional(readOnly = true)

@@ -12,4 +12,6 @@ public interface IInterestService {
 
     public List<Interest>listByIndexes(List<Long> list);
 
+    public Interest findById(Long id);
+
 }

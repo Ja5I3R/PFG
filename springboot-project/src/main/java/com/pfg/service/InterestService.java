@@ -40,4 +40,8 @@ public class InterestService implements IInterestService{
 
 		return result;
 	}
+
+	public Interest findById(Long id) {
+        return repository.findById(id).orElse(null);
+    }
 }

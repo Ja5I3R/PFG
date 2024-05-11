@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -22,11 +23,14 @@ public class Interest {
 	@Column(name = "name", nullable = false, length = 50)
 	private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="interest")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="eventInterest")
     private Set<Event> events;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="groupInterest")
-    private Set<GroupChat> groupChats;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="chatInterest")
+    private Set<Chat> chats;
+
+    @ManyToMany(mappedBy = "interests")
+    private Set<UserData> userDatas;
 
     public Interest() {
     }
@@ -38,6 +42,30 @@ public class Interest {
     public Interest(Long id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public Set<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(Set<Event> events) {
+        this.events = events;
+    }
+
+    public Set<Chat> getChats() {
+        return chats;
+    }
+
+    public void setChats(Set<Chat> chats) {
+        this.chats = chats;
+    }
+
+    public Set<UserData> getUserDatas() {
+        return userDatas;
+    }
+
+    public void setUserDatas(Set<UserData> userDatas) {
+        this.userDatas = userDatas;
     }
 
     public Long getId() {
