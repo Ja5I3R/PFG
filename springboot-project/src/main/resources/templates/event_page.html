@@ -49,7 +49,10 @@
             </div>
             <h5>Descripcion</h5>
             <p th:text="${event.description}"></p>
-            <a th:if="${event.idCreator == author.id}" th:href="@{/events/join}" class="btn btn-outline-light me-2">Modificar</a>
+
+            <a th:if="${#lists.contains(userList.![id], userS.id)}" th:href="@{/events/leave/{id}(id=${event.id})}" class="btn btn-dark me-2">Salir de evento</a>
+            <a th:unless="${#lists.contains(userList.![id], userS.id)}" th:href="@{/events/join/{id}(id=${event.id})}" class="btn btn-dark me-2">Entrar a evento</a>
+
         </div>
         <div class="col-6">
             <div class="border rounded p-2"><h6>Autor: <span th:text="${author.username}"></span></h6></div>

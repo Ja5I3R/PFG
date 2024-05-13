@@ -3,6 +3,7 @@ package com.pfg.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pfg.interfaceService.IUserService;
 import com.pfg.interfaces.IUser;
+import com.pfg.models.Event;
+import com.pfg.models.Interest;
 import com.pfg.models.Rol;
 import com.pfg.models.User;
 
@@ -94,4 +97,18 @@ public class UserService implements IUserService {
         return list;
     }
 
+	@Override
+    @Transactional(readOnly = true)
+    public List<Event> getEventList(User user) {
+        List<Event> eventList = new ArrayList<>();
+
+        if (user != null && user.getEvents() != null) {
+            Set<Event> events = user.getEvents();
+            for (Event event : events) {
+                eventList.add(event);
+            }
+        }
+
+        return eventList;
+    }
 }

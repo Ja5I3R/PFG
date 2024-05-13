@@ -21,7 +21,7 @@
     <div th:if="${not #lists.isEmpty(eventList)}">
         <div class="row">
             <div class="col">
-                <div th:if="${param.name eq ''}"> <!-- eq == Equals (Con el campo vacío se ven todos los events) -->
+                <div th:if="${#strings.isEmpty(param.name)}">
                     <div th:each="event : ${eventList}" class="card mb-3" style="width: 18rem;">
                         <img src="..." class="card-img-top" alt="...">
                         <div class="card-body">
@@ -31,7 +31,7 @@
                         </div>
                     </div>
                 </div>
-                <div th:if="${param.name ne ''}"> <!-- ne == Not equals -->
+                <div th:if="${not #strings.isEmpty(param.name)}">
                     <div th:each="event : ${eventList}" th:if="${#strings.containsIgnoreCase(event.name, param.name)}" class="card mb-3" style="width: 18rem;">
                         <img src="..." class="card-img-top" alt="...">
                         <div class="card-body">

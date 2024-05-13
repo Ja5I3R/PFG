@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.pfg.interfaceService.IEventDataService;
 import com.pfg.interfaceService.IEventService;
 import com.pfg.interfaceService.IInterestService;
 import com.pfg.interfaceService.IUserDataService;
@@ -58,9 +57,6 @@ public class UserController {
     private IEventService eventService;
 
     @Autowired
-    private IEventDataService eventDataService;
-
-    @Autowired
     private UploadFileService uploadService;
 
     // Pagina de inicio
@@ -88,9 +84,13 @@ public class UserController {
     @GetMapping({ "/userpage/{id}" })
     public String userPage(Model model, @PathVariable Long id) {
         User userC = service.readUserId(id);
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpSession session = attr.getRequest().getSession(true);
+        session.setAttribute("user", userC);
         model.addAttribute("user", userC);
         model.addAttribute("interestList", intService.listByIndexes(userDataService.getInterestList(userC)));
-        model.addAttribute("eventList", eventService.listByIndexes(eventDataService.getEventData(userC.getId())));
+        //model.addAttribute("eventList", service.getEventList(userC));
+        model.addAttribute("eventList", userC.getEvents());
         return "user_page";
     }
 
@@ -207,10 +207,6 @@ public class UserController {
             return "redirect:/try_session";
         }
         if (userC != null && user.getPassword().equals(userC.getPassword())) {
-            ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-            HttpSession session = attr.getRequest().getSession(true);
-            session.setAttribute("user", userC);
-
             if (userC.getRol().isAdministrator()) {
                 return "redirect:/users";
             } else {

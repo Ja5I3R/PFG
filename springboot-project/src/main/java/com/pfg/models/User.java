@@ -82,7 +82,7 @@ public class User {
 	}
 
 	public User(Long id, Rol rol, String username, String password, String name, String surname, String email, Long age,
-			String birthdate, Long gender, String image, Long avatar) {
+			String birthdate, Long gender, String image, Long avatar, Set<Event> events) {
 		this.id = id;
 		this.rol = rol;
 		this.username = username;
@@ -95,6 +95,7 @@ public class User {
 		this.gender = gender;
 		this.image_url = image;
 		this.avatar_id = avatar;
+		this.events = events;
 	}
 
 	public User(Long id, UserData userData, Rol rol, String username, String password, String name, String surname,
@@ -217,6 +218,14 @@ public class User {
 
 	public void setAvatar_id(Long avatar_id) {
 		this.avatar_id = avatar_id;
+	}
+
+	public Set<Event> getEvents() {
+		return events;
+	}
+
+	public void setEvents(Set<Event> events) {
+		this.events = events;
 	}
 
 	@Override

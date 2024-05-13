@@ -4,8 +4,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import javax.enterprise.inject.spi.EventMetadata;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -18,12 +21,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.pfg.interfaceService.IEventDataService;
 import com.pfg.interfaceService.IEventService;
 import com.pfg.interfaceService.IInterestService;
 import com.pfg.interfaceService.IUserService;
 import com.pfg.models.Event;
-import com.pfg.models.EventData;
 import com.pfg.models.Interest;
 import com.pfg.models.User;
 import com.pfg.service.UploadFileService;
@@ -38,9 +39,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class EventController {
     @Autowired
     private IEventService service;
-
-    @Autowired
-    private IEventDataService eventDService;
 
     @Autowired
     private IInterestService intService;
@@ -63,7 +61,7 @@ public class EventController {
     @PostMapping("/events/create")
     public String postMethodName(@ModelAttribute("event") Event event, BindingResult bindingResult, HttpServletRequest request, @RequestParam("eventImage") MultipartFile file,
     @RequestParam("interest") Long interest) {
-        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder .currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);
         User actualUser = (User) session.getAttribute("user");
 
@@ -72,13 +70,15 @@ public class EventController {
         event.setIdCreator(actualUser.getId());
         Interest it = intService.getInterestById(interest);
         event.setInterest(it);
-        service.createEvent(event);
-    
-        EventData ED = new EventData();
-        ED.setIdUser(actualUser.getId());
-        ED.setIdEvent(event.getId());
-        eventDService.saveEventData(ED);
+
+        Set<Event> events = new HashSet<>();
+        events.add(event);
+        actualUser.setEvents(events);
         
+        service.createEvent(event);
+        
+        userService.createUser(actualUser);
+
         return "index";
     }
 
@@ -86,7 +86,8 @@ public class EventController {
     @GetMapping("/events/view/{id}")
     public String viewEvent(@PathVariable Long id, Model model) {
         Event actualEvent = service.readEventId(id);
-        List<User> userList = userService.getUserList(eventDService.getUsersToEvent(id));
+        //List<User> userList = userService.getUserList(eventDService.getUsersToEvent(id));
+        Set<User> userList = actualEvent.getUsers();
         User author = userService.readUserId(actualEvent.getIdCreator());
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);
@@ -106,5 +107,17 @@ public class EventController {
         return "events";
     }
     
-    
+    //AÑADIR A EVENTO
+    @GetMapping("/events/join/{id}")
+    public String eventUserAdd(Model model, @PathVariable Long id) {
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpSession session = attr.getRequest().getSession(false);
+        User actualUser = (User) session.getAttribute("user");
+        Event actualEvent = service.readEventId(id);
+        actualUser.getEvents().add(actualEvent);
+        userService.createUser(actualUser);
+        return "redirect:/events/view/" + actualEvent.getId();
+    }
+
+    //ELIMINAR DE EVENTO
 }

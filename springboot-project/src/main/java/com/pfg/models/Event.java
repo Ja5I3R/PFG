@@ -1,17 +1,21 @@
 package com.pfg.models;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "t_events")
@@ -31,16 +35,16 @@ public class Event {
 	private String name;
 
     @Column(name = "initial_date", nullable = false)
-	private LocalDate initialDate;
+	private String initialDate;
 
     @Column(name = "end_date", nullable = false)
-	private LocalDate endDate;
+	private String endDate;
 
     @Column(name = "id_creator", nullable = false)
 	private Long idCreator;
 
     @Column(name = "create_date", nullable = false)
-	private LocalDate creationDate;
+	private String creationDate;
 
     @Column(name = "location", nullable = false, length = 50)
 	private String location;
@@ -54,8 +58,8 @@ public class Event {
     public Event() {
     }
 
-    public Event(Long id, Interest eventInterest, Set<User> users, String name, LocalDate initialDate, LocalDate endDate,
-            Long idCreator, LocalDate creationDate, String location, String description, String image_url) {
+    public Event(Long id, Interest eventInterest, Set<User> users, String name, String initialDate, String endDate,
+            Long idCreator, String creationDate, String location, String description, String image_url) {
         this.id = id;
         this.eventInterest = eventInterest;
         this.users = users;
@@ -77,27 +81,27 @@ public class Event {
         this.users = users;
     }
 
-    public LocalDate getInitialDate() {
+    public String getInitialDate() {
         return initialDate;
     }
 
-    public void setInitialDate(LocalDate initialDate) {
+    public void setInitialDate(String initialDate) {
         this.initialDate = initialDate;
     }
 
-    public LocalDate getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 
-    public LocalDate getCreationDate() {
+    public String getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(LocalDate creationDate) {
+    public void setCreationDate(String creationDate) {
         this.creationDate = creationDate;
     }
 
