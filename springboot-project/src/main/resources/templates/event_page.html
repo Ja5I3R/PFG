@@ -10,6 +10,13 @@
     .userPic{
         width: 40px;
     }
+    .backgroundImage{
+        background-image: url('[[@{/img/events/__${event.image_url}__}]]');
+        background-position: center;
+        background-repeat: no-repeat;
+        width: 110%;
+        height: 50vh;
+    }
 </style>
 </head>
 <body>
@@ -35,11 +42,7 @@
     </div>
 </header>
     <div class="container-fluid">
-      <div class="row">
-        <div class="col-12">
-            <img class="img-fluid w-100 h-50" th:src="@{/img/events/__${event.image_url}__}" th:alt="${event.image_url}">
-        </div>
-      </div>
+      <div class="row backgroundImage"></div>
       <div class="row p-5">
         <div class="col-6">
             <h1 th:text="${event.name}"></h1>

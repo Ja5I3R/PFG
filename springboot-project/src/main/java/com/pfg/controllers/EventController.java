@@ -86,7 +86,6 @@ public class EventController {
     @GetMapping("/events/view/{id}")
     public String viewEvent(@PathVariable Long id, Model model) {
         Event actualEvent = service.readEventId(id);
-        //List<User> userList = userService.getUserList(eventDService.getUsersToEvent(id));
         Set<User> userList = actualEvent.getUsers();
         User author = userService.readUserId(actualEvent.getIdCreator());
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();

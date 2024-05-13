@@ -75,7 +75,7 @@
               <a th:href="@{/events/new}" class="btn btn-danger">Crear evento</a>
               <a th:href="@{/events/search}" class="btn btn-danger">Eventos</a>
               <div class="container-fluid">
-                <div class="row g-2">
+                <div class="row gx-5">
                   <div class="col-4" th:each="event : ${eventList}">
                     <div class="card d-inline-block" style="width: 18rem;">
                       <img class="card-img-top" th:src="@{/img/events/__${event.image_url}__}" th:alt="${event.image_url}">
