@@ -1,16 +1,21 @@
 package com.pfg.models;
 
+import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "t_events")
@@ -21,7 +26,7 @@ public class Event {
 
     @ManyToOne
     @JoinColumn(name = "id_event")
-    private Interest interest;
+    private Interest eventInterest;
 
     @ManyToMany(mappedBy = "events")
     private Set<User> users;
@@ -47,13 +52,17 @@ public class Event {
     @Column(name = "description", nullable = false, length = 50)
 	private String description;
 
+    @Column(name = "image_url", nullable = false,length = 50)
+	private String image_url;
+
     public Event() {
     }
 
-    public Event(Long id, Interest interest, String name, String initialDate, String endDate, Long idCreator,
-            String creationDate, String location, String description) {
+    public Event(Long id, Interest eventInterest, Set<User> users, String name, String initialDate, String endDate,
+            Long idCreator, String creationDate, String location, String description, String image_url) {
         this.id = id;
-        this.interest = interest;
+        this.eventInterest = eventInterest;
+        this.users = users;
         this.name = name;
         this.initialDate = initialDate;
         this.endDate = endDate;
@@ -61,22 +70,15 @@ public class Event {
         this.creationDate = creationDate;
         this.location = location;
         this.description = description;
+        this.image_url = image_url;
     }
 
-    public Long getId() {
-        return id;
+    public Set<User> getUsers() {
+        return users;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 
     public String getInitialDate() {
@@ -95,20 +97,37 @@ public class Event {
         this.endDate = endDate;
     }
 
-    public Long getIdCreator() {
-        return idCreator;
-    }
-
-    public void setIdCreator(Long idCreator) {
-        this.idCreator = idCreator;
-    }
-
     public String getCreationDate() {
         return creationDate;
     }
 
     public void setCreationDate(String creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
+    public Long getIdCreator() {
+        return idCreator;
+    }
+
+    public void setIdCreator(Long idCreator) {
+        this.idCreator = idCreator;
     }
 
     public String getLocation() {
@@ -128,16 +147,25 @@ public class Event {
     }
 
     public Interest getInterest() {
-        return interest;
+        return eventInterest;
     }
 
-    public void setInterest(Interest interest) {
-        this.interest = interest;
+    public void setInterest(Interest eventInterest) {
+        this.eventInterest = eventInterest;
+    }
+
+
+    public String getImage_url() {
+        return image_url;
+    }
+
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
     }
 
     @Override
     public String toString() {
-        return "Event [id=" + id + ", interest=" + interest + ", name=" + name + ", initialDate=" + initialDate
+        return "Event [id=" + id + ", interest=" + eventInterest + ", name=" + name + ", initialDate=" + initialDate
                 + ", endDate=" + endDate + ", idCreator=" + idCreator + ", creationDate=" + creationDate + ", location="
                 + location + ", description=" + description + "]";
     }

@@ -20,7 +20,11 @@
 			<div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
 				<h1 class="text-center">Registro de evento</h1>
 				<div class="card-body">
-					<form id="eventForm" th:action="@{/events/create}" th:object="${event}" method="POST" onsubmit="return validateForm()">
+					<form id="eventForm" th:action="@{/events/create}" th:object="${event}" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
+						<br>
+						<div class="form-group">
+							<label>Imagen del evento:</label> <input type="file" name="eventImage" class="form-control-file" accept="image/*" required>
+						</div>
 						<br>
 						<div class="form-group">
 							<label>Nombre:</label> <input type="text" name="name" th:field="*{name}" class="form-control" placeholder="Escriba el nombre del evento" required>
@@ -39,12 +43,12 @@
 						</div>
 						<br>
 						<div class="form-group">
-							<label>Descripcion:</label> <input type="text" name="description" th:field="*{description}" class="form-control" placeholder="Escriba la descripcion" required>
+							<label>Descripcion:</label> <textarea name="description" th:field="*{description}" class="form-control" placeholder="Escriba la descripcion" required></textarea>
 						</div>
 						<br>
 						<div class="form-group">
 							<label>Intereses</label><br>
-							<select class="form-control" name="interest" th:field="*{idInterest}" required>
+							<select class="form-control" id="interest" name="interest" th:field="*{interest}" required>
 								<option value="">Selecciona un interés</option>
 								<option th:each="interest : ${interestList}" th:value="${interest.id}" th:text="${interest.name}"></option>
 							</select>
