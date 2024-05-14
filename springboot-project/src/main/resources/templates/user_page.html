@@ -71,6 +71,7 @@
               <ul th:each="interest : ${interestList}">
                 <li th:text="${interest.name}"></li>
               </ul>
+              <!--Este th, hace un bucle tipo foreach con info de la bbdd (sólo para registros dinámicos)-->
             </div>
             <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
               <a th:href="@{/events/new}" class="btn btn-danger">Crear evento</a>
