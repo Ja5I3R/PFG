@@ -228,11 +228,20 @@ public class User {
 		this.events = events;
 	}
 
+	public Set<Chat> getChats() {
+		return chats;
+	}
+
+	public void setChats(Set<Chat> chats) {
+		this.chats = chats;
+	}
+	
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", userData=" + userData + ", rol=" + rol + ", username=" + username + ", password="
 				+ password + ", name=" + name + ", surname=" + surname + ", email=" + email + ", age=" + age
 				+ ", birthdate=" + birthdate + ", gender=" + gender + "]";
 	}
+
 
 }

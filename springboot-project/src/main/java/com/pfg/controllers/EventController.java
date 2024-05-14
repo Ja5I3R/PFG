@@ -71,7 +71,7 @@ public class EventController {
         Interest it = intService.getInterestById(interest);
         event.setInterest(it);
 
-        Set<Event> events = new HashSet<>();
+        Set<Event> events = actualUser.getEvents();
         events.add(event);
         actualUser.setEvents(events);
         

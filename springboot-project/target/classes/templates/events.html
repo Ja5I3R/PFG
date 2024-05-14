@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Eventos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 
 <body>
@@ -46,7 +47,7 @@
                     <div class="row m-3 justify-content-center" th:if="${#strings.isEmpty(param.name)}">
                         <div th:each="event : ${eventList}" class="col-4" style="width: 18rem;">
                             <div class="card mb-3 d-inline-block" style="width: 18rem;">
-                                <img class="card-img-top" th:src="@{/img/events/__${event.image_url}__}" th:alt="${event.image_url}">
+                                <img class="card-img-top" th:src="@{/img/__${event.image_url}__}" th:alt="${event.image_url}">
                                 <div class="card-body">
                                     <h5 class="card-title" th:text="${event.name}"></h5>
                                     <p class="card-text" th:text="${event.description}"></p>
@@ -58,7 +59,7 @@
                     <div class="row gx-5 gy-5" th:if="${not #strings.isEmpty(param.name)}">
                         <div th:each="event : ${eventList}" th:if="${#strings.containsIgnoreCase(event.name, param.name)}" class="col-4" style="width: 18rem;">
                             <div class="card mb-3 d-inline-block" style="width: 18rem;">
-                                <img class="card-img-top" th:src="@{/img/events/__${event.image_url}__}" th:alt="${event.image_url}">
+                                <img class="card-img-top" th:src="@{/img/__${event.image_url}__}" th:alt="${event.image_url}">
                                 <div class="card-body">
                                     <h5 class="card-title" th:text="${event.name}"></h5>
                                     <p class="card-text" th:text="${event.description}"></p>

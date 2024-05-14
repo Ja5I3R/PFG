@@ -34,7 +34,6 @@ import com.pfg.interfaceService.IUserService;
 import com.pfg.models.User;
 import com.pfg.models.Interest;
 import com.pfg.models.UserData;
-import com.pfg.service.InterestService;
 import com.pfg.service.UploadFileService;
 
 import org.springframework.web.context.request.RequestContextHolder;
@@ -89,7 +88,7 @@ public class UserController {
         session.setAttribute("user", userC);
         model.addAttribute("user", userC);
         model.addAttribute("interestList", intService.listByIndexes(userDataService.getInterestList(userC)));
-        //model.addAttribute("eventList", service.getEventList(userC));
+        model.addAttribute("chatList", userC.getChats());
         model.addAttribute("eventList", userC.getEvents());
         return "user_page";
     }
@@ -122,7 +121,7 @@ public class UserController {
         if (userCreated != null) {
             return "redirect:/users/new";
         } else {
-            uploadService.saveEventImage(file);
+            uploadService.saveUserImage(file);
             user.setImage_url(file.getOriginalFilename());
             service.createUser(user);
             String[] interestIds = request.getParameterValues("interests");
@@ -194,7 +193,7 @@ public class UserController {
         if (sessionUser.getRol().isAdministrator()) {
             return "redirect:/users";
         } else {
-            return "user_page";
+            return "redirect:/userpage/" + sessionUser.getId();
         }
 
     }
