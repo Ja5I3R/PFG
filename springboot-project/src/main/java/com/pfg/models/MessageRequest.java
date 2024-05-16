@@ -1,17 +1,20 @@
 package com.pfg.models;
 
-public class Message {
+public class MessageRequest {
     
     public String user;
 
     public String message;
 
-    public Message(String user, String message) {
+    public Long id;
+
+    public MessageRequest(String user, String message, Long id) {
         this.user = user;
         this.message = message;
+        this.id = id;
     }
 
-    public Message() {
+    public MessageRequest() {
     }
 
     public String getUser() {
@@ -28,6 +31,14 @@ public class Message {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     

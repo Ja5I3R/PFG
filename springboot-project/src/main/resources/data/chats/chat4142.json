@@ -1,0 +1,6 @@
+[
+    {"user": "Admin", "message": "Hola"},
+    {"user": "Usuario1", "message": "¡Hola, Admin! ¿Cómo estás?"},
+    {"user": "Usuario2", "message": "Hola a todos"},
+    {"user": "Usuario3", "message": "Buenos días"}
+]
