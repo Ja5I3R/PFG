@@ -38,6 +38,9 @@ public class Chat {
 	@JoinColumn(name = "id_creator")
 	private User creator;
 
+	@Column(name = "chat_type", nullable = false)
+	private Long chatType;
+
 	public Chat() {
 	}
 
@@ -90,9 +93,18 @@ public class Chat {
 		this.creator = creator;
 	}
 
+	public Long getChatType() {
+		return chatType;
+	}
+
+	public void setChatType(Long chatType) {
+		this.chatType = chatType;
+	}
+
 	@Override
 	public String toString() {
 		return "GroupChat [id=" + id + ", contentURL=" + contentURL + ", creationDate=" + creationDate + "]";
 	}
+
 
 }
