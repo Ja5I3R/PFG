@@ -3,6 +3,7 @@ package com.pfg.interfaceService;
 import java.util.List;
 
 import com.pfg.models.Event;
+import com.pfg.models.Interest;
 import com.pfg.models.User;
 
 public interface IUserService {
@@ -21,7 +22,9 @@ public interface IUserService {
 
 	public User readEmail(String email);
 
-	public List<User>getUserList(List<Long> idList);
+	public List<User> getUserList(List<Long> idList);
 
 	public List<Event> getEventList(User user);
+
+	public List<User> findUsersByInterests(List<Interest> interests);
 }

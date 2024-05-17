@@ -1,14 +1,8 @@
 package com.pfg.controllers;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.enterprise.inject.spi.EventMetadata;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -20,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.pfg.interfaceService.IEventService;
 import com.pfg.interfaceService.IInterestService;
@@ -36,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 @Controller
+@RequestMapping("/events")
 public class EventController {
     @Autowired
     private IEventService service;
@@ -50,7 +46,7 @@ public class EventController {
     private UploadFileService uploadService;
 
     //CREAR EVENTO
-    @GetMapping("/events/new")
+    @GetMapping("/new")
     public String gotoeventCreation(Model model) {
         Event EV = new Event();
         model.addAttribute("event", EV);
@@ -58,7 +54,7 @@ public class EventController {
         return "create_event";
     }
 
-    @PostMapping("/events/create")
+    @PostMapping("/create")
     public String postMethodName(@ModelAttribute("event") Event event, BindingResult bindingResult, HttpServletRequest request, @RequestParam("eventImage") MultipartFile file,
     @RequestParam("interest") Long interest) {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder .currentRequestAttributes();
@@ -83,7 +79,7 @@ public class EventController {
     }
 
     //VER EVENTO INDIVIDUAL
-    @GetMapping("/events/view/{id}")
+    @GetMapping("/view/{id}")
     public String viewEvent(@PathVariable Long id, Model model) {
         Event actualEvent = service.readEventId(id);
         Set<User> userList = actualEvent.getUsers();
@@ -99,7 +95,7 @@ public class EventController {
     }
 
     //IR A BUSQUEDA DE EVENTOS
-    @GetMapping("/events/search")
+    @GetMapping("/search")
     public String goToEventSearch(Model model) {
         List<Event> eventList = service.listAllEvents(); 
         model.addAttribute("eventList", eventList);
@@ -107,7 +103,7 @@ public class EventController {
     }
     
     //AÑADIR A EVENTO
-    @GetMapping("/events/join/{id}")
+    @GetMapping("/join/{id}")
     public String eventUserAdd(Model model, @PathVariable Long id) {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);

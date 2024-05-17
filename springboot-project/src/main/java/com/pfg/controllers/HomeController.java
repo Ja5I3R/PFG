@@ -1,14 +1,5 @@
 package com.pfg.controllers;
 
-import java.nio.file.Paths;
-import java.nio.file.Files;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.sql.Date;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -17,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,7 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.pfg.interfaceService.IEventService;
 import com.pfg.interfaceService.IInterestService;
 import com.pfg.interfaceService.IUserDataService;
 import com.pfg.interfaceService.IUserService;
@@ -41,7 +30,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
-public class UserController {
+public class HomeController {
 
     @Autowired
     private IUserService service;
@@ -53,15 +42,37 @@ public class UserController {
     private IUserDataService userDataService;
 
     @Autowired
-    private IEventService eventService;
-
-    @Autowired
     private UploadFileService uploadService;
 
-    // Pagina de inicio
-    @GetMapping({ "/" })
-    public String redirect(Model model) {
-        return "index";
+    @GetMapping({ "/meet/{id}" })
+    public String meetPage(Model model, @PathVariable Long id) {
+        User user = service.readUserId(id);
+        List<Interest> currentUserInterests = intService.listByIndexes(userDataService.getInterestList(user));
+        List<User> matchedUsers = service.findUsersByInterests(currentUserInterests);
+
+        matchedUsers.remove(user);
+
+        matchedUsers.sort((u1, u2) -> {
+            int commonInterestsU1 = countCommonInterests(u1, currentUserInterests);
+            int commonInterestsU2 = countCommonInterests(u2, currentUserInterests);
+            return Integer.compare(commonInterestsU2, commonInterestsU1);
+        });
+
+        List<User> topMatchedUsers = matchedUsers.subList(0, Math.min(3, matchedUsers.size()));
+        model.addAttribute("matchedUsers", topMatchedUsers);
+
+        return "meet_page";
+    }
+
+    private int countCommonInterests(User user, List<Interest> currentUserInterests) {
+        List<Interest> userInterests = intService.listByIndexes(userDataService.getInterestList(user));
+        int commonInterests = 0;
+        for (Interest interest : userInterests) {
+            if (currentUserInterests.contains(interest)) {
+                commonInterests++;
+            }
+        }
+        return commonInterests;
     }
 
     // Pagina de inicio de sesion

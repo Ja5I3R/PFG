@@ -1,16 +1,22 @@
 package com.pfg.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pfg.interfaceService.IUserDataService;
 import com.pfg.interfaceService.IUserService;
 import com.pfg.interfaces.IUser;
+import com.pfg.interfaces.IUserData;
 import com.pfg.models.Event;
 import com.pfg.models.Interest;
 import com.pfg.models.Rol;
@@ -22,6 +28,35 @@ public class UserService implements IUserService {
 	@Autowired
 	private IUser repository;
 
+    @Autowired
+    private IUserData userDataRepository;
+
+	public List<User> findUsersByInterests(List<Interest> interests) {
+        Map<User, Integer> userInterestCountMap = new HashMap<>();
+
+        List<User> usersWithInterests = userDataRepository.findUsersByInterests(interests);
+
+		// Crear mapa con usuarios (clave, valor)
+		// User1 -> 3, User2 -> 5, User3 -> 2
+        for (User user : usersWithInterests) {
+            for (Interest interest : interests) {
+                if (user.getUserData().getInterests().contains(interest)) {
+                    userInterestCountMap.put(user, userInterestCountMap.getOrDefault(user, 0) + 1);
+                }
+            }
+        }
+
+		// Ordenar la lista por intereses 
+		// User2 -> 5, User1 -> 3, User3 -> 2
+        List<Map.Entry<User, Integer>> sortedUserList = new ArrayList<>(userInterestCountMap.entrySet());
+        sortedUserList.sort((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()));
+
+		// Mapeo [User2, User1, User3]
+        return sortedUserList.stream()
+                             .map(Map.Entry::getKey)
+                             .collect(Collectors.toList());
+    }
+	
 	@Override
 	@Transactional
 	public User createUser(User user) {

@@ -1,32 +1,21 @@
 package com.pfg.controllers;
 
-import javax.json.JsonArray;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import org.springframework.core.io.ClassPathResource;
-import org.h2.util.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -41,22 +30,11 @@ import com.pfg.models.User;
 import com.pfg.service.UploadFileService;
 
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
-
-
 
 @Controller
+@RequestMapping("/chat")
 public class ChatController {
 
     @Autowired
@@ -68,7 +46,7 @@ public class ChatController {
     @Autowired
     private UploadFileService uploadService;
 
-    @GetMapping("/chat/create")
+    @GetMapping("/create")
     public String createEvent(Model model) {
         User userWith = userService.readUserId(48L); //USUARIO CON QUIEN HABLAS
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
@@ -100,7 +78,7 @@ public class ChatController {
         return "redirect:/chat/view/" + chat.getId();
     }
 
-    @GetMapping("/chat/view/{id}")
+    @GetMapping("/view/{id}")
     public String viewEvent(Model model, @PathVariable Long id) {
         Chat actualChat = service.readChatId(id); //CHAT A ENVIAR
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
