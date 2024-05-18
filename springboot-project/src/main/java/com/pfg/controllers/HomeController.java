@@ -93,7 +93,13 @@ public class HomeController {
     // Pagina de usuario
     @GetMapping({ "/userpage/{id}" })
     public String userPage(Model model, @PathVariable Long id) {
-        User userC = service.readUserId(id);
+        User userC = new User();
+        try {
+            userC = service.readUserId(id); 
+        } catch (Exception e) {
+            return "/error";
+        }
+       
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(true);
         session.setAttribute("user", userC);
