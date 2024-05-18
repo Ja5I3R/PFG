@@ -15,7 +15,9 @@ public class CustomErrorController implements ErrorController {
     @GetMapping("/error")
     public String errorPage(HttpServletRequest request, Model model){
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
+
         model.addAttribute("error", status);
+        model.addAttribute("date", new Date());
         return "error_page";
     }
 
