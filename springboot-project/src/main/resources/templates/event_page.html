@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Evento</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<style>
+    .userPic{
+        width: 40px;
+    }
+    .backgroundImage{
+        background-image: url('[[@{/img/__${event.image_url}__}]]');
+        background-position: center;
+        background-repeat: no-repeat;
+        width: 110%;
+        height: 50vh;
+    }
+</style>
+</head>
+<body>
+  <header class="p-3 bg-dark text-white">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                <a class="navbar-brand" href="#">
+                    <img src="https://cdn-icons-png.freepik.com/512/12082/12082882.png?ga=GA1.1.647944042.1714035643" alt="logo" width="30" height="24" class="d-inline-block align-text-top">
+                </a>
+            </a>
+
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li><a th:href="@{/users/login}" class="nav-link px-2 text-secondary">Sobre nosotros</a></li>
+                <li><a th:href="@{/users/new}" class="nav-link px-2 text-white">Contacto</a></li>
+            </ul>
+
+            <div class="text-end">
+                <a th:href="@{/users/login}" class="btn btn-outline-light me-2">Log In</a>
+                <a th:href="@{/users/new}" class="btn btn-warning">Sign Up</a>
+            </div>
+        </div>
+    </div>
+</header>
+    <div class="container-fluid">
+      <div class="row backgroundImage"></div>
+      <div class="row p-5">
+        <div class="col-6">
+            <h1 th:text="${event.name}"></h1>
+            <div class="d-inline" th:each="user : ${userList}">
+                <img class="img-fluid rounded userPic d-inline" th:src="@{/img/avatars/__${user.avatar_id}__.jpg}" th:alt="${user.avatar_id}">
+                <p class="d-inline m-2" th:text="${user.username}"></p>
+            </div>
+            <h5>Descripcion</h5>
+            <p th:text="${event.description}"></p>
+
+            <a th:if="${#lists.contains(userList.![id], userS.id)}" th:href="@{/events/leave/{id}(id=${event.id})}" class="btn btn-dark me-2">Salir de evento</a>
+            <a th:unless="${#lists.contains(userList.![id], userS.id)}" th:href="@{/events/join/{id}(id=${event.id})}" class="btn btn-dark me-2">Entrar a evento</a>
+
+        </div>
+        <div class="col-6">
+            <div class="border rounded p-2"><h6>Autor: <span th:text="${author.username}"></span></h6></div>
+            <div class="border rounded p-2"><h6>Fecha de inicio: <span th:text="${event.initialDate}"></span></h6></div>
+            <div class="border rounded p-2"><h6>Fecha de fin: <span th:text="${event.endDate}"></span></h6></div>
+            <div class="border rounded p-2"><h6>Interes: <span th:text="${event.interest.getName()}"></span></h6></div>
+           <p>Localizacion</p>
+           <iframe
+                width="600"
+                height="450"
+                style="border:0"
+                loading="lazy"
+                allowfullscreen
+                src="https://www.google.com/maps/embed/v1/search?q=Madrid">
+            </iframe>
+
+
+           <a class="link-info" th:href="'https://www.google.com/maps/search/?api=&query=' + ${event.location}">Ver localizacion en mapa</a>
+        </div>
+      </div>
+    </div>
+      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
