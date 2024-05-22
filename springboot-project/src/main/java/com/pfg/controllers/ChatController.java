@@ -1,5 +1,6 @@
 package com.pfg.controllers;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import java.io.BufferedWriter;
@@ -10,14 +11,19 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
+
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -54,21 +60,85 @@ public class ChatController {
 
     @Autowired
     private IUserDataService udService;
-    
+
     @Autowired
     private IInterestService intService;
 
+    @PostMapping("/create/group")
+    public String createGroup(@RequestParam("name") String name,
+            @RequestParam("participants") List<Long> participantIds, @RequestParam("interest") Long interestId,
+            Model model, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            return "redirect:/login";
+        }
+
+        User sessionUser = (User) session.getAttribute("user");
+        if (sessionUser == null) {
+            return "redirect:/login";
+        }
+
+        Chat chat = new Chat();
+        chat.setName(name);
+        chat.setChatType(2L);
+        chat.setCreationDate(LocalDateTime.now());
+        chat.setContentURL("chat_group_" + name + ".json");
+        chat.setChatInterest(intService.findById(interestId));
+
+        String filePath = "data/chats/" + chat.getContentURL();
+        try {
+            Path path = Paths.get(filePath);
+            if (!Files.exists(path)) {
+                Files.createDirectories(path.getParent());
+                Files.createFile(path);
+
+                BufferedWriter writer = Files.newBufferedWriter(path);
+                writer.write("[]");
+                writer.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Set<User> chatUsers = new HashSet<>();
+        chatUsers.add(sessionUser);
+
+        for (Long userId : participantIds) {
+            User participant = userService.readUserId(userId);
+            chatUsers.add(participant);
+        }
+        chat.setUsers(chatUsers);
+
+        service.createChat(chat);
+
+        List<User> usersToUpdate = new ArrayList<>(chatUsers);
+
+        for (User user : usersToUpdate) {
+            user.getChats().add(chat);
+            userService.createUser(user);
+        }
+
+        return "redirect:/chat/view/" + chat.getId();
+    }
+
     @GetMapping("/create/group")
-    public String createGroup(Model model) {
+    public String createGroupPage(Model model) {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);
         User sessionUser = (User) session.getAttribute("user");
+
+        if (sessionUser == null) {
+            return "redirect:/login";
+        }
+
         Set<User> friends;
         Set<Chat> chats = sessionUser.getChats();
         friends = userService.getFriends(sessionUser, chats);
         List<Interest> interestList = intService.listByIndexes(udService.getInterestList(sessionUser));
+
         model.addAttribute("friends", friends);
         model.addAttribute("interestList", interestList);
+
         return "create_group";
     }
 
@@ -131,6 +201,9 @@ public class ChatController {
             model.addAttribute("messages", messageList);
             model.addAttribute("usersession", sessionUser);
             model.addAttribute("chat", actualChat);
+            if (actualChat.getChatType() == 2) {
+                model.addAttribute("chatName", actualChat.getName());
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

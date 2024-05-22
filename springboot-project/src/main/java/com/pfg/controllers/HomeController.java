@@ -80,22 +80,6 @@ public class HomeController {
         return commonInterests;
     }
 
-    //OBTENER AMIGOS
-    public Set<User> getFriends(User currentUser, Set<Chat> chats) {
-        Set<User> friends = new HashSet<>();
-
-        for (Chat chat : chats) {
-                Set<User> chatUsers = chat.getUsers();
-                for (User user : chatUsers) {
-                    if (!user.equals(currentUser)) {
-                        friends.add(user);
-                    }
-            }
-        }
-
-        return friends;
-    }
-
     // Pagina de inicio de sesion
     @GetMapping({ "/users/login" })
     public String redirectLogIn(Model model) {
@@ -127,7 +111,6 @@ public class HomeController {
         model.addAttribute("user", userC);
         model.addAttribute("interestList", intService.listByIndexes(userDataService.getInterestList(userC)));
         model.addAttribute("chatList", userC.getChats());
-        model.addAttribute("friends", getFriends(userC, userC.getChats()));
         if(userC.getRol().isAdministrator()){
             model.addAttribute("userList", service.listAllUsers());
             model.addAttribute("eventList", eventService.listAllEvents());

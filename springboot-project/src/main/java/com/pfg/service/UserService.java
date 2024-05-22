@@ -37,23 +37,19 @@ public class UserService implements IUserService {
     @Autowired
     private IUserData userDataRepository;
 
-	@Override
+    //OBTENER AMIGOS
     public Set<User> getFriends(User currentUser, Set<Chat> chats) {
         Set<User> friends = new HashSet<>();
-		
-        
+
         for (Chat chat : chats) {
-            //if (chat.getUsers().size() == 2) {
-				Set<User> chatUsers = chat.getUsers();
+                Set<User> chatUsers = chat.getUsers();
                 for (User user : chatUsers) {
                     if (!user.equals(currentUser)) {
                         friends.add(user);
                     }
-            
-            //    }
             }
         }
-        
+
         return friends;
     }
 
