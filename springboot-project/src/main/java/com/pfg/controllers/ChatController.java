@@ -24,8 +24,12 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pfg.interfaceService.IChatService;
+import com.pfg.interfaceService.IInterestService;
+import com.pfg.interfaceService.IUserDataService;
 import com.pfg.interfaceService.IUserService;
 import com.pfg.models.Chat;
+import com.pfg.models.Event;
+import com.pfg.models.Interest;
 import com.pfg.models.Message;
 import com.pfg.models.MessageRequest;
 import com.pfg.models.User;
@@ -48,23 +52,43 @@ public class ChatController {
     @Autowired
     private UploadFileService uploadService;
 
-    @GetMapping("/create/{id}")
-    public String createEvent(Model model, @PathVariable Long id) {
-        User userWith = userService.readUserId(id); //USUARIO CON QUIEN HABLAS
+    @Autowired
+    private IUserDataService udService;
+    
+    @Autowired
+    private IInterestService intService;
+
+    @GetMapping("/create/group")
+    public String createGroup(Model model) {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);
-        User sessionUser = (User) session.getAttribute("user"); //USUARIO DE SESION
+        User sessionUser = (User) session.getAttribute("user");
+        Set<User> friends;
+        Set<Chat> chats = sessionUser.getChats();
+        friends = userService.getFriends(sessionUser, chats);
+        List<Interest> interestList = intService.listByIndexes(udService.getInterestList(sessionUser));
+        model.addAttribute("friends", friends);
+        model.addAttribute("interestList", interestList);
+        return "create_group";
+    }
+
+    @GetMapping("/create/{id}")
+    public String createChat(Model model, @PathVariable Long id) {
+        User userWith = userService.readUserId(id); // USUARIO CON QUIEN HABLAS
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpSession session = attr.getRequest().getSession(false);
+        User sessionUser = (User) session.getAttribute("user"); // USUARIO DE SESION
         Chat chat = new Chat();
         chat.setContentURL("chat" + sessionUser.getId() + "_" + userWith.getId() + ".json");
-        
+
         String filePath = "data/chats/" + chat.getContentURL();
-        
+
         try {
             Path path = Paths.get(filePath);
             if (!Files.exists(path)) {
-                Files.createDirectories(path.getParent()); 
-                Files.createFile(path); 
-                
+                Files.createDirectories(path.getParent());
+                Files.createFile(path);
+
                 BufferedWriter writer = Files.newBufferedWriter(path);
                 writer.write("[]");
                 writer.close();
@@ -72,8 +96,7 @@ public class ChatController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
-        
+
         LocalDateTime actualDate = LocalDateTime.now();
         chat.setCreationDate(actualDate);
         chat.setChatType(1L);
@@ -88,20 +111,21 @@ public class ChatController {
 
     @GetMapping("/view/{id}")
     public String viewEvent(Model model, @PathVariable Long id) {
-        Chat actualChat = service.readChatId(id); //CHAT A ENVIAR
+        Chat actualChat = service.readChatId(id); // CHAT A ENVIAR
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);
-        User sessionUser = (User) session.getAttribute("user"); //USUARIO PARA ENVIAR MENSAJES
+        User sessionUser = (User) session.getAttribute("user"); // USUARIO PARA ENVIAR MENSAJES
 
-        Set<User> chatUserList = actualChat.getUsers(); //LISTA DE USUARIOS DEL CHAT
+        Set<User> chatUserList = actualChat.getUsers(); // LISTA DE USUARIOS DEL CHAT
 
         try {
             String filePath = "data/chats/" + actualChat.getContentURL();
             byte[] bytes = Files.readAllBytes(Paths.get(filePath));
             String jsonContent = new String(bytes);
             ObjectMapper objectMapper = new ObjectMapper();
-            List<Message> messageList = objectMapper.readValue(jsonContent, new TypeReference<List<Message>>() {});
-            if(messageList.size() == 0){
+            List<Message> messageList = objectMapper.readValue(jsonContent, new TypeReference<List<Message>>() {
+            });
+            if (messageList.size() == 0) {
                 messageList = new ArrayList<>();
             }
             model.addAttribute("messages", messageList);
@@ -110,11 +134,10 @@ public class ChatController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+
         return "chat";
     }
 
-    
     @MessageMapping("/messages")
     @SendTo("/topic/messages")
     public Message send(MessageRequest message) throws Exception {

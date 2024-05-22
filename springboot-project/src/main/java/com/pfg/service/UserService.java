@@ -13,10 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.pfg.interfaceService.IUserDataService;
 import com.pfg.interfaceService.IUserService;
 import com.pfg.interfaces.IUser;
 import com.pfg.interfaces.IUserData;
+import com.pfg.models.Chat;
 import com.pfg.models.Event;
 import com.pfg.models.Interest;
 import com.pfg.models.Rol;
@@ -30,6 +30,26 @@ public class UserService implements IUserService {
 
     @Autowired
     private IUserData userDataRepository;
+
+	@Override
+    public Set<User> getFriends(User currentUser, Set<Chat> chats) {
+        Set<User> friends = new HashSet<>();
+		
+        
+        for (Chat chat : chats) {
+            //if (chat.getUsers().size() == 2) {
+				Set<User> chatUsers = chat.getUsers();
+                for (User user : chatUsers) {
+                    if (!user.equals(currentUser)) {
+                        friends.add(user);
+                    }
+            
+            //    }
+            }
+        }
+        
+        return friends;
+    }
 
 	public List<User> findUsersByInterests(List<Interest> interests) {
         Map<User, Integer> userInterestCountMap = new HashMap<>();
