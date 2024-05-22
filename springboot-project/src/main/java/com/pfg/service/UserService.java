@@ -1,9 +1,15 @@
 package com.pfg.service;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -82,6 +88,20 @@ public class UserService implements IUserService {
 	public User createUser(User user) {
 		Rol rol = new Rol(2L, "Usuario");
 		user.setRol(rol);
+		try {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MMM-dd");
+			LocalDate date = LocalDate.parse(user.getBirthdate());	
+
+			LocalDate actualDate = LocalDate.now();
+
+			int age = Period.between(date, actualDate).getYears();
+			Long finalAge = Long.valueOf(age);
+
+			user.setAge(finalAge);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return repository.save(user);
 	}
 

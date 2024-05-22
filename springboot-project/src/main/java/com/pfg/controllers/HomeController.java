@@ -17,10 +17,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.pfg.interfaceService.IEventService;
 import com.pfg.interfaceService.IInterestService;
 import com.pfg.interfaceService.IUserDataService;
 import com.pfg.interfaceService.IUserService;
 import com.pfg.models.User;
+import com.pfg.models.Chat;
 import com.pfg.models.Interest;
 import com.pfg.models.UserData;
 import com.pfg.service.UploadFileService;
@@ -43,6 +45,9 @@ public class HomeController {
 
     @Autowired
     private UploadFileService uploadService;
+
+    @Autowired
+    private IEventService eventService;
 
     @GetMapping({ "/meet/{id}" })
     public String meetPage(Model model, @PathVariable Long id) {
@@ -75,6 +80,22 @@ public class HomeController {
         return commonInterests;
     }
 
+    //OBTENER AMIGOS
+    public Set<User> getFriends(User currentUser, Set<Chat> chats) {
+        Set<User> friends = new HashSet<>();
+
+        for (Chat chat : chats) {
+                Set<User> chatUsers = chat.getUsers();
+                for (User user : chatUsers) {
+                    if (!user.equals(currentUser)) {
+                        friends.add(user);
+                    }
+            }
+        }
+
+        return friends;
+    }
+
     // Pagina de inicio de sesion
     @GetMapping({ "/users/login" })
     public String redirectLogIn(Model model) {
@@ -99,14 +120,22 @@ public class HomeController {
         } catch (Exception e) {
             return "/error";
         }
-       
+        
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(true);
         session.setAttribute("user", userC);
         model.addAttribute("user", userC);
         model.addAttribute("interestList", intService.listByIndexes(userDataService.getInterestList(userC)));
         model.addAttribute("chatList", userC.getChats());
-        model.addAttribute("eventList", userC.getEvents());
+        model.addAttribute("friends", getFriends(userC, userC.getChats()));
+        if(userC.getRol().isAdministrator()){
+            model.addAttribute("userList", service.listAllUsers());
+            model.addAttribute("eventList", eventService.listAllEvents());
+        }
+        else{
+            model.addAttribute("eventList", userC.getEvents());
+        }
+       
         return "user_page";
     }
 
@@ -181,8 +210,18 @@ public class HomeController {
     // Borrado de usuarios
     @GetMapping("/users/{id}")
     public String deleteUser(@PathVariable Long id) {
-        service.deleteUser(id);
-        return "redirect:/users";
+        User user = service.readUserId(id);
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpSession session = attr.getRequest().getSession(false);
+        User sessionUser = (User) session.getAttribute("user");
+        if(sessionUser.getRol().isAdministrator() && sessionUser.getId() != user.getId()){
+            service.deleteUser(id);
+            return "redirect:/userpage/" + sessionUser.getId();
+        }
+        else{
+            service.deleteUser(id);
+            return "redirect:/";
+        }
     }
 
     // Actualizacion de usuarios
@@ -207,11 +246,7 @@ public class HomeController {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);
         User sessionUser = (User) session.getAttribute("user");
-        if (sessionUser.getRol().isAdministrator()) {
-            return "redirect:/users";
-        } else {
-            return "redirect:/userpage/" + sessionUser.getId();
-        }
+        return "redirect:/userpage/" + sessionUser.getId();
 
     }
 
@@ -223,11 +258,7 @@ public class HomeController {
             return "redirect:/try_session";
         }
         if (userC != null && user.getPassword().equals(userC.getPassword())) {
-            if (userC.getRol().isAdministrator()) {
-                return "redirect:/users";
-            } else {
-                return "redirect:/userpage/" + userC.getId();
-            }
+            return "redirect:/userpage/" + userC.getId();
 
         } else {
             return "try_session";
