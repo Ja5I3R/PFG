@@ -42,12 +42,13 @@ public class UserService implements IUserService {
         Set<User> friends = new HashSet<>();
 
         for (Chat chat : chats) {
+			if(chat.getChatType() == 1L){
                 Set<User> chatUsers = chat.getUsers();
                 for (User user : chatUsers) {
                     if (!user.equals(currentUser)) {
                         friends.add(user);
                     }
-            }
+            }}
         }
 
         return friends;
