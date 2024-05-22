@@ -5,31 +5,63 @@
     <meta charset="UTF-8">
     <title>Eventos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script>
+        $(document).ready(function () {
+            $('input[type=radio][name=interest]').change(function () {
+                //alert(`${this.value}`);   MANERA DE ALERT DE VALOR CON ID
+                var value = $(this).val();
+                $(".events-container").empty();
+                $.ajax({
+                    type: "POST",
+                    url: "/events/interest",
+                    contentType: "application/json",
+                    data: JSON.stringify({ value: value }),
+                    dataType: "json", // Specify dataType as JSON to ensure proper parsing
+                    success: function(result){
+                        if(result.length === 0){
+                            $(".events-container").html("<p>No se encontraron eventos</p>");
+                        } else {
+                            // Iterate over the events and display them
+                            $.each(result, function(index, event){
+                                var eventHtml = "<div class='row m-3 justify-content-center'><div class='col-4' style='width: 18rem;'><div class='card mb-3 d-inline-block' style='width: 18rem;'><img class='card-img-top' src='/img/eventsImg/" + event.image_url + "'th:alt='" + event.image_url + "'><div class='card-body'><h5 class='card-title'>"+event.name+"</h5><p class='card-text'>"+event.description+"</p><a href='/events/view/"+event.id+"' class='btn btn-info'>Ver más datos</a></div></div></div></div>";
+                                $(".events-container").append(eventHtml);
+                            });  
+                        }
+                    },
+                    error: function(xhr, status, error){
+                        alert("Error: " + error); // Display the error message
+                        console.log("Error: ", xhr.responseText); // Log the detailed error response
+                    }
+                });
+            });
+        });
+    </script>
 </head>
 
 <body>
     <header class="p-3 text-white">
-		<div class="container">
-			<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-				<a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-					<img src="" alt="Logo">
-				</a>
+        <div class="container">
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                    <img src="" alt="Logo">
+                </a>
 
-				<ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-					<li><a href="#" class="nav-link px-2 text-white">Home</a></li>
-					<li><a href="#" class="nav-link px-2 text-white">Contacto</a></li>
-					<li><a href="#" class="nav-link px-2 text-white">Sobre nosotros</a></li>
-				</ul>
+                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                    <li><a href="#" class="nav-link px-2 text-white">Home</a></li>
+                    <li><a href="#" class="nav-link px-2 text-white">Contacto</a></li>
+                    <li><a href="#" class="nav-link px-2 text-white">Sobre nosotros</a></li>
+                </ul>
 
-				<div class="text-end">
-					<button type="button" class="btn btn-outline-light me-2">Login</button>
-					<button type="button" class="btn" id="btn-signup">Sign-up</button>
-				</div>
-			</div>
-		</div>
-	</header>
-	<br>
+                <div class="text-end">
+                    <button type="button" class="btn btn-outline-light me-2">Login</button>
+                    <button type="button" class="btn" id="btn-signup">Sign-up</button>
+                </div>
+            </div>
+        </div>
+    </header>
+    <br>
     <div class="container">
         <h1>Eventos</h1>
         <form th:action="@{/events/search}" method="GET">
@@ -41,29 +73,41 @@
                 <button type="submit" class="btn btn-success">Comprobar</button>
             </div>
         </form>
+        <!--PARTE NUEVA POR INTERESES-->
+        <div th:each="interest : ${interestList}">
+            <label th:for="${'interest' + interest.id}" th:text="${interest.name}"></label>
+            <input type="radio" name="interest" th:id="'avatar'+${interest.id}" th:value="${interest.id}">
+        </div>
+        <!---->
         <div th:if="${not #lists.isEmpty(eventList)}">
             <div>
-                <div class="container-fluid">
+                <div class="container-fluid events-container">
                     <div class="row m-3 justify-content-center" th:if="${#strings.isEmpty(param.name)}">
                         <div th:each="event : ${eventList}" class="col-4" style="width: 18rem;">
                             <div class="card mb-3 d-inline-block" style="width: 18rem;">
-                                <img class="card-img-top" th:src="@{/img/__${event.image_url}__}" th:alt="${event.image_url}">
+                                <img class="card-img-top" th:src="@{/img/eventsImg/__${event.image_url}__}"
+                                    th:alt="${event.image_url}">
                                 <div class="card-body">
                                     <h5 class="card-title" th:text="${event.name}"></h5>
                                     <p class="card-text" th:text="${event.description}"></p>
-                                    <a th:href="@{/events/view/{id}(id=${event.id})}" class="btn btn-info">Ver más datos</a>
+                                    <a th:href="@{/events/view/{id}(id=${event.id})}" class="btn btn-info">Ver más
+                                        datos</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row gx-5 gy-5" th:if="${not #strings.isEmpty(param.name)}">
-                        <div th:each="event : ${eventList}" th:if="${#strings.containsIgnoreCase(event.name, param.name)}" class="col-4" style="width: 18rem;">
+                        <div th:each="event : ${eventList}"
+                            th:if="${#strings.containsIgnoreCase(event.name, param.name)}" class="col-4"
+                            style="width: 18rem;">
                             <div class="card mb-3 d-inline-block" style="width: 18rem;">
-                                <img class="card-img-top" th:src="@{/img/__${event.image_url}__}" th:alt="${event.image_url}">
+                                <img class="card-img-top" th:src="@{/img/__${event.image_url}__}"
+                                    th:alt="${event.image_url}">
                                 <div class="card-body">
                                     <h5 class="card-title" th:text="${event.name}"></h5>
                                     <p class="card-text" th:text="${event.description}"></p>
-                                    <a th:href="@{/events/view/{id}(id=${event.id})}" class="btn btn-info">Ver más datos</a>
+                                    <a th:href="@{/events/view/{id}(id=${event.id})}" class="btn btn-info">Ver más
+                                        datos</a>
                                 </div>
                             </div>
                         </div>
