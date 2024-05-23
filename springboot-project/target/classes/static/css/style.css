@@ -3,6 +3,10 @@
  */
 
 /* Variables */
+@font-face {
+    font-family: 'Bebas';
+    src: url(../../fonts/BebasNeue-Regular.otf);
+}
 :root 
 {
     /* Colores */
