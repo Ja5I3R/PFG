@@ -13,6 +13,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -56,6 +57,8 @@ public class HomeController {
 
     @Autowired
     private IEventService eventService;
+
+    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public User getSessionUser(){
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
@@ -236,6 +239,7 @@ public class HomeController {
         } else {
             uploadService.saveUserImage(file);
             user.setImage_url(file.getOriginalFilename());
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
             service.createUser(user);
             String[] interestIds = request.getParameterValues("interests");
             if (interestIds != null) {
@@ -324,7 +328,7 @@ public class HomeController {
         if (bindingResult.hasErrors()) {
             return "redirect:/try_session";
         }
-        if (userC != null && user.getPassword().equals(userC.getPassword())) {
+        if (userC != null && passwordEncoder.matches(user.getPassword(), userC.getPassword())) {
             return "redirect:/userpage/" + userC.getId();
 
         } else {
