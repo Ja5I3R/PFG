@@ -19,10 +19,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.pfg.interfaceService.IUserDataService;
 import com.pfg.interfaceService.IUserService;
 import com.pfg.interfaces.IUser;
 import com.pfg.interfaces.IUserData;
+import com.pfg.models.Chat;
 import com.pfg.models.Event;
 import com.pfg.models.Interest;
 import com.pfg.models.Rol;
@@ -34,35 +34,53 @@ public class UserService implements IUserService {
 	@Autowired
 	private IUser repository;
 
-    @Autowired
-    private IUserData userDataRepository;
+	@Autowired
+	private IUserData userDataRepository;
+
+	// OBTENER AMIGOS
+	public Set<User> getFriends(User currentUser, Set<Chat> chats) {
+		Set<User> friends = new HashSet<>();
+
+		for (Chat chat : chats) {
+			if (chat.getChatType() == 1L) {
+				Set<User> chatUsers = chat.getUsers();
+				for (User user : chatUsers) {
+					if (!user.equals(currentUser)) {
+						friends.add(user);
+					}
+				}
+			}
+		}
+
+		return friends;
+	}
 
 	public List<User> findUsersByInterests(List<Interest> interests) {
-        Map<User, Integer> userInterestCountMap = new HashMap<>();
+		Map<User, Integer> userInterestCountMap = new HashMap<>();
 
-        List<User> usersWithInterests = userDataRepository.findUsersByInterests(interests);
+		List<User> usersWithInterests = userDataRepository.findUsersByInterests(interests);
 
 		// Crear mapa con usuarios (clave, valor)
 		// User1 -> 3, User2 -> 5, User3 -> 2
-        for (User user : usersWithInterests) {
-            for (Interest interest : interests) {
-                if (user.getUserData().getInterests().contains(interest)) {
-                    userInterestCountMap.put(user, userInterestCountMap.getOrDefault(user, 0) + 1);
-                }
-            }
-        }
+		for (User user : usersWithInterests) {
+			for (Interest interest : interests) {
+				if (user.getUserData().getInterests().contains(interest)) {
+					userInterestCountMap.put(user, userInterestCountMap.getOrDefault(user, 0) + 1);
+				}
+			}
+		}
 
-		// Ordenar la lista por intereses 
+		// Ordenar la lista por intereses
 		// User2 -> 5, User1 -> 3, User3 -> 2
-        List<Map.Entry<User, Integer>> sortedUserList = new ArrayList<>(userInterestCountMap.entrySet());
-        sortedUserList.sort((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()));
+		List<Map.Entry<User, Integer>> sortedUserList = new ArrayList<>(userInterestCountMap.entrySet());
+		sortedUserList.sort((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()));
 
 		// Mapeo [User2, User1, User3]
-        return sortedUserList.stream()
-                             .map(Map.Entry::getKey)
-                             .collect(Collectors.toList());
-    }
-	
+		return sortedUserList.stream()
+				.map(Map.Entry::getKey)
+				.collect(Collectors.toList());
+	}
+
 	@Override
 	@Transactional
 	public User createUser(User user) {
@@ -70,7 +88,7 @@ public class UserService implements IUserService {
 		user.setRol(rol);
 		try {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MMM-dd");
-			LocalDate date = LocalDate.parse(user.getBirthdate());	
+			LocalDate date = LocalDate.parse(user.getBirthdate());
 
 			LocalDate actualDate = LocalDate.now();
 
@@ -140,30 +158,30 @@ public class UserService implements IUserService {
 
 	@Override
 	@Transactional(readOnly = true)
-    public List<User>getUserList(List<Long> idList){
-        List<User> list = new ArrayList<>();
+	public List<User> getUserList(List<Long> idList) {
+		List<User> list = new ArrayList<>();
 
-        for(Long userA : idList){
-			if(readUserId(userA) != null){
+		for (Long userA : idList) {
+			if (readUserId(userA) != null) {
 				list.add(readUserId(userA));
 			}
 		}
 
-        return list;
-    }
+		return list;
+	}
 
 	@Override
-    @Transactional(readOnly = true)
-    public List<Event> getEventList(User user) {
-        List<Event> eventList = new ArrayList<>();
+	@Transactional(readOnly = true)
+	public List<Event> getEventList(User user) {
+		List<Event> eventList = new ArrayList<>();
 
-        if (user != null && user.getEvents() != null) {
-            Set<Event> events = user.getEvents();
-            for (Event event : events) {
-                eventList.add(event);
-            }
-        }
+		if (user != null && user.getEvents() != null) {
+			Set<Event> events = user.getEvents();
+			for (Event event : events) {
+				eventList.add(event);
+			}
+		}
 
-        return eventList;
-    }
+		return eventList;
+	}
 }

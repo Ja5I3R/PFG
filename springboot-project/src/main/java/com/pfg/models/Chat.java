@@ -28,6 +28,9 @@ public class Chat {
 	@ManyToMany(mappedBy = "chats")
     private Set<User> users;
 
+	@Column(name = "name", nullable = false, length = 50)
+    private String name;
+
 	@Column(name = "content_url", nullable = false, length = 50)
 	private String contentURL;
 
@@ -68,7 +71,7 @@ public class Chat {
 	public void setUsers(Set<User> users) {
 		this.users = users;
 	}
-
+	
 	public String getContentURL() {
 		return contentURL;
 	}
@@ -101,10 +104,17 @@ public class Chat {
 		this.chatType = chatType;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	@Override
 	public String toString() {
 		return "GroupChat [id=" + id + ", contentURL=" + contentURL + ", creationDate=" + creationDate + "]";
 	}
-
 
 }

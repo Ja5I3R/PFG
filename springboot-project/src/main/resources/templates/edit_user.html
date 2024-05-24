@@ -28,10 +28,6 @@
                             <p typeth:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="alert alert-danger"></p>
                         </div>
 						<br>
-						<!--<div class="form-group">
-							<label>Contraseña:</label> <input type="password" name="password" th:field="*{password}" class="form-control" placeholder="Escriba la contraseña" value="${user.password}" required>
-                            <p typeth:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="alert alert-danger"></p>
-                        </div>-->
 						<br>
 						<div class="form-group">
 							<label>Nombre:</label> <input type="text" name="name" th:field="*{name}" class="form-control" placeholder="Escriba el nombre" required>
