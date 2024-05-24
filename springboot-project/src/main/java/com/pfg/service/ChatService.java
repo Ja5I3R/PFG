@@ -15,7 +15,7 @@ public class ChatService implements IChatService{
 
     @Autowired
 	private IChat repository;
-
+    
     @Override
     @Transactional(readOnly = true)
     public List<Chat>listAllChats(){
