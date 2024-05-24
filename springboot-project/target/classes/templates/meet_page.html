@@ -6,14 +6,115 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meet</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 	<link rel="stylesheet" th:href="@{/css/style.css}">
+    <!-- Font Awesome -->
+    <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    rel="stylesheet"
+    />
+    <!-- Google Fonts -->
+    <link
+    href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+    rel="stylesheet"
+    />
+    <!-- MDB -->
+    <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css"
+    rel="stylesheet"
+    />
+    <script>
+        $(document).ready(function () {
+            $('input[type=radio][name=interest]').change(function () {
+                var value = $(this).val();
+                $(".users-container").empty();
+                $.ajax({
+                    type: "POST",
+                    url: "/users/filter",
+                    contentType: "application/json",
+                    data: JSON.stringify({ value: value }),
+                    dataType: "json", 
+                    success: function(result){
+                        if(result.length === 0){
+                            $(".users-container").html("<p>No se encontraron usuarios</p>");
+                        } else {
+                            $.each(result, function(index, user){
+                                var eventHtml = "<div class='row m-3 justify-content-center'><div class='col-4' style='width: 18rem;'><div class='card mb-3 d-inline-block' style='width: 18rem;'><img class='card-img-top' src='/img/avatars/" + user.avatar_id + ".jpg'th:alt='" + user.avatar_id + "'><div class='card-body'><h5 class='card-title'>"+user.username+"</h5><a href='/events/view/"+user.id+"' class='btn btn-info'>Ver más datos</a></div></div></div></div>";
+                                $(".users-container").append(eventHtml);
+                            });  
+                        }
+                    },
+                    error: function(xhr, status, error){
+                        alert("Error: " + error);
+                        console.log("Error: ", xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
 </head>
 
 <body>
-    <h2>Recomendaciones de usuarios</h2>
-    <ul th:each="matchedUser : ${matchedUsers}">
-        <li th:text="${matchedUser.username}"></li>
-        <li th:text="${matchedUser.id}"></li>
-    </ul>
+    <header class="p-3 text-white">
+        <div class="container">
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                    <img src="" alt="Logo">
+                </a>
+
+                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                    <li><a href="#" class="nav-link px-2 text-white">Home</a></li>
+                    <li><a href="#" class="nav-link px-2 text-white">Contacto</a></li>
+                    <li><a href="#" class="nav-link px-2 text-white">Sobre nosotros</a></li>
+                </ul>
+
+                <div class="text-end">
+                    <button type="button" class="btn btn-outline-light me-2">Login</button>
+                    <button type="button" class="btn" id="btn-signup">Sign-up</button>
+                </div>
+            </div>
+        </div>
+    </header>
+    <br>
+    <div class="container">
+        <h2>Recomendaciones de usuarios</h2>
+        <!--PARTE NUEVA POR INTERESES
+        <div class="btn-group shadow-0" >
+            <div th:each="interest : ${interestList}" class="m-2">
+                <input type="radio" class="btn-check" name="interest" th:id="'avatar'+${interest.id}" th:value="${interest.id}">
+                <label class="btn btn-secondary" th:for="${'interest' + interest.id}" th:text="${interest.name}" data-mdb-ripple-init></label>
+            </div>
+        </div>
+        -->
+         <!--PARTE NUEVA POR INTERESES-->
+         <div th:each="interest : ${interestList}">
+            <label th:for="${'interest' + interest.id}" th:text="${interest.name}"></label>
+            <input type="radio" name="interest" th:id="'avatar'+${interest.id}" th:value="${interest.id}">
+        </div>
+        <!---->
+        <div class="container-fluid users-container">
+            <div class="row m-3 justify-content-center">
+                <div th:each="matchedUser : ${matchedUsers}" class="col-4" style="width: 18rem;">
+                    <div class="card mb-3 d-inline-block" style="width: 18rem;">
+                        <img class="card-img-top" th:src="@{/img/avatars/__${matchedUser.avatar_id}__.jpg}"
+                            th:alt="${matchedUser.avatar_id}">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${matchedUser.username}"></h5>
+                            <div class="inline">
+                                <a th:href="@{/users/view/{id}(id=${matchedUser.id})}" class="btn btn-info">Ver más datos</a>
+                                <a th:href="@{/chat/create/{id}(id=${matchedUser.id})}" class="btn btn-info">Iniciar chat</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <!-- MDB -->
+        <script
+        type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.umd.min.js"
+        ></script>
 </body>
 </html>

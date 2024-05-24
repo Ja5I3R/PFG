@@ -10,7 +10,6 @@
     <script>
         $(document).ready(function () {
             $('input[type=radio][name=interest]').change(function () {
-                //alert(`${this.value}`);   MANERA DE ALERT DE VALOR CON ID
                 var value = $(this).val();
                 $(".events-container").empty();
                 $.ajax({
@@ -18,12 +17,11 @@
                     url: "/events/interest",
                     contentType: "application/json",
                     data: JSON.stringify({ value: value }),
-                    dataType: "json", // Specify dataType as JSON to ensure proper parsing
+                    dataType: "json", 
                     success: function(result){
                         if(result.length === 0){
                             $(".events-container").html("<p>No se encontraron eventos</p>");
                         } else {
-                            // Iterate over the events and display them
                             $.each(result, function(index, event){
                                 var eventHtml = "<div class='row m-3 justify-content-center'><div class='col-4' style='width: 18rem;'><div class='card mb-3 d-inline-block' style='width: 18rem;'><img class='card-img-top' src='/img/eventsImg/" + event.image_url + "'th:alt='" + event.image_url + "'><div class='card-body'><h5 class='card-title'>"+event.name+"</h5><p class='card-text'>"+event.description+"</p><a href='/events/view/"+event.id+"' class='btn btn-info'>Ver más datos</a></div></div></div></div>";
                                 $(".events-container").append(eventHtml);
@@ -31,8 +29,8 @@
                         }
                     },
                     error: function(xhr, status, error){
-                        alert("Error: " + error); // Display the error message
-                        console.log("Error: ", xhr.responseText); // Log the detailed error response
+                        alert("Error: " + error);
+                        console.log("Error: ", xhr.responseText);
                     }
                 });
             });
