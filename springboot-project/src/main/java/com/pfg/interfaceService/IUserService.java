@@ -1,7 +1,9 @@
 package com.pfg.interfaceService;
 
 import java.util.List;
+import java.util.Set;
 
+import com.pfg.models.Chat;
 import com.pfg.models.Event;
 import com.pfg.models.Interest;
 import com.pfg.models.User;
@@ -27,4 +29,6 @@ public interface IUserService {
 	public List<Event> getEventList(User user);
 
 	public List<User> findUsersByInterests(List<Interest> interests);
+
+	public Set<User> getFriends(User currentUser, Set<Chat> chats);
 }
