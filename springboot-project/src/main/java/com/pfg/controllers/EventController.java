@@ -1,12 +1,17 @@
 package com.pfg.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,8 +19,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pfg.interfaceService.IEventService;
 import com.pfg.interfaceService.IInterestService;
 import com.pfg.interfaceService.IUserService;
@@ -98,8 +106,27 @@ public class EventController {
     @GetMapping("/search")
     public String goToEventSearch(Model model) {
         List<Event> eventList = service.listAllEvents(); 
+        model.addAttribute("interestList", intService.listAllInterest());
         model.addAttribute("eventList", eventList);
         return "events";
+    }
+
+    //EVENTOS POR INTERES
+    @PostMapping("/interest")
+    public ResponseEntity<String> handleInterest(@Valid @RequestBody Map<String, String> payload) {
+        String interestValue = payload.get("value");
+        Long id = Long.parseLong(interestValue); //ID RECOGIDO
+        Interest interest = intService.getInterestById(id);
+        Set<Event> list = interest.getOnlyEvent(); 
+        List<Event> list2 = new ArrayList<>(list);
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            String jsonEvents = objectMapper.writeValueAsString(list2);
+            return ResponseEntity.ok().body(jsonEvents);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
     
     //AÑADIR A EVENTO

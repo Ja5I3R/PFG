@@ -12,6 +12,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "t_interest")
 public class Interest {
@@ -27,9 +29,11 @@ public class Interest {
     private Set<Event> events;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="chatInterest")
+    @JsonIgnore
     private Set<Chat> chats;
 
     @ManyToMany(mappedBy = "interests")
+    @JsonIgnore
     private Set<UserData> userDatas;
 
     public Interest() {
@@ -46,6 +50,15 @@ public class Interest {
 
     public Set<Event> getEvents() {
         return events;
+    }
+
+    public Set<Event> getOnlyEvent() {
+        Set<Event> eventsA = events;
+        for(Event event : eventsA){
+            event.setUsers(null);
+            event.setInterest(null);
+        }
+        return eventsA;
     }
 
     public void setEvents(Set<Event> events) {

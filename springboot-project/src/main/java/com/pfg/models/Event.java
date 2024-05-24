@@ -12,6 +12,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "t_events")
 public class Event {
@@ -21,9 +23,11 @@ public class Event {
 
     @ManyToOne
     @JoinColumn(name = "id_event")
+    @JsonIgnore
     private Interest eventInterest;
 
     @ManyToMany(mappedBy = "events")
+    @JsonIgnore
     private Set<User> users;
 
     @Column(name = "name", nullable = false, length = 50)
