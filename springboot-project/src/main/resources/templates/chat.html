@@ -40,25 +40,27 @@
                 <div th:unless="${#lists.isEmpty(messages)}">
                     <div class="container-fluid" id="messagesBody">
                         <div class="row" th:each="message : ${messages}">
-                            <div class="d-flex justify-content-end" th:if="${message.user == usersession.username}">
-                                <div class="col-6"></div>
-                                <div class="col-6">
-                                        <div class="card mt-5 m-b-5 w-75 bg-info">
-                                            <div class="card-body">
-                                              <p class="card-text text-left" th:text="${message.message}"></p>
+                            <div th:unless="${message.user == null}">
+                                <div class="d-flex justify-content-end" th:if="${message.user == usersession.username}">
+                                    <div class="col-6"></div>
+                                    <div class="col-6">
+                                            <div class="card mt-5 m-b-5 w-75 bg-info">
+                                                <div class="card-body">
+                                                  <p class="card-text text-left" th:text="${message.message}"></p>
+                                                </div>
                                             </div>
-                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="d-flex justify-content-start" th:unless="${message.user == usersession.username}">
-                                <div class="col-6" >
-                                        <div class="card mt-5 m-b-5 w-75">
-                                            <div class="card-body">
-                                              <p class="card-text text-left" th:text="${message.user} + ': ' + ${message.message}"></p>
+                                <div class="d-flex justify-content-start" th:unless="${message.user == usersession.username}">
+                                    <div class="col-6" >
+                                            <div class="card mt-5 m-b-5 w-75">
+                                                <div class="card-body">
+                                                  <p class="card-text text-left" th:text="${message.user} + ': ' + ${message.message}"></p>
+                                                </div>
                                             </div>
-                                        </div>
+                                    </div>
+                                    <div class="col-6"></div>
                                 </div>
-                                <div class="col-6"></div>
                             </div>
                         </div>
                     </div>
