@@ -93,7 +93,7 @@ public class ChatController {
                 Files.createFile(path);
 
                 BufferedWriter writer = Files.newBufferedWriter(path);
-                writer.write("[]");
+                writer.write("[{}]");
                 writer.close();
             }
         } catch (IOException e) {
@@ -160,7 +160,7 @@ public class ChatController {
                 Files.createFile(path);
 
                 BufferedWriter writer = Files.newBufferedWriter(path);
-                writer.write("[]");
+                writer.write("[{}]");
                 writer.close();
             }
         } catch (IOException e) {

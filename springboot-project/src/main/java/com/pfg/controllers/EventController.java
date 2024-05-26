@@ -83,7 +83,7 @@ public class EventController {
         
         userService.createUser(actualUser);
 
-        return "index";
+        return "redirect:/userpage/" + actualUser.getId();
     }
 
     //VER EVENTO INDIVIDUAL

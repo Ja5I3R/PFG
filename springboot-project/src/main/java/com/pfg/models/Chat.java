@@ -28,7 +28,7 @@ public class Chat {
 	@ManyToMany(mappedBy = "chats")
     private Set<User> users;
 
-	@Column(name = "name", nullable = false, length = 50)
+	@Column(name = "name", length = 50)
     private String name;
 
 	@Column(name = "content_url", nullable = false, length = 50)
