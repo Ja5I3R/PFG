@@ -60,6 +60,11 @@ public class HomeController {
 
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+    @GetMapping({ "/home/contact" })
+    public String contactPage(Model model) {
+        return "contact";
+    }
+
     public User getSessionUser(){
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);
@@ -335,5 +340,4 @@ public class HomeController {
             return "try_session";
         }
     }
-
 }
