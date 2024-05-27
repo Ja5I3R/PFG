@@ -65,11 +65,21 @@ public class HomeController {
         return "contact";
     }
 
-    public User getSessionUser(){
+    public User getSessionUser() {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);
         User sessionUser = (User) session.getAttribute("user");
         return sessionUser;
+    }
+
+    private String getCommonInterestsFraction(User user1, User user2) {
+        List<Interest> user1Interests = intService.listByIndexes(userDataService.getInterestList(user1));
+        List<Interest> user2Interests = intService.listByIndexes(userDataService.getInterestList(user2));
+
+        long commonInterestsCount = user1Interests.stream()
+                .filter(user2Interests::contains)
+                .count();
+        return commonInterestsCount + "/" + user1Interests.size() + " intereses coincidentes";
     }
 
     @GetMapping({ "/meet/{id}" })
@@ -87,7 +97,14 @@ public class HomeController {
         });
 
         List<User> topMatchedUsers = matchedUsers.subList(0, Math.min(3, matchedUsers.size()));
+        List<String> interestNumberMatch = new ArrayList<>();
+
+        for (User userExist : topMatchedUsers) {
+            interestNumberMatch.add(getCommonInterestsFraction(userExist, user));
+        }
+
         model.addAttribute("matchedUsers", topMatchedUsers);
+        model.addAttribute("interestNumber", interestNumberMatch);
         model.addAttribute("interestList", intService.listAllInterest());
 
         return "meet_page";
@@ -104,16 +121,16 @@ public class HomeController {
         return commonInterests;
     }
 
-    //OBTENER AMIGOS
+    // OBTENER AMIGOS
     public Set<User> getFriends(User currentUser, Set<Chat> chats) {
         Set<User> friends = new HashSet<>();
 
         for (Chat chat : chats) {
-                Set<User> chatUsers = chat.getUsers();
-                for (User user : chatUsers) {
-                    if (!user.equals(currentUser)) {
-                        friends.add(user);
-                    }
+            Set<User> chatUsers = chat.getUsers();
+            for (User user : chatUsers) {
+                if (!user.equals(currentUser)) {
+                    friends.add(user);
+                }
             }
         }
         return friends;
@@ -138,7 +155,7 @@ public class HomeController {
     @PostMapping("/users/filter")
     public ResponseEntity<String> viewUsersByFilter(@Valid @RequestBody Map<String, String> payload) {
         String interestValue = payload.get("value");
-        Long id = Long.parseLong(interestValue); //ID RECOGIDO
+        Long id = Long.parseLong(interestValue); // ID RECOGIDO
         Interest interest = intService.getInterestById(id);
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);
@@ -146,7 +163,7 @@ public class HomeController {
         Set<UserData> users = interest.getUserDatas();
         List<User> listUsers = new ArrayList<>();
         for (UserData user : users) {
-            if(!user.getUser().getRol().isAdministrator() && sessionUser.getId() != user.getUser().getId()){
+            if (!user.getUser().getRol().isAdministrator() && sessionUser.getId() != user.getUser().getId()) {
                 listUsers.add(user.getUser());
             }
         }
@@ -159,14 +176,14 @@ public class HomeController {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             String jsonEvents = objectMapper.writeValueAsString(listUsers);
-                return ResponseEntity.ok().body(jsonEvents);
+            return ResponseEntity.ok().body(jsonEvents);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
-    //PAGINA DE USUARIO POR INTERES
+    // PAGINA DE USUARIO POR INTERES
     @GetMapping("/users/view/{id}")
     public String getMethodName(Model model, @PathVariable Long id) {
         User user = service.readUserId(id);
@@ -174,8 +191,8 @@ public class HomeController {
         model.addAttribute("interestList", intService.listByIndexes(userDataService.getInterestList(user)));
         return "view_user";
     }
-    
-    //REPORTAR USUARIO
+
+    // REPORTAR USUARIO
     @GetMapping("/users/report/{id}")
     public String getMethodName(@PathVariable Long id) {
         User user = service.readUserId(id);
@@ -184,18 +201,17 @@ public class HomeController {
         userDataService.saveUserPreferences(userD);
         return "redirect:/meet/" + getSessionUser().getId();
     }
-    
 
     // Pagina de usuario
     @GetMapping({ "/userpage/{id}" })
     public String userPage(Model model, @PathVariable Long id) {
         User userC = new User();
         try {
-            userC = service.readUserId(id); 
+            userC = service.readUserId(id);
         } catch (Exception e) {
             return "/error";
         }
-        
+
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(true);
         session.setAttribute("user", userC);
@@ -203,14 +219,13 @@ public class HomeController {
         model.addAttribute("interestList", intService.listByIndexes(userDataService.getInterestList(userC)));
         model.addAttribute("chatList", userC.getChats());
         model.addAttribute("friends", getFriends(userC, userC.getChats()));
-        if(userC.getRol().isAdministrator()){
+        if (userC.getRol().isAdministrator()) {
             model.addAttribute("userList", service.listAllUsers());
             model.addAttribute("eventList", eventService.listAllEvents());
-        }
-        else{
+        } else {
             model.addAttribute("eventList", userC.getEvents());
         }
-       
+
         return "user_page";
     }
 
@@ -290,11 +305,10 @@ public class HomeController {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);
         User sessionUser = (User) session.getAttribute("user");
-        if(sessionUser.getRol().isAdministrator() && sessionUser.getId() != user.getId()){
+        if (sessionUser.getRol().isAdministrator() && sessionUser.getId() != user.getId()) {
             service.deleteUser(id);
             return "redirect:/userpage/" + sessionUser.getId();
-        }
-        else{
+        } else {
             service.deleteUser(id);
             return "redirect:/";
         }

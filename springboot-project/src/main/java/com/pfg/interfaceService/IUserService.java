@@ -31,4 +31,5 @@ public interface IUserService {
 	public List<User> findUsersByInterests(List<Interest> interests);
 
 	public Set<User> getFriends(User currentUser, Set<Chat> chats);
+	
 }

@@ -12,8 +12,6 @@ public interface IEventService {
 	
 	public Event readEventId(Long id);
 	
-	//public Event updateEvent(Event event);
-	
 	public void deleteEvent(Long id) ;
 
 	public List<Event>listByIndexes(List<Long> list);
