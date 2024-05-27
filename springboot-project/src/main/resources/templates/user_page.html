@@ -20,7 +20,7 @@
 
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
           <li><a th:href="@{/users/login}" class="nav-link px-2 text-secondary">Sobre nosotros</a></li>
-          <li><a th:href="@{/users/new}" class="nav-link px-2 text-white">Contacto</a></li>
+          <li><a th:href="@{/home/contact}" class="nav-link px-2 text-white">Contacto</a></li>
         </ul>
 
         <div class="text-end">
@@ -102,7 +102,9 @@
             </div>
           </div>
           <div class="tab-pane fade" id="v-pills-chats" role="tabpanel" aria-labelledby="v-pills-chats-tab">
-            <a th:href="@{/chat/create/group}" class="btn btn-info">Crear chat grupal</a>
+            <div th:if="${#lists.size(chatList) >= 2}">
+              <a th:href="@{/chat/create/group}" class="btn btn-info">Crear chat grupal</a>
+            </div>
             <br>
             <a th:href="@{/chat/create/{id}(id=48)}" class="btn btn-info">Prueba de chat con otro user 1</a>
             <a th:href="@{/chat/create/{id}(id=45)}" class="btn btn-info">Prueba de chat con otro user 2</a>

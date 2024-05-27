@@ -64,6 +64,31 @@ public class ChatController {
     @Autowired
     private IInterestService intService;
 
+    private String[] getCommonInterests(User user1, User user2) {
+        List<Interest> user1Interests = intService.listByIndexes(udService.getInterestList(user1));
+        List<Interest> user2Interests = intService.listByIndexes(udService.getInterestList(user2));
+    
+        long commonInterestsCount = user1Interests.stream()
+                .filter(user2Interests::contains)
+                .count();
+    
+        String fraction = commonInterestsCount + "/" + user1Interests.size();
+    
+        StringBuilder commonInterestsBuilder = new StringBuilder();
+        for (Interest interest : user1Interests) {
+            if (user2Interests.contains(interest)) {
+                if (commonInterestsBuilder.length() > 0) {
+                    commonInterestsBuilder.append(", ");
+                }
+                commonInterestsBuilder.append(interest.getName());
+            }
+        }
+        String commonInterests = commonInterestsBuilder.toString();
+    
+        return new String[] { fraction, commonInterests };
+    }
+    
+
     @PostMapping("/create/group")
     public String createGroup(@RequestParam("name") String name,
             @RequestParam("participants") List<Long> participantIds, @RequestParam("interest") Long interestId,
@@ -203,6 +228,9 @@ public class ChatController {
             model.addAttribute("chat", actualChat);
             if (actualChat.getChatType() == 2) {
                 model.addAttribute("chatName", actualChat.getName());
+            }else{
+                List<User> userList = new ArrayList<>(chatUserList);
+                model.addAttribute("interestsList", getCommonInterests(sessionUser, userList.get(0)));
             }
         } catch (IOException e) {
             e.printStackTrace();
