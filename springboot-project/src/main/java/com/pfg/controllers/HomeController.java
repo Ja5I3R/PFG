@@ -106,6 +106,7 @@ public class HomeController {
         model.addAttribute("matchedUsers", topMatchedUsers);
         model.addAttribute("interestNumber", interestNumberMatch);
         model.addAttribute("interestList", intService.listAllInterest());
+        model.addAttribute("usersession", getSessionUser());
 
         return "meet_page";
     }
@@ -188,6 +189,7 @@ public class HomeController {
     public String getMethodName(Model model, @PathVariable Long id) {
         User user = service.readUserId(id);
         model.addAttribute("user", user);
+        model.addAttribute("birth", user.getFormattedBirthdate());
         model.addAttribute("interestList", intService.listByIndexes(userDataService.getInterestList(user)));
         return "view_user";
     }
@@ -216,6 +218,7 @@ public class HomeController {
         HttpSession session = attr.getRequest().getSession(true);
         session.setAttribute("user", userC);
         model.addAttribute("user", userC);
+        model.addAttribute("birth", userC.getFormattedBirthdate());
         model.addAttribute("interestList", intService.listByIndexes(userDataService.getInterestList(userC)));
         model.addAttribute("chatList", userC.getChats());
         model.addAttribute("friends", getFriends(userC, userC.getChats()));
@@ -325,6 +328,7 @@ public class HomeController {
     @PostMapping("/users/update")
     public String updateUser(@ModelAttribute("user") User user, BindingResult bindingResult) {
         User existingUser = service.readUserId(user.getId());
+        existingUser.setUsername(user.getUsername());
         existingUser.setName(user.getName());
         existingUser.setSurname(user.getSurname());
         existingUser.setEmail(user.getEmail());

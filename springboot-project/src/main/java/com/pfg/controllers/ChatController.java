@@ -2,6 +2,7 @@ package com.pfg.controllers;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.websocket.server.PathParam;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -17,6 +18,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.repository.query.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -238,6 +240,18 @@ public class ChatController {
 
         return "chat";
     }
+
+    @GetMapping("/leave/{idC}/{idU}")
+    public String leaveChat(@PathVariable("idC") Long chatId, @PathVariable("idU") Long userId) {
+        Chat actualChat = service.readChatId(chatId);
+        User sessionUser = userService.readUserId(userId);
+        actualChat.getUsers().remove(sessionUser);
+        service.createChat(actualChat);
+        sessionUser.getChats().remove(actualChat);
+        userService.createUser(sessionUser);
+        return "redirect:/userpage/" + sessionUser.getId();
+    }
+    
 
     @MessageMapping("/messages")
     @SendTo("/topic/messages")
