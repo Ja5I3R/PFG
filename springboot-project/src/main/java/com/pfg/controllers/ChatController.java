@@ -2,6 +2,7 @@ package com.pfg.controllers;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.websocket.server.PathParam;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -17,6 +18,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.repository.query.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,6 +65,31 @@ public class ChatController {
 
     @Autowired
     private IInterestService intService;
+
+    private String[] getCommonInterests(User user1, User user2) {
+        List<Interest> user1Interests = intService.listByIndexes(udService.getInterestList(user1));
+        List<Interest> user2Interests = intService.listByIndexes(udService.getInterestList(user2));
+    
+        long commonInterestsCount = user1Interests.stream()
+                .filter(user2Interests::contains)
+                .count();
+    
+        String fraction = commonInterestsCount + "/" + user1Interests.size();
+    
+        StringBuilder commonInterestsBuilder = new StringBuilder();
+        for (Interest interest : user1Interests) {
+            if (user2Interests.contains(interest)) {
+                if (commonInterestsBuilder.length() > 0) {
+                    commonInterestsBuilder.append(", ");
+                }
+                commonInterestsBuilder.append(interest.getName());
+            }
+        }
+        String commonInterests = commonInterestsBuilder.toString();
+    
+        return new String[] { fraction, commonInterests };
+    }
+    
 
     @PostMapping("/create/group")
     public String createGroup(@RequestParam("name") String name,
@@ -203,6 +230,9 @@ public class ChatController {
             model.addAttribute("chat", actualChat);
             if (actualChat.getChatType() == 2) {
                 model.addAttribute("chatName", actualChat.getName());
+            }else{
+                List<User> userList = new ArrayList<>(chatUserList);
+                model.addAttribute("interestsList", getCommonInterests(sessionUser, userList.get(0)));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -210,6 +240,18 @@ public class ChatController {
 
         return "chat";
     }
+
+    @GetMapping("/leave/{idC}/{idU}")
+    public String leaveChat(@PathVariable("idC") Long chatId, @PathVariable("idU") Long userId) {
+        Chat actualChat = service.readChatId(chatId);
+        User sessionUser = userService.readUserId(userId);
+        actualChat.getUsers().remove(sessionUser);
+        service.createChat(actualChat);
+        sessionUser.getChats().remove(actualChat);
+        userService.createUser(sessionUser);
+        return "redirect:/userpage/" + sessionUser.getId();
+    }
+    
 
     @MessageMapping("/messages")
     @SendTo("/topic/messages")
