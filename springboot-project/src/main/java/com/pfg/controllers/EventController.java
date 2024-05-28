@@ -53,6 +53,13 @@ public class EventController {
     @Autowired
     private UploadFileService uploadService;
 
+    public User getSessionUser() {
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpSession session = attr.getRequest().getSession(false);
+        User sessionUser = (User) session.getAttribute("user");
+        return sessionUser;
+    }
+
     //CREAR EVENTO
     @GetMapping("/new")
     public String gotoeventCreation(Model model) {
@@ -108,6 +115,7 @@ public class EventController {
         List<Event> eventList = service.listAllEvents(); 
         model.addAttribute("interestList", intService.listAllInterest());
         model.addAttribute("eventList", eventList);
+        model.addAttribute("usersession", getSessionUser());
         return "events";
     }
 
@@ -142,4 +150,15 @@ public class EventController {
     }
 
     //ELIMINAR DE EVENTO
+    @GetMapping("/leave/{id}")
+    public String eventUserLeave(Model model, @PathVariable Long id) {
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpSession session = attr.getRequest().getSession(false);
+        User actualUser = (User) session.getAttribute("user");
+        Event actualEvent = service.readEventId(id);
+
+        actualUser.getEvents().removeIf(event -> event.getId().equals(actualEvent.getId()));
+        userService.createUser(actualUser);
+        return "redirect:/events/view/" + actualEvent.getId();
+    }
 }
