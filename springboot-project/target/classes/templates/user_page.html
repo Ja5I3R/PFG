@@ -13,6 +13,9 @@
       -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
     }
+    .logo{
+      width: 40px;
+    }
   </style>
   <!-- Font Awesome -->
   <link
@@ -36,7 +39,7 @@
 		<div class="container">
 			<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
 				<a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-					<img src="" alt="Logo">
+					<img class="logo" th:src="@{/img/logo/logo.png}" alt="Logo">
 				</a>
 
 				<ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
@@ -96,9 +99,12 @@
             <a th:href="@{/users/logout}" class="btn btn-danger">Cerrar sesion</a>
           </div>
           <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-            <ul class="list-unstyled" th:each="interest : ${interestList}">
-              <li class="mb-1"><i class="fas fa-play m-2"></i><span th:text="${interest.name}"></span></li>
-            </ul>
+            <h4>Lista de interes</h4>
+            <div class="row">
+              <div class="col-3 text-center m-2" th:each="interest : ${interestList}">
+                <button type="button" class="btn btn-primary" th:text="${interest.name}" disabled></button>
+              </div>
+            </div>
             <a th:href="@{/meet/{id}(id=${user.id})}" class="btn btn-info">Descubrir gente</a>
           </div>
           <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">

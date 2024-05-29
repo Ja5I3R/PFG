@@ -70,20 +70,12 @@
     <div class="container">
         <h2>Recomendaciones de usuarios</h2>
         <a name="return" id="return" class="btn btn-primary" th:href="@{/userpage/{id}(id=${usersession.id})}" role="button">Volver a pagina de usuario</a>
-        
         <div class="btn-group shadow-0" >
             <div th:each="interest : ${interestList}" class="m-2">
                 <input type="radio" class="btn-check" name="interest" th:id="'interest'+${interest.id}" th:value="${interest.id}">
                 <label class="btn btn-secondary" th:for="${'interest' + interest.id}" th:text="${interest.name}"></label>
             </div>
         </div>
-
-        <!--PARTE NUEVA POR INTERESES
-        <div th:each="interest : ${interestList}">
-            <label th:for="${'interest' + interest.id}" th:text="${interest.name}"></label>
-            <input type="radio" name="interest" th:id="'avatar'+${interest.id}" th:value="${interest.id}">
-        </div>
-        -->
         <div class="container-fluid">
             <div class="row m-3 justify-content-center users-container">
                 <div th:each="matchedUser, stat : ${matchedUsers}" class="col-3">

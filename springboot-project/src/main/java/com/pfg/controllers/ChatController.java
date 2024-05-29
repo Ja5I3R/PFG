@@ -227,10 +227,18 @@ public class ChatController {
             }
             model.addAttribute("messages", messageList);
             model.addAttribute("usersession", sessionUser);
+
             model.addAttribute("chat", actualChat);
             if (actualChat.getChatType() == 2) {
                 model.addAttribute("chatName", actualChat.getName());
+                Set<User> userList = actualChat.getUsers();
+                model.addAttribute("userList", userList);
             }else{
+                for (User user : actualChat.getUsers()) {
+                    if(!sessionUser.getId().equals(user.getId())){
+                        model.addAttribute("otherUser", user);
+                    }
+                }
                 List<User> userList = new ArrayList<>(chatUserList);
                 model.addAttribute("interestsList", getCommonInterests(sessionUser, userList.get(0)));
             }
@@ -247,7 +255,7 @@ public class ChatController {
         User sessionUser = userService.readUserId(userId);
         actualChat.getUsers().remove(sessionUser);
         service.createChat(actualChat);
-        sessionUser.getChats().remove(actualChat);
+        sessionUser.getChats().removeIf(chat -> chat.getId().equals(actualChat.getId()));
         userService.createUser(sessionUser);
         return "redirect:/userpage/" + sessionUser.getId();
     }

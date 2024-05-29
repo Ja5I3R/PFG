@@ -70,19 +70,19 @@ rel="stylesheet"
                         </div>
 						<br>
 						<div class="form-group">
-							<label>Edad:</label> <input type="number" name="age" th:field="*{age}" class="form-control" placeholder="Escriba su edad" required>
-                            <p typeth:if="${#fields.hasErrors('age')}" th:errors="*{age}" class="alert alert-danger"></p>
-                        </div>
-						<br>
-						<div class="form-group">
 							<label>Fecha de nacimiento:</label> <input type="date" name="birthdate" th:field="*{birthdate}" class="form-control" required>
                             <p typeth:if="${#fields.hasErrors('birthdate')}" th:errors="*{birthdate}" class="alert alert-danger"></p>
                         </div>
 						<br>
 						<div class="form-group">
-							<label>Género:</label> <input type="text" name="gender" th:field="*{gender}" class="form-control" placeholder="Escriba su género" required>
-                            <p typeth:if="${#fields.hasErrors('gender')}" th:errors="*{gender}" class="alert alert-danger"></p>
-                        </div>
+							<label>Género:</label>
+							<select name="gender" th:field="*{gender}" class="form-control" required>
+								<option value="1">Hombre</option>
+								<option value="2">Mujer</option>
+								<option value="3">Otro</option>
+							</select>
+							<p typeth:if="${#fields.hasErrors('gender')}" th:errors="*{gender}" class="alert alert-danger"></p>
+						</div>
 						<br>
 						<div class="box-footer">
 							<button class="btn btn-success">Actualizar</button>
