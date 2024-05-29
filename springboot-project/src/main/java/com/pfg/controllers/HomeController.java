@@ -31,6 +31,7 @@ import com.pfg.interfaceService.IInterestService;
 import com.pfg.interfaceService.IUserDataService;
 import com.pfg.interfaceService.IUserService;
 import com.pfg.models.User;
+import com.pfg.models.SessionUtils;
 import com.pfg.models.Chat;
 import com.pfg.models.Interest;
 import com.pfg.models.UserData;
@@ -58,11 +59,18 @@ public class HomeController {
     @Autowired
     private IEventService eventService;
 
+    private SessionUtils SU = new SessionUtils();
+
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @GetMapping({ "/home/contact" })
     public String contactPage(Model model) {
         return "contact";
+    }
+
+    public HttpSession getSession(){
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        return attr.getRequest().getSession(false);
     }
 
     public User getSessionUser() {
@@ -207,6 +215,13 @@ public class HomeController {
     // Pagina de usuario
     @GetMapping({ "/userpage/{id}" })
     public String userPage(Model model, @PathVariable Long id) {
+        //COMPROBACION DE SESION
+        boolean sessionN = SU.checkSession(getSession());
+        if (!sessionN) {
+            return "redirect:/";
+        }
+        //---------------------
+
         User userC = new User();
         try {
             userC = service.readUserId(id);
@@ -335,7 +350,7 @@ public class HomeController {
         existingUser.setAge(user.getAge());
         existingUser.setGender(user.getGender());
         existingUser.setBirthdate(user.getBirthdate());
-        service.updateUser(existingUser);
+        service.createUser(existingUser);
 
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);
@@ -352,6 +367,9 @@ public class HomeController {
             return "redirect:/try_session";
         }
         if (userC != null && passwordEncoder.matches(user.getPassword(), userC.getPassword())) {
+            ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+            HttpSession session = attr.getRequest().getSession(true);
+            session.setAttribute("user", userC);
             return "redirect:/userpage/" + userC.getId();
 
         } else {
