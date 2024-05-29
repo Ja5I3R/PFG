@@ -29,6 +29,7 @@ import com.pfg.interfaceService.IInterestService;
 import com.pfg.interfaceService.IUserService;
 import com.pfg.models.Event;
 import com.pfg.models.Interest;
+import com.pfg.models.SessionUtils;
 import com.pfg.models.User;
 import com.pfg.service.UploadFileService;
 
@@ -52,6 +53,8 @@ public class EventController {
 
     @Autowired
     private UploadFileService uploadService;
+
+    private SessionUtils SU;
 
     public User getSessionUser() {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
@@ -109,6 +112,30 @@ public class EventController {
         return "event_page";
     }
 
+    //EDITAR EVENTO
+    @GetMapping("/edit/{id}")
+    public String getMethodName(@PathVariable Long id, Model model) {
+        Event actualEvent = service.readEventId(id);
+        model.addAttribute("event", actualEvent);
+        model.addAttribute("interestList", intService.listAllInterest());
+        return "edit_event";
+    }
+
+    @PostMapping("/update")
+    public String postMethodName(@ModelAttribute("event") Event event, BindingResult bindingResult) {
+        Event actualEvent = service.readEventId(event.getId());
+        actualEvent.setName(event.getName());
+        actualEvent.setInitialDate(event.getInitialDate());
+        actualEvent.setEndDate(event.getEndDate());
+        actualEvent.setLocation(event.getLocation());
+        actualEvent.setDescription(event.getDescription());
+        actualEvent.setInterest(event.getInterest());
+        service.createEvent(actualEvent);
+        return "redirect:/events/view/" + actualEvent.getId();
+    }
+    
+    
+
     //IR A BUSQUEDA DE EVENTOS
     @GetMapping("/search")
     public String goToEventSearch(Model model) {
@@ -161,4 +188,20 @@ public class EventController {
         userService.createUser(actualUser);
         return "redirect:/events/view/" + actualEvent.getId();
     }
+
+    //ELIMINAR EVENTO
+    @GetMapping("/delete/{id}")
+    public String getMethodName(Model model, @PathVariable Long id) {
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpSession session = attr.getRequest().getSession(false);
+        User actualUser = (User) session.getAttribute("user");
+        Event actualEvent = service.readEventId(id);
+        for (User user : actualEvent.getUsers()) {
+            user.getEvents().removeIf(event -> event.getId().equals(actualEvent.getId()));
+            userService.createUser(user);
+        }
+        service.deleteEvent(id);
+        return "redirect:/userpage/" + actualUser.getId();
+    }
+    
 }

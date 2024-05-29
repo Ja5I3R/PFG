@@ -115,6 +115,29 @@
                 <a th:unless="${#lists.contains(userList.![id], userS.id)}"
                     th:href="@{/events/join/{id}(id=${event.id})}" class="btn btn-dark me-2">Entrar a evento</a>
                 <a name="return" id="return" class="btn btn-primary" th:href="@{/userpage/{id}(id=${userS.id})}" role="button">Volver a pagina de usuario</a>
+                <a class="btn btn-warning" th:href="@{/events/edit/{id}(id=${event.id})}" role="button">Editar evento</a>
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
+                    Eliminar evento
+                  </button>
+                  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLongTitle">Eliminacion de evento</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          Estas a punto de eliminar este evento con todos sus datos de manera permanente, ¿deseas hacerlo?
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                          <a class="btn btn-danger" th:href="@{/events/delete/{id}(id=${event.id})}" role="button">Si, quiero eliminar este evento</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
             </div>
             <div class="col-md-6">
