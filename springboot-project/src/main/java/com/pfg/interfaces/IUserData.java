@@ -18,3 +18,4 @@ public interface IUserData extends JpaRepository<UserData, Long>{
     List<User> findUsersByInterests(@Param("interests") List<Interest> interests);
 
 }
+
