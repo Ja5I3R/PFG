@@ -115,10 +115,10 @@
                 <a th:unless="${#lists.contains(userList.![id], userS.id)}"
                     th:href="@{/events/join/{id}(id=${event.id})}" class="btn btn-dark me-2">Entrar a evento</a>
                 <a name="return" id="return" class="btn btn-primary" th:href="@{/userpage/{id}(id=${userS.id})}" role="button">Volver a pagina de usuario</a>
-                <a class="btn btn-warning" th:href="@{/events/edit/{id}(id=${event.id})}" role="button">Editar evento</a>
-                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
+                <a th:if="${userS.id == author.id}" class="btn btn-warning" th:href="@{/events/edit/{id}(id=${event.id})}" role="button">Editar evento</a>
+                <button th:if="${userS.id == author.id}" type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
                     Eliminar evento
-                  </button>
+                </button>
                   <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                       <div class="modal-content">
