@@ -2,11 +2,11 @@
   {
     "name": "config.calendar.close",
     "type": "java.lang.String",
-    "description": "Horario de cierre de la página de contacto"
+    "description": "Horario de apertura de la página de contacto"
   },
   {
     "name": "config.calendar.open",
     "type": "java.lang.String",
-    "description": "Horario de apertura de la página de contacto"
+    "description": "Horario de cierre de la página de contacto"
   }
 ]}
