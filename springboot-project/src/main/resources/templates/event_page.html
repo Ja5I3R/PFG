@@ -86,8 +86,8 @@
                 </ul>
 
                 <div class="text-end">
-                    <a th:href="@{/users/login}" class="btn btn-outline-light me-2">Log In</a>
-                    <a th:href="@{/users/new}" class="btn btn-warning">Sign Up</a>
+                    <a th:href="@{/home/login}" class="btn btn-outline-light me-2">Log In</a>
+                    <a th:href="@{/home/new}" class="btn btn-warning">Sign Up</a>
                 </div>
             </div>
         </div>
@@ -114,7 +114,7 @@
                     class="btn btn-dark me-2">Salir de evento</a>
                 <a th:unless="${#lists.contains(userList.![id], userS.id)}"
                     th:href="@{/events/join/{id}(id=${event.id})}" class="btn btn-dark me-2">Entrar a evento</a>
-                <a name="return" id="return" class="btn btn-primary" th:href="@{/userpage/{id}(id=${userS.id})}" role="button">Volver a pagina de usuario</a>
+                <a name="return" id="return" class="btn btn-primary" th:href="@{/home/userpage/{id}(id=${userS.id})}" role="button">Volver a pagina de usuario</a>
                 <a th:if="${userS.id == author.id}" class="btn btn-warning" th:href="@{/events/edit/{id}(id=${event.id})}" role="button">Editar evento</a>
                 <button th:if="${userS.id == author.id}" type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
                     Eliminar evento

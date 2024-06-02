@@ -21,7 +21,7 @@
                 $(".users-container").empty();
                 $.ajax({
                     type: "POST",
-                    url: "/users/filter",
+                    url: "/home/filter",
                     contentType: "application/json",
                     data: JSON.stringify({ value: value }),
                     dataType: "json",
@@ -30,7 +30,7 @@
                             $(".users-container").html("<p>No se encontraron usuarios</p>");
                         } else {
                             $.each(result, function (index, user) {
-                                var eventHtml = "<div class='col-3'><div class='card mb-3'><img class='card-img-top' src='/img/avatars/" + user.avatar_id + ".jpg'th:alt='" + user.avatar_id + "'><div class='card-body'><h5 class='card-title'>" + user.username + "</h5><a href='/events/view/" + user.id + "' class='btn btn-info'>Ver más datos</a><a href='/chat/create/"+ user.id +"' class='btn btn-info'>Iniciar chat</a></div></div></div>";
+                                var eventHtml = "<div class='col-3'><div class='card mb-3'><img class='card-img-top' src='/img/avatars/" + user.avatar_id + ".jpg'th:alt='" + user.avatar_id + "'><div class='card-body'><h5 class='card-title'>" + user.username + "</h5><a href='/home/view/" + user.id + "' class='btn btn-info'>Ver más datos</a><a href='/chat/create/"+ user.id +"' class='btn btn-info'>Iniciar chat</a></div></div></div>";
                                 $(".users-container").append(eventHtml);
                             });
                         }
@@ -69,8 +69,8 @@
     <br>
     <div class="container">
         <h2>Recomendaciones de usuarios</h2>
-        <a name="return" id="return" class="btn btn-primary" th:href="@{/userpage/{id}(id=${usersession.id})}" role="button">Volver a pagina de usuario</a>
-        <div class="btn-group shadow-0" >
+        <a name="return" id="return" class="btn btn-primary" th:href="@{/home/userpage/{id}(id=${usersession.id})}" role="button">Volver a pagina de usuario</a>
+        <div class="btn-group shadow-0 m-3" >
             <div th:each="interest : ${interestList}" class="m-2">
                 <input type="radio" class="btn-check" name="interest" th:id="'interest'+${interest.id}" th:value="${interest.id}">
                 <label class="btn btn-secondary" th:for="${'interest' + interest.id}" th:text="${interest.name}"></label>
@@ -85,7 +85,7 @@
                         <div class="card-body">
                             <h5 class="card-title" th:text="${matchedUser.username}"></h5>
                             <div class="inline">
-                                <a th:href="@{/users/view/{id}(id=${matchedUser.id})}" class="btn btn-info">Ver más
+                                <a th:href="@{/home/view/{id}(id=${matchedUser.id})}" class="btn btn-info">Ver más
                                     datos</a>
                                 <a th:href="@{/chat/create/{id}(id=${matchedUser.id})}" class="btn btn-info">Iniciar
                                     chat</a>

@@ -45,7 +45,7 @@ rel="stylesheet"
 			<div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
 				<h1 class="text-center">Edicion de usuario</h1>
 				<div class="card-body">
-					<form th:action="@{/users/update}" th:object="${user}" method="POST">
+					<form th:action="@{/home/update}" th:object="${user}" method="POST">
                         <input type="hidden" id="id" name="id" th:field="*{id}"/>
 						<br>
                         <div class="form-group">

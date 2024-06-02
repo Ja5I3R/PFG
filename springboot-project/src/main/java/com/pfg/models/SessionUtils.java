@@ -15,9 +15,7 @@ public class SessionUtils {
         }
     }
 
-    public User getUserSession(){
-        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        HttpSession session = attr.getRequest().getSession(false);
+    public User getUserSession(HttpSession session){
         User actualUser = (User) session.getAttribute("user");
         return actualUser;
     }

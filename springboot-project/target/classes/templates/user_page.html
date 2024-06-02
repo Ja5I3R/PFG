@@ -46,8 +46,8 @@
 				</ul>
 
 				<div class="text-end">
-					<a th:href="@{/userpage/{id}(id=${user.id})}" class="btn btn-outline-light me-2">Volver a pagina personal</a>
-					<a th:href="@{/users/logout}" class="btn" id="btn-signup">Cerrar sesion</a>
+					<a th:href="@{/home/userpage/{id}(id=${user.id})}" class="btn btn-outline-light me-2">Volver a pagina personal</a>
+					<a th:href="@{/home/logout}" class="btn" id="btn-signup">Cerrar sesion</a>
 				</div>
 			</div>
 		</div>
@@ -94,11 +94,11 @@
             </ul>
           </div>
           <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-            <a th:href="@{/users/edit/{id}(id=${user.id})}" class="btn btn-info">Editar</a>
+            <a th:href="@{/home/edit/{id}(id=${user.id})}" class="btn btn-info">Editar</a>
             <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteUser">
               Eliminar cuenta
             </button>
-            <a th:href="@{/users/logout}" class="btn btn-danger">Cerrar sesion</a>
+            <a th:href="@{/home/logout}" class="btn btn-danger">Cerrar sesion</a>
             <div class="modal fade" id="deleteUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -113,7 +113,7 @@
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">No, quiero mantener mi cuenta</button>
-                    <a th:href="@{/users/{id}(id=${user.id})}" class="btn btn-danger">Si, quiero eliminar mi cuenta permanentemente</a>
+                    <a th:href="@{/home/{id}(id=${user.id})}" class="btn btn-danger">Si, quiero eliminar mi cuenta permanentemente</a>
                   </div>
                 </div>
               </div>
@@ -126,7 +126,7 @@
                 <button type="button" class="btn btn-primary" th:text="${interest.name}" disabled></button>
               </div>
             </div>
-            <a th:href="@{/meet/{id}(id=${user.id})}" class="btn btn-info">Descubrir gente</a>
+            <a th:href="@{/home/meet/{id}(id=${user.id})}" class="btn btn-info">Descubrir gente</a>
           </div>
           <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
             <a th:href="@{/events/new}" class="btn btn-danger">Crear evento</a>
@@ -206,8 +206,8 @@
                   <td th:text="${user.email}"></td>
                   <td th:text="${user.userData.report_number}"></td>
                   <td>
-                    <a th:href="@{/users/edit/{id}(id=${user.id})}" class="btn btn-info">Editar</a>
-                    <a th:href="@{/users/{id}(id=${user.id})}" class="btn btn-danger">Eliminar</a>
+                    <a th:href="@{/home/edit/{id}(id=${user.id})}" class="btn btn-info">Editar</a>
+                    <a th:href="@{/home/{id}(id=${user.id})}" class="btn btn-danger">Eliminar</a>
                   </td>
                 </tr>
               </tbody>

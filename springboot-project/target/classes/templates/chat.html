@@ -125,7 +125,7 @@
                                 </button>
                             </div>
                         </div>
-                        <a name="return" id="return" class="btn btn-primary" th:href="@{/userpage/{id}(id=${usersession.id})}" role="button">Volver a pagina de usuario</a>
+                        <a name="return" id="return" class="btn btn-primary" th:href="@{/home/userpage/{id}(id=${usersession.id})}" role="button">Volver a pagina de usuario</a>
                         <a name="return" id="return" class="btn btn-danger" th:href="@{/chat/leave/{idC}/{idU}(idC=${chat.id}, idU=${usersession.id})}" role="button">Salir de chat</a>
                     </div>
                 </div>

@@ -45,8 +45,8 @@
 				</ul>
 
 				<div class="text-end">
-					<a th:href="@{/users/login}" class="btn btn-outline-light me-2">Login</a>
-					<a th:href="@{/users/new}" class="btn" id="btn-signup">Sign-up</a>
+					<a th:href="@{/home/login}" class="btn btn-outline-light me-2">Login</a>
+					<a th:href="@{/home/new}" class="btn" id="btn-signup">Sign-up</a>
 				</div>
 			</div>
 		</div>
@@ -60,7 +60,7 @@
 						class="img-fluid" alt="Sample image">
 				</div>
 				<div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-					<form th:action="@{/users/checkuser}" method="POST">
+					<form th:action="@{/home/checkuser}" method="POST">
 						<div data-mdb-input-init class="form-outline mb-4">
 							<input type="text" name="username" id="form3Example3" class="form-control form-control-lg"/>
 							<label class="form-label" for="form3Example3">Nombre de usuario</label>
