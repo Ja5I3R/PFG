@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class CustomErrorController implements ErrorController {
     
+    //PAGINA DE ERROR (400 Y 500)
     @GetMapping("/error")
     public String errorPage(HttpServletRequest request, Model model){
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);

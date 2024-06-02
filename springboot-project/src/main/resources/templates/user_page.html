@@ -13,6 +13,9 @@
       -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
     }
+    .logo{
+      width: 40px;
+    }
   </style>
   <!-- Font Awesome -->
   <link
@@ -36,15 +39,15 @@
 		<div class="container">
 			<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
 				<a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-					<img src="" alt="Logo">
+					<img class="logo" th:src="@{/img/logo/logo.png}" alt="Logo">
 				</a>
 
 				<ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
 				</ul>
 
 				<div class="text-end">
-					<a th:href="@{/userpage/{id}(id=${user.id})}" class="btn btn-outline-light me-2">Volver a pagina personal</a>
-					<a th:href="@{/users/logout}" class="btn" id="btn-signup">Cerrar sesion</a>
+					<a th:href="@{/home/userpage/{id}(id=${user.id})}" class="btn btn-outline-light me-2">Volver a pagina personal</a>
+					<a th:href="@{/home/logout}" class="btn" id="btn-signup">Cerrar sesion</a>
 				</div>
 			</div>
 		</div>
@@ -91,15 +94,39 @@
             </ul>
           </div>
           <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-            <a th:href="@{/users/edit/{id}(id=${user.id})}" class="btn btn-info">Editar</a>
-            <a th:href="@{/users/{id}(id=${user.id})}" class="btn btn-danger">Eliminar cuenta</a>
-            <a th:href="@{/users/logout}" class="btn btn-danger">Cerrar sesion</a>
+            <a th:href="@{/home/edit/{id}(id=${user.id})}" class="btn btn-info">Editar</a>
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteUser">
+              Eliminar cuenta
+            </button>
+            <a th:href="@{/home/logout}" class="btn btn-danger">Cerrar sesion</a>
+            <div class="modal fade" id="deleteUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Eliminacion de cuenta</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    Estas a punto de eliminar tu cuenta con todos sus datos de manera permanente, ¿deseas hacerlo?
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No, quiero mantener mi cuenta</button>
+                    <a th:href="@{/home/{id}(id=${user.id})}" class="btn btn-danger">Si, quiero eliminar mi cuenta permanentemente</a>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-            <ul class="list-unstyled" th:each="interest : ${interestList}">
-              <li class="mb-1"><i class="fas fa-play m-2"></i><span th:text="${interest.name}"></span></li>
-            </ul>
-            <a th:href="@{/meet/{id}(id=${user.id})}" class="btn btn-info">Descubrir gente</a>
+            <h4>Lista de interes</h4>
+            <div class="row">
+              <div class="col-3 text-center m-2" th:each="interest : ${interestList}">
+                <button type="button" class="btn btn-primary" th:text="${interest.name}" disabled></button>
+              </div>
+            </div>
+            <a th:href="@{/home/meet/{id}(id=${user.id})}" class="btn btn-info">Descubrir gente</a>
           </div>
           <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
             <a th:href="@{/events/new}" class="btn btn-danger">Crear evento</a>
@@ -179,8 +206,8 @@
                   <td th:text="${user.email}"></td>
                   <td th:text="${user.userData.report_number}"></td>
                   <td>
-                    <a th:href="@{/users/edit/{id}(id=${user.id})}" class="btn btn-info">Editar</a>
-                    <a th:href="@{/users/{id}(id=${user.id})}" class="btn btn-danger">Eliminar</a>
+                    <a th:href="@{/home/edit/{id}(id=${user.id})}" class="btn btn-info">Editar</a>
+                    <a th:href="@{/home/{id}(id=${user.id})}" class="btn btn-danger">Eliminar</a>
                   </td>
                 </tr>
               </tbody>
