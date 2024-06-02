@@ -126,7 +126,28 @@
                             </div>
                         </div>
                         <a name="return" id="return" class="btn btn-primary" th:href="@{/home/userpage/{id}(id=${usersession.id})}" role="button">Volver a pagina de usuario</a>
-                        <a name="return" id="return" class="btn btn-danger" th:href="@{/chat/leave/{idC}/{idU}(idC=${chat.id}, idU=${usersession.id})}" role="button">Salir de chat</a>
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteChat">
+                            Salir de chat
+                        </button>
+                        <div class="modal fade" id="deleteChat" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="exampleModalLongTitle">Eliminacion de cuenta</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  Estas a punto de eliminar tu cuenta con todos sus datos de manera permanente, ¿deseas hacerlo?
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">No, quiero mantenerme en el chat</button>
+                                  <a name="return" id="return" class="btn btn-danger" th:href="@{/chat/leave/{idC}/{idU}(idC=${chat.id}, idU=${usersession.id})}" role="button">Sí, quiero salir del chat</a>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                     </div>
                 </div>
             </div>
