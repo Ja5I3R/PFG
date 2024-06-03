@@ -104,17 +104,6 @@ public class HomeController {
         return "meet_page";
     }
 
-    private int countCommonInterests(User user, List<Interest> currentUserInterests) {
-        List<Interest> userInterests = intService.listByIndexes(userDataService.getInterestList(user));
-        int commonInterests = 0;
-        for (Interest interest : userInterests) {
-            if (currentUserInterests.contains(interest)) {
-                commonInterests++;
-            }
-        }
-        return commonInterests;
-    }
-
     // OBTENER AMIGOS
     public Set<User> getFriends(User currentUser, Set<Chat> chats) {
         Set<User> friends = new HashSet<>();
