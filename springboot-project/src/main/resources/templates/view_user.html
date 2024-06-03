@@ -18,13 +18,13 @@
             </a>
 
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a th:href="@{/users/login}" class="nav-link px-2 text-secondary">Sobre nosotros</a></li>
-                <li><a th:href="@{/users/new}" class="nav-link px-2 text-white">Contacto</a></li>
+                <li><a th:href="@{/home/login}" class="nav-link px-2 text-secondary">Sobre nosotros</a></li>
+                <li><a th:href="@{/home/new}" class="nav-link px-2 text-white">Contacto</a></li>
             </ul>
 
             <div class="text-end">
-                <a th:href="@{/users/login}" class="btn btn-outline-light me-2">Log In</a>
-                <a th:href="@{/users/new}" class="btn btn-warning">Sign Up</a>
+                <a th:href="@{/home/login}" class="btn btn-outline-light me-2">Log In</a>
+                <a th:href="@{/home/new}" class="btn btn-warning">Sign Up</a>
             </div>
         </div>
     </div>
@@ -57,11 +57,11 @@
                     <li class="list-group-item">Nombre: <span th:text="${user.name}"></span></li>
                     <li class="list-group-item">Apellidos: <span th:text="${user.surname}"></span></li>
                     <li class="list-group-item">Edad: <span th:text="${user.age}"></span></li>
-                    <li class="list-group-item">Fecha de nacimiento: <span th:text="${user.birthdate}"></span></li>
+                    <li class="list-group-item">Fecha de nacimiento: <span th:text="${birth}"></span></li>
                 </ul>
             </div>
             <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                <a th:href="@{/users/report/{id}(id=${user.id})}" class="btn btn-info">Reportar</a> 
+                <a th:href="@{/home/report/{id}(id=${user.id})}" class="btn btn-info">Reportar</a> 
                 <a th:href="@{/chat/create/{id}(id=${user.id})}" class="btn btn-info">Iniciar chat</a>
             </div>
             <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">

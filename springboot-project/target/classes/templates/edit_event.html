@@ -32,13 +32,10 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
-				<h1 class="text-center">Registro de evento</h1>
+				<h1 class="text-center">Edicion de evento</h1>
 				<div class="card-body">
-					<form id="eventForm" th:action="@{/events/create}" th:object="${event}" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
-						<br>
-						<div class="form-group">
-							<label>Imagen del evento:</label> <input type="file" name="eventImage" class="form-control-file" accept="image/*" required>
-						</div>
+					<form id="eventForm" th:action="@{/events/update}" th:object="${event}" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
+						<input type="hidden" name="id" th:field="*{id}">
 						<br>
 						<div class="form-group">
 							<label>Nombre:</label> <input type="text" name="name" th:field="*{name}" class="form-control" placeholder="Escriba el nombre del evento" required>

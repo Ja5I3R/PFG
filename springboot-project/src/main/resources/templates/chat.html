@@ -12,6 +12,28 @@
             overflow:scroll;
             overflow-x:hidden;
         }
+        .DivWithScroll::-webkit-scrollbar {
+        width: var(--scroll-size, 10px);
+        height: var(--scroll-size, 10px);
+        }
+        .DivWithScroll::-webkit-scrollbar-track {
+        background-color: var(--scroll-track, transparent);
+        border-radius: var(--scroll-track-radius, var(--scroll-radius));
+        }
+        .DivWithScroll::-webkit-scrollbar-thumb {
+        background-color: var(--scroll-thumb-color, grey);
+        background-image: var(--scroll-thumb, none);
+        border-radius: var(--scroll-thumb-radius, var(--scroll-radius));
+        }
+        :root {
+        --scroll-size: 15px;
+        --scroll-radius: 20px;
+        --scroll-track: rgb(255 255 255 / 10%);
+        --scroll-thumb: linear-gradient(45deg, #00aeff, #a68eff);
+        }
+        .userPic {
+            width: 40px;
+        }
     </style>
      <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
      <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
@@ -35,57 +57,102 @@
 
 <body class="p-5">
     <div class="container text-center">
-        <div class="container-fluid border align-content-center p-2 rounded">
-            <div class="messagesBody border-5 DivWithScroll" id="scrollDiv" data-spy="scroll" data-offset="50">
-                <div th:unless="${#lists.isEmpty(messages)}">
-                    <div class="container-fluid" id="messagesBody">
-                        <div class="row" th:each="message : ${messages}">
-                            <div th:unless="${message.user == null}">
-                                <div class="d-flex justify-content-end" th:if="${message.user == usersession.username}">
-                                    <div class="col-6"></div>
-                                    <div class="col-6">
-                                            <div class="card mt-5 m-b-5 w-75 bg-info">
-                                                <div class="card-body">
-                                                  <p class="card-text text-left" th:text="${message.message}"></p>
-                                                </div>
-                                            </div>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-start" th:unless="${message.user == usersession.username}">
-                                    <div class="col-6" >
-                                            <div class="card mt-5 m-b-5 w-75">
-                                                <div class="card-body">
-                                                  <p class="card-text text-left" th:text="${message.user} + ': ' + ${message.message}"></p>
-                                                </div>
-                                            </div>
-                                    </div>
-                                    <div class="col-6"></div>
-                                </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-2">
+                    <div th:if="${chat.chatType == 2}">
+                        <div>
+                            <h3 class="fw-bold fst-italic" th:text="${chatName}"></h3>
+                            <h5>Participantes</h5>
+                            <div class="m-2" th:each="user : ${userList}">
+                                <img class="img-fluid rounded userPic d-inline" th:src="@{/img/avatars/__${user.avatar_id}__.jpg}"
+                                    th:alt="${user.avatar_id}">
+                                <p class="d-inline m-2" th:text="${user.username}"></p>
                             </div>
                         </div>
                     </div>
+                    <div th:if="${chat.chatType == 1}">
+                        <h3 th:text="${otherUser.username}"></h3>
+                    </div>
                 </div>
-                <div th:if="${#lists.isEmpty(messages)}">
-                    <p>No hay mensajes</p>
+                <div class="col-10">
+                    <div class="container-fluid border align-content-center p-3 rounded shadow">
+                        <div class="messagesBody border-5 DivWithScroll" id="scrollDiv" data-spy="scroll" data-offset="50">
+                            <div th:unless="${#lists.isEmpty(messages)}">
+                                <div class="container-fluid" id="messagesBody">
+                                    <div class="row" th:each="message : ${messages}">
+                                        <div th:unless="${message.user == null}">
+                                            <div class="d-flex justify-content-end" th:if="${message.user == usersession.username}">
+                                                <div class="col-6"></div>
+                                                <div class="col-6">
+                                                        <div class="card mt-5 m-b-5 w-75 bg-info shadow">
+                                                            <div class="card-body">
+                                                              <p class="card-text text-left" th:text="${message.message}"></p>
+                                                            </div>
+                                                        </div>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-content-start" th:unless="${message.user == usersession.username}">
+                                                <div class="col-6" >
+                                                        <div class="card mt-5 m-b-5 w-75 shadow">
+                                                            <div class="card-body">
+                                                              <p class="card-text text-left" th:text="${message.user} + ': ' + ${message.message}"></p>
+                                                            </div>
+                                                        </div>
+                                                </div>
+                                                <div class="col-6"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div th:if="${#lists.isEmpty(messages)}">
+                                <p>No hay mensajes</p>
+                            </div>
+                        </div>
+                        <div class="row m-3">
+                            <div class="col-6">
+                                <div class="form-outline" data-mdb-input-init>
+                                    <input type="text" name="message" id="message" class="form-control" />
+                                    <label class="form-label" for="form12">Mensaje</label>
+                                  </div>
+                                <input type="hidden" name="user" id="user" th:value="${usersession.username}">
+                                <input type="hidden" name="id" id="id" th:value="${chat.id}">
+                            </div>
+                            <div class="col-6">
+                                <button id="send" class="btn text-white" data-mdb-ripple-init style="background-color: #3b5998;" href="#!" role="button">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <a name="return" id="return" class="btn btn-primary" th:href="@{/home/userpage/{id}(id=${usersession.id})}" role="button">Volver a pagina de usuario</a>
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteChat">
+                            Salir de chat
+                        </button>
+                        <div class="modal fade" id="deleteChat" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="exampleModalLongTitle">Eliminacion de cuenta</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  Estas a punto de eliminar tu cuenta con todos sus datos de manera permanente, ¿deseas hacerlo?
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">No, quiero mantenerme en el chat</button>
+                                  <a name="return" id="return" class="btn btn-danger" th:href="@{/chat/leave/{idC}/{idU}(idC=${chat.id}, idU=${usersession.id})}" role="button">Sí, quiero salir del chat</a>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                    </div>
                 </div>
             </div>
-            <div class="row m-3">
-                <div class="col-6">
-                    <div class="form-outline" data-mdb-input-init>
-                        <input type="text" name="message" id="message" class="form-control" />
-                        <label class="form-label" for="form12">Mensaje</label>
-                      </div>
-                    <input type="hidden" name="user" id="user" th:value="${usersession.username}">
-                    <input type="hidden" name="id" id="id" th:value="${chat.id}">
-                </div>
-                <div class="col-6">
-                    <button id="send" class="btn text-white" data-mdb-ripple-init style="background-color: #3b5998;" href="#!" role="button">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
-                </div>
-            </div>
-            <a name="return" id="return" class="btn btn-primary" th:href="@{/userpage/{id}(id=${usersession.id})}" role="button">Volver a pagina de usuario</a>
         </div>
+        
     </div>
 
     <!-- MDB -->
@@ -153,7 +220,7 @@
                             '<div class="d-flex justify-content-end">' +
                                 '<div class="col-6"></div>' +
                                 '<div class="col-6">' +
-                                    '<div class="card mt-5 m-b-5 w-75 bg-info">' +
+                                    '<div class="card mt-5 m-b-5 w-75 bg-info shadow">' +
                                         '<div class="card-body">' +
                                             '<p class="card-text text-left">'+messageOutput.message+'</p>' +
                                         '</div>' +
@@ -166,7 +233,7 @@
                 var htmlString = '<div class="row">' +
                             '<div class="d-flex justify-content-start">' +
                                 '<div class="col-6">' +
-                                    '<div class="card mt-5 m-b-5 w-75">' +
+                                    '<div class="card mt-5 m-b-5 w-75 shadow">' +
                                         '<div class="card-body">' +
                                             '<p class="card-text text-left">'+messageOutput.user+': '+messageOutput.message+'</p>' +
                                         '</div>' +

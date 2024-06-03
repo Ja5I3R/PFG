@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -31,6 +32,7 @@ import com.pfg.interfaceService.IInterestService;
 import com.pfg.interfaceService.IUserDataService;
 import com.pfg.interfaceService.IUserService;
 import com.pfg.models.User;
+import com.pfg.models.SessionUtils;
 import com.pfg.models.Chat;
 import com.pfg.models.Interest;
 import com.pfg.models.UserData;
@@ -41,37 +43,55 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
+@RequestMapping("/home")
 public class HomeController {
 
+    //SERVICIO DE USUARIO
     @Autowired
     private IUserService service;
 
+    //SERVICIO DE INTERESES
     @Autowired
     private IInterestService intService;
 
+    //SERVICIO DE DATOS DE USUARIO
     @Autowired
     private IUserDataService userDataService;
 
+    //CLASE SISTEMA DE GUARDADO DE ARCHIVOS
     @Autowired
     private UploadFileService uploadService;
 
+    //SERVICIO DE EVENTOS
     @Autowired
     private IEventService eventService;
 
+    //CLASE SISTEMA DE SESIONES
+    private SessionUtils SU = new SessionUtils();
+
+    //ENCRIPTADOR PARA CONTRASEÑAS
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    @GetMapping({ "/home/contact" })
+    //PAGINA DE CONTACTO
+    @GetMapping({ "/contact" })
     public String contactPage(Model model) {
         return "contact";
     }
 
-    public User getSessionUser() {
+    //OBTENER SESION ACTUAL
+    public HttpSession getSession(){
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        HttpSession session = attr.getRequest().getSession(false);
+        return attr.getRequest().getSession(false);
+    }
+
+    //OBTENER USUARIO DE LA SESION
+    public User getSessionUser() {
+        HttpSession session = getSession();
         User sessionUser = (User) session.getAttribute("user");
         return sessionUser;
     }
 
+    //INTERESES EN COMUN ENTRE DOS USUARIOS
     private String getCommonInterestsFraction(User user1, User user2) {
         List<Interest> user1Interests = intService.listByIndexes(userDataService.getInterestList(user1));
         List<Interest> user2Interests = intService.listByIndexes(userDataService.getInterestList(user2));
@@ -82,8 +102,15 @@ public class HomeController {
         return commonInterestsCount + "/" + user1Interests.size() + " intereses coincidentes";
     }
 
+    //PAGINA DE DESCUBRIMIENTO DE PERSONAS
     @GetMapping({ "/meet/{id}" })
     public String meetPage(Model model, @PathVariable Long id) {
+        //COMPROBACION DE SESION
+        boolean sessionN = SU.checkSession(getSession());
+        if (!sessionN) {
+            return "redirect:/";
+        }
+        //---------------------
         User user = service.readUserId(id);
         List<Interest> currentUserInterests = intService.listByIndexes(userDataService.getInterestList(user));
         List<User> matchedUsers = service.findUsersByInterests(currentUserInterests);
@@ -100,6 +127,7 @@ public class HomeController {
         model.addAttribute("matchedUsers", topMatchedUsers);
         model.addAttribute("interestNumber", interestNumberMatch);
         model.addAttribute("interestList", intService.listAllInterest());
+        model.addAttribute("usersession", getSessionUser());
 
         return "meet_page";
     }
@@ -119,14 +147,14 @@ public class HomeController {
         return friends;
     }
 
-    // Pagina de inicio de sesion
-    @GetMapping({ "/users/login" })
+    //PAGINA DE INICIO DE SESION
+    @GetMapping({ "/login" })
     public String redirectLogIn(Model model) {
         return "try_session";
     }
 
-    // Cierre de sesion
-    @GetMapping({ "/users/logout" })
+    //CIERRE DE SESION
+    @GetMapping({ "/logout" })
     public String logout(Model model) {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);
@@ -134,8 +162,8 @@ public class HomeController {
         return "redirect:/";
     }
 
-    // Filtrado de usuarios
-    @PostMapping("/users/filter")
+    //FILTRADO DE USUARIOS
+    @PostMapping("/filter")
     public ResponseEntity<String> viewUsersByFilter(@Valid @RequestBody Map<String, String> payload) {
         String interestValue = payload.get("value");
         Long id = Long.parseLong(interestValue); // ID RECOGIDO
@@ -166,28 +194,42 @@ public class HomeController {
         }
     }
 
-    // PAGINA DE USUARIO POR INTERES
-    @GetMapping("/users/view/{id}")
+    //PAGINA DE USUARIO POR INTERES
+    @GetMapping("/view/{id}")
     public String getMethodName(Model model, @PathVariable Long id) {
+        //COMPROBACION DE SESION
+        boolean sessionN = SU.checkSession(getSession());
+        if (!sessionN) {
+            return "redirect:/";
+        }
+        //---------------------
         User user = service.readUserId(id);
         model.addAttribute("user", user);
+        model.addAttribute("birth", user.getFormattedBirthdate());
         model.addAttribute("interestList", intService.listByIndexes(userDataService.getInterestList(user)));
         return "view_user";
     }
 
-    // REPORTAR USUARIO
-    @GetMapping("/users/report/{id}")
+    //REPORTAR USUARIO
+    @GetMapping("/report/{id}")
     public String getMethodName(@PathVariable Long id) {
         User user = service.readUserId(id);
         UserData userD = user.getUserData();
         userD.setReport_number(userD.getReport_number() + 1);
         userDataService.saveUserPreferences(userD);
-        return "redirect:/meet/" + getSessionUser().getId();
+        return "redirect:/home/meet/" + getSessionUser().getId();
     }
 
-    // Pagina de usuario
+    //PAGINA DE USUARIO
     @GetMapping({ "/userpage/{id}" })
     public String userPage(Model model, @PathVariable Long id) {
+        //COMPROBACION DE SESION
+        boolean sessionN = SU.checkSession(getSession());
+        if (!sessionN) {
+            return "redirect:/";
+        }
+        //---------------------
+
         User userC = new User();
         try {
             userC = service.readUserId(id);
@@ -199,6 +241,7 @@ public class HomeController {
         HttpSession session = attr.getRequest().getSession(true);
         session.setAttribute("user", userC);
         model.addAttribute("user", userC);
+        model.addAttribute("birth", userC.getFormattedBirthdate());
         model.addAttribute("interestList", intService.listByIndexes(userDataService.getInterestList(userC)));
         model.addAttribute("chatList", userC.getChats());
         model.addAttribute("friends", getFriends(userC, userC.getChats()));
@@ -212,15 +255,8 @@ public class HomeController {
         return "user_page";
     }
 
-    // Listado de usuarios
-    @GetMapping({ "/users" })
-    public String listUsers(Model model) {
-        model.addAttribute("users", service.listAllUsers());
-        return "users";
-    }
-
-    // Creacion de nuevos usuarios
-    @GetMapping("/users/new")
+    //CREACION DE NUEVOS USUARIOS
+    @GetMapping("/new")
     public String showRegistration(Model model) {
         User user = new User();
         int[] avatarList = { 1, 2, 3, 4, 5, 6 };
@@ -230,6 +266,7 @@ public class HomeController {
         return "create_user";
     }
 
+
     @PostMapping("/users")
     public String createUser(@ModelAttribute("user") User user, BindingResult bindingResult, HttpServletRequest request,
             @RequestParam("profileImage") MultipartFile file) {
@@ -238,7 +275,7 @@ public class HomeController {
             userCreated = service.readEmail(user.getEmail());
         }
         if (userCreated != null) {
-            return "redirect:/users/new";
+            return "redirect:/home/new";
         } else {
             uploadService.saveUserImage(file);
             user.setImage_url(file.getOriginalFilename());
@@ -266,72 +303,86 @@ public class HomeController {
                 if (session == null) { // CASO SI ES UN USUARIO NUEVO DESDE EL INDEX
                     session = attr.getRequest().getSession(true);
                     session.setAttribute("user", user);
-                    return "redirect:/userpage/" + user.getId();
-                } else {
-                    User sessionUser = (User) session.getAttribute("user");
-                    if (sessionUser.getRol().isAdministrator()) {
-                        return "redirect:/users";
-                    } else {
-                        return "redirect:/userpage/" + user.getId();
-                    }
+                    
                 }
-
             }
-            return "redirect:/users";
+            return "redirect:/home/userpage/" + user.getId();
         }
     }
 
-    // Borrado de usuarios
-    @GetMapping("/users/{id}")
+    //BORRADO DE USUARIOS
+    @GetMapping("/{id}")
     public String deleteUser(@PathVariable Long id) {
+        //COMPROBACION DE SESION
+        boolean sessionN = SU.checkSession(getSession());
+        if (!sessionN) {
+            return "redirect:/";
+        }
+        //---------------------
         User user = service.readUserId(id);
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);
         User sessionUser = (User) session.getAttribute("user");
         if (sessionUser.getRol().isAdministrator() && sessionUser.getId() != user.getId()) {
             service.deleteUser(id);
-            return "redirect:/userpage/" + sessionUser.getId();
+            return "redirect:/home/userpage/" + sessionUser.getId();
         } else {
             service.deleteUser(id);
             return "redirect:/";
         }
     }
 
-    // Actualizacion de usuarios
-    @GetMapping("/users/edit/{id}")
+    //ACTUALIZACION DE USUARIOS
+    @GetMapping("/edit/{id}")
     public String showRegistration(@PathVariable Long id, Model model) {
+        //COMPROBACION DE SESION
+        boolean sessionN = SU.checkSession(getSession());
+        if (!sessionN) {
+            return "redirect:/";
+        }
+        //---------------------
         User user = service.readUserId(id);
         model.addAttribute("user", user);
         return "edit_user";
     }
 
-    @PostMapping("/users/update")
+    @PostMapping("/update")
     public String updateUser(@ModelAttribute("user") User user, BindingResult bindingResult) {
+        //COMPROBACION DE SESION
+        boolean sessionN = SU.checkSession(getSession());
+        if (!sessionN) {
+            return "redirect:/";
+        }
+        //---------------------
         User existingUser = service.readUserId(user.getId());
+        existingUser.setUsername(user.getUsername());
         existingUser.setName(user.getName());
         existingUser.setSurname(user.getSurname());
         existingUser.setEmail(user.getEmail());
         existingUser.setAge(user.getAge());
         existingUser.setGender(user.getGender());
         existingUser.setBirthdate(user.getBirthdate());
-        service.updateUser(existingUser);
+        service.createUser(existingUser);
 
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);
         User sessionUser = (User) session.getAttribute("user");
-        return "redirect:/userpage/" + sessionUser.getId();
+        return "redirect:/home/userpage/" + sessionUser.getId();
 
     }
 
-    // Comprobacion para inicio de sesion
-    @PostMapping("/users/checkuser")
+    //CHECKEO DE SESION DE USUARIO
+    @PostMapping("/checkuser")
     public String checkUser(@ModelAttribute("user") User user, BindingResult bindingResult, Model model) {
         User userC = service.readUserName(user.getUsername());
         if (bindingResult.hasErrors()) {
             return "redirect:/try_session";
         }
         if (userC != null && passwordEncoder.matches(user.getPassword(), userC.getPassword())) {
-            return "redirect:/userpage/" + userC.getId();
+            ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+            HttpSession session = attr.getRequest().getSession(true);
+            session.setAttribute("user", userC);
+            return "redirect:/home/userpage/" + userC.getId();
 
         } else {
             return "try_session";

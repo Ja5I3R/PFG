@@ -1,5 +1,8 @@
 package com.pfg.models;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -238,6 +241,22 @@ public class User {
 	public void setChats(Set<Chat> chats) {
 		this.chats = chats;
 	}
+
+	public String getFormattedBirthdate() {
+        if (this.birthdate != null && !this.birthdate.isEmpty()) {
+            try {
+                DateTimeFormatter originalFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                DateTimeFormatter targetFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                LocalDate date = LocalDate.parse(this.birthdate, originalFormat);
+                return date.format(targetFormat);
+            } catch (DateTimeParseException e) {
+                e.printStackTrace();
+                return "Formato de fecha no válido";
+            }
+        } else {
+            return "Fecha no disponible";
+        }
+    }
 	
 	@Override
 	public String toString() {

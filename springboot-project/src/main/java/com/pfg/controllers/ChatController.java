@@ -2,6 +2,7 @@ package com.pfg.controllers;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.websocket.server.PathParam;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -14,6 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +36,7 @@ import com.pfg.models.Chat;
 import com.pfg.models.Interest;
 import com.pfg.models.Message;
 import com.pfg.models.MessageRequest;
+import com.pfg.models.SessionUtils;
 import com.pfg.models.User;
 import com.pfg.service.UploadFileService;
 
@@ -60,6 +63,16 @@ public class ChatController {
     @Autowired
     private IInterestService intService;
 
+    //CLASE SISTEMA DE SESIONES
+    private SessionUtils SU = new SessionUtils();
+
+    //OBTENER SESION ACTUAL
+    public HttpSession getSession(){
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        return attr.getRequest().getSession(false);
+    }
+
+    //INTERESES EN COMUN ENTRE USUARIOS
     private String[] getCommonInterests(User user1, User user2) {
         List<Interest> user1Interests = intService.listByIndexes(udService.getInterestList(user1));
         List<Interest> user2Interests = intService.listByIndexes(udService.getInterestList(user2));
@@ -84,11 +97,17 @@ public class ChatController {
         return new String[] { fraction, commonInterests };
     }
     
-
+    //CREAR GRUPO
     @PostMapping("/create/group")
     public String createGroup(@RequestParam("name") String name,
             @RequestParam("participants") List<Long> participantIds, @RequestParam("interest") Long interestId,
             Model model, HttpServletRequest request) {
+                //COMPROBACION DE SESION
+        boolean sessionN = SU.checkSession(getSession());
+        if (!sessionN) {
+            return "redirect:/";
+        }
+        //---------------------
         HttpSession session = request.getSession(false);
         if (session == null) {
             return "redirect:/login";
@@ -144,6 +163,12 @@ public class ChatController {
 
     @GetMapping("/create/group")
     public String createGroupPage(Model model) {
+        //COMPROBACION DE SESION
+        boolean sessionN = SU.checkSession(getSession());
+        if (!sessionN) {
+            return "redirect:/";
+        }
+        //---------------------
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);
         User sessionUser = (User) session.getAttribute("user");
@@ -163,8 +188,15 @@ public class ChatController {
         return "create_group";
     }
 
+    //CREAR CHAT INDIVIDUAL
     @GetMapping("/create/{id}")
     public String createChat(Model model, @PathVariable Long id) {
+        //COMPROBACION DE SESION
+        boolean sessionN = SU.checkSession(getSession());
+        if (!sessionN) {
+            return "redirect:/";
+        }
+        //---------------------
         User userWith = userService.readUserId(id); // USUARIO CON QUIEN HABLAS
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);
@@ -200,8 +232,15 @@ public class ChatController {
         return "redirect:/chat/view/" + chat.getId();
     }
 
+    //VER CHAT
     @GetMapping("/view/{id}")
     public String viewEvent(Model model, @PathVariable Long id) {
+        //COMPROBACION DE SESION
+        boolean sessionN = SU.checkSession(getSession());
+        if (!sessionN) {
+            return "redirect:/";
+        }
+        //---------------------
         Chat actualChat = service.readChatId(id); // CHAT A ENVIAR
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);
@@ -221,10 +260,18 @@ public class ChatController {
             }
             model.addAttribute("messages", messageList);
             model.addAttribute("usersession", sessionUser);
+
             model.addAttribute("chat", actualChat);
             if (actualChat.getChatType() == 2) {
                 model.addAttribute("chatName", actualChat.getName());
+                Set<User> userList = actualChat.getUsers();
+                model.addAttribute("userList", userList);
             }else{
+                for (User user : actualChat.getUsers()) {
+                    if(!sessionUser.getId().equals(user.getId())){
+                        model.addAttribute("otherUser", user);
+                    }
+                }
                 List<User> userList = new ArrayList<>(chatUserList);
                 model.addAttribute("interestsList", getCommonInterests(sessionUser, userList.get(0)));
             }
@@ -235,6 +282,25 @@ public class ChatController {
         return "chat";
     }
 
+    //SALIR DE CHAT
+    @GetMapping("/leave/{idC}/{idU}")
+    public String leaveChat(@PathVariable("idC") Long chatId, @PathVariable("idU") Long userId) {
+        //COMPROBACION DE SESION
+        boolean sessionN = SU.checkSession(getSession());
+        if (!sessionN) {
+            return "redirect:/";
+        }
+        //---------------------
+        Chat actualChat = service.readChatId(chatId);
+        User sessionUser = userService.readUserId(userId);
+        actualChat.getUsers().remove(sessionUser);
+        service.createChat(actualChat);
+        sessionUser.getChats().removeIf(chat -> chat.getId().equals(actualChat.getId()));
+        userService.createUser(sessionUser);
+        return "redirect:/home/userpage/" + sessionUser.getId();
+    }
+    
+    //METODO PARA WEBSOCKETS - MANDADO DE MENSAJES
     @MessageMapping("/messages")
     @SendTo("/topic/messages")
     public Message send(MessageRequest message) throws Exception {
@@ -243,6 +309,7 @@ public class ChatController {
         return new Message(message.getUser(), message.getMessage());
     }
 
+    //GUARDAR MENSAJE EN ARCHIVO JSON
     public void saveMessage(String user, String message, Chat chat) {
         uploadService.saveChatMessage(user, message, chat);
     }

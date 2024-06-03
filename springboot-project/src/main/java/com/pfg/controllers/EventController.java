@@ -29,6 +29,7 @@ import com.pfg.interfaceService.IInterestService;
 import com.pfg.interfaceService.IUserService;
 import com.pfg.models.Event;
 import com.pfg.models.Interest;
+import com.pfg.models.SessionUtils;
 import com.pfg.models.User;
 import com.pfg.service.UploadFileService;
 
@@ -53,6 +54,22 @@ public class EventController {
     @Autowired
     private UploadFileService uploadService;
 
+    //CLASE SISTEMA DE SESIONES
+    private SessionUtils SU = new SessionUtils();
+
+    //OBTENER SESION ACTUAL
+    public HttpSession getSession(){
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        return attr.getRequest().getSession(false);
+    }
+
+    public User getSessionUser() {
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpSession session = attr.getRequest().getSession(false);
+        User sessionUser = (User) session.getAttribute("user");
+        return sessionUser;
+    }
+
     //CREAR EVENTO
     @GetMapping("/new")
     public String gotoeventCreation(Model model) {
@@ -65,6 +82,12 @@ public class EventController {
     @PostMapping("/create")
     public String postMethodName(@ModelAttribute("event") Event event, BindingResult bindingResult, HttpServletRequest request, @RequestParam("eventImage") MultipartFile file,
     @RequestParam("interest") Long interest) {
+        //COMPROBACION DE SESION
+        boolean sessionN = SU.checkSession(getSession());
+        if (!sessionN) {
+            return "redirect:/";
+        }
+        //---------------------
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder .currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);
         User actualUser = (User) session.getAttribute("user");
@@ -83,12 +106,18 @@ public class EventController {
         
         userService.createUser(actualUser);
 
-        return "redirect:/userpage/" + actualUser.getId();
+        return "redirect:/home/userpage/" + actualUser.getId();
     }
 
     //VER EVENTO INDIVIDUAL
     @GetMapping("/view/{id}")
     public String viewEvent(@PathVariable Long id, Model model) {
+        //COMPROBACION DE SESION
+        boolean sessionN = SU.checkSession(getSession());
+        if (!sessionN) {
+            return "redirect:/";
+        }
+        //---------------------
         Event actualEvent = service.readEventId(id);
         Set<User> userList = actualEvent.getUsers();
         User author = userService.readUserId(actualEvent.getIdCreator());
@@ -102,12 +131,55 @@ public class EventController {
         return "event_page";
     }
 
+    //EDITAR EVENTO
+    @GetMapping("/edit/{id}")
+    public String getMethodName(@PathVariable Long id, Model model) {
+        //COMPROBACION DE SESION
+        boolean sessionN = SU.checkSession(getSession());
+        if (!sessionN) {
+            return "redirect:/";
+        }
+        //---------------------
+        Event actualEvent = service.readEventId(id);
+        model.addAttribute("event", actualEvent);
+        model.addAttribute("interestList", intService.listAllInterest());
+        return "edit_event";
+    }
+
+    @PostMapping("/update")
+    public String postMethodName(@ModelAttribute("event") Event event, BindingResult bindingResult) {
+        //COMPROBACION DE SESION
+        boolean sessionN = SU.checkSession(getSession());
+        if (!sessionN) {
+            return "redirect:/";
+        }
+        //---------------------
+        Event actualEvent = service.readEventId(event.getId());
+        actualEvent.setName(event.getName());
+        actualEvent.setInitialDate(event.getInitialDate());
+        actualEvent.setEndDate(event.getEndDate());
+        actualEvent.setLocation(event.getLocation());
+        actualEvent.setDescription(event.getDescription());
+        actualEvent.setInterest(event.getInterest());
+        service.createEvent(actualEvent);
+        return "redirect:/events/view/" + actualEvent.getId();
+    }
+    
+    
+
     //IR A BUSQUEDA DE EVENTOS
     @GetMapping("/search")
     public String goToEventSearch(Model model) {
+        //COMPROBACION DE SESION
+        boolean sessionN = SU.checkSession(getSession());
+        if (!sessionN) {
+            return "redirect:/";
+        }
+        //---------------------
         List<Event> eventList = service.listAllEvents(); 
         model.addAttribute("interestList", intService.listAllInterest());
         model.addAttribute("eventList", eventList);
+        model.addAttribute("usersession", getSessionUser());
         return "events";
     }
 
@@ -132,6 +204,12 @@ public class EventController {
     //AÑADIR A EVENTO
     @GetMapping("/join/{id}")
     public String eventUserAdd(Model model, @PathVariable Long id) {
+        //COMPROBACION DE SESION
+        boolean sessionN = SU.checkSession(getSession());
+        if (!sessionN) {
+            return "redirect:/";
+        }
+        //---------------------
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);
         User actualUser = (User) session.getAttribute("user");
@@ -142,4 +220,43 @@ public class EventController {
     }
 
     //ELIMINAR DE EVENTO
+    @GetMapping("/leave/{id}")
+    public String eventUserLeave(Model model, @PathVariable Long id) {
+        //COMPROBACION DE SESION
+        boolean sessionN = SU.checkSession(getSession());
+        if (!sessionN) {
+            return "redirect:/";
+        }
+        //---------------------
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpSession session = attr.getRequest().getSession(false);
+        User actualUser = (User) session.getAttribute("user");
+        Event actualEvent = service.readEventId(id);
+
+        actualUser.getEvents().removeIf(event -> event.getId().equals(actualEvent.getId()));
+        userService.createUser(actualUser);
+        return "redirect:/events/view/" + actualEvent.getId();
+    }
+
+    //ELIMINAR EVENTO
+    @GetMapping("/delete/{id}")
+    public String getMethodName(Model model, @PathVariable Long id) {
+        //COMPROBACION DE SESION
+        boolean sessionN = SU.checkSession(getSession());
+        if (!sessionN) {
+            return "redirect:/";
+        }
+        //---------------------
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpSession session = attr.getRequest().getSession(false);
+        User actualUser = (User) session.getAttribute("user");
+        Event actualEvent = service.readEventId(id);
+        for (User user : actualEvent.getUsers()) {
+            user.getEvents().removeIf(event -> event.getId().equals(actualEvent.getId()));
+            userService.createUser(user);
+        }
+        service.deleteEvent(id);
+        return "redirect:/home/userpage/" + actualUser.getId();
+    }
+    
 }
