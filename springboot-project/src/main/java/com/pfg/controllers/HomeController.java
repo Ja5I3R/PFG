@@ -90,12 +90,6 @@ public class HomeController {
 
         matchedUsers.remove(user);
 
-        matchedUsers.sort((u1, u2) -> {
-            int commonInterestsU1 = countCommonInterests(u1, currentUserInterests);
-            int commonInterestsU2 = countCommonInterests(u2, currentUserInterests);
-            return Integer.compare(commonInterestsU2, commonInterestsU1);
-        });
-
         List<User> topMatchedUsers = matchedUsers.subList(0, Math.min(3, matchedUsers.size()));
         List<String> interestNumberMatch = new ArrayList<>();
 
