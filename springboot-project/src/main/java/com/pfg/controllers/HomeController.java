@@ -117,12 +117,6 @@ public class HomeController {
 
         matchedUsers.remove(user);
 
-        matchedUsers.sort((u1, u2) -> {
-            int commonInterestsU1 = countCommonInterests(u1, currentUserInterests);
-            int commonInterestsU2 = countCommonInterests(u2, currentUserInterests);
-            return Integer.compare(commonInterestsU2, commonInterestsU1);
-        });
-
         List<User> topMatchedUsers = matchedUsers.subList(0, Math.min(3, matchedUsers.size()));
         List<String> interestNumberMatch = new ArrayList<>();
 
@@ -136,18 +130,6 @@ public class HomeController {
         model.addAttribute("usersession", getSessionUser());
 
         return "meet_page";
-    }
-
-    //INTERESES COMUNES ENTRE USUARIOS
-    private int countCommonInterests(User user, List<Interest> currentUserInterests) {
-        List<Interest> userInterests = intService.listByIndexes(userDataService.getInterestList(user));
-        int commonInterests = 0;
-        for (Interest interest : userInterests) {
-            if (currentUserInterests.contains(interest)) {
-                commonInterests++;
-            }
-        }
-        return commonInterests;
     }
 
     // OBTENER AMIGOS
