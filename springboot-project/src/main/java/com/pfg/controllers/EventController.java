@@ -235,12 +235,14 @@ public class EventController {
 
         actualUser.getEvents().removeIf(event -> event.getId().equals(actualEvent.getId()));
         userService.createUser(actualUser);
+        actualEvent.getUsers().removeIf(user -> user.getId().equals(actualUser.getId()));
+        service.createEvent(actualEvent);
         return "redirect:/events/view/" + actualEvent.getId();
     }
 
     //ELIMINAR EVENTO
     @GetMapping("/delete/{id}")
-    public String getMethodName(Model model, @PathVariable Long id) {
+    public String deleteEvent(Model model, @PathVariable Long id) {
         //COMPROBACION DE SESION
         boolean sessionN = SU.checkSession(getSession());
         if (!sessionN) {

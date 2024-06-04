@@ -32,6 +32,7 @@ import com.pfg.interfaceService.IInterestService;
 import com.pfg.interfaceService.IUserDataService;
 import com.pfg.interfaceService.IUserService;
 import com.pfg.models.User;
+import com.pfg.models.Event;
 import com.pfg.models.SessionUtils;
 import com.pfg.models.Chat;
 import com.pfg.models.Interest;
@@ -323,6 +324,16 @@ public class HomeController {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);
         User sessionUser = (User) session.getAttribute("user");
+        //ELMINACION DE EVENTOS DONDE SE ES PROPIETARIO
+        for(Event event : user.getEvents()){
+            if(event.getIdCreator().equals(user.getId())){
+                for (User userA : event.getUsers()) {
+                    userA.getEvents().removeIf(eventA -> eventA.getId().equals(event.getId()));
+                    service.createUser(userA);
+                }
+                eventService.deleteEvent(event.getId());
+            }
+        }
         if (sessionUser.getRol().isAdministrator() && sessionUser.getId() != user.getId()) {
             service.deleteUser(id);
             return "redirect:/home/userpage/" + sessionUser.getId();
