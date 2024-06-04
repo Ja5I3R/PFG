@@ -18,10 +18,12 @@ public class CalendarInterceptor implements HandlerInterceptor {
     private Integer close;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, 
+    Object handler)
             throws Exception {
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        boolean isOpen;
 
         StringBuilder message = new StringBuilder("");
         if (hour >= open && hour < close) {
@@ -33,6 +35,7 @@ public class CalendarInterceptor implements HandlerInterceptor {
             message.append(":00 hrs.");
             message.append(" ¡Gracias por su visita!");
             request.setAttribute("message", message.toString());
+            isOpen = true;
         } else {
             message.append("Cerrado, fuera del horario de atención por favor visítenos desde las ");
             message.append(open);
@@ -40,7 +43,9 @@ public class CalendarInterceptor implements HandlerInterceptor {
             message.append(close);
             message.append(":00 hrs. ¡Gracias!");
             request.setAttribute("message", message.toString());
+            isOpen = false;
         }
+        request.setAttribute("isOpen", isOpen);
         return true;
     }
 
