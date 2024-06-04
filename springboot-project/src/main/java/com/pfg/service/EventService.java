@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.pfg.interfaceService.IEventService;
 import com.pfg.interfaces.IEvent;
 import com.pfg.models.Event;
+import com.pfg.models.Interest;
 
 @Service
 public class EventService implements IEventService{
@@ -23,6 +25,20 @@ public class EventService implements IEventService{
     @Transactional(readOnly = true)
     public List<Event>listAllEvents(){
         return repository.findAll();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Event>listEventsByList(Set<Interest> interests){
+        List<Event> recomendedList = new ArrayList<>();
+        for(Event event : repository.findAll()){
+            for(Interest interst : interests){
+                if(interst.getId().equals(event.getInterest().getId())){
+                    recomendedList.add(event);
+                }
+            }
+        }
+        return recomendedList;
     }
 
     @Override
@@ -40,8 +56,6 @@ public class EventService implements IEventService{
 	public Event readEventId(Long id){
         return repository.findById(id).get();
     }
-	
-	//public Event updateEvent(Event event);
 	
     @Override
     @Transactional

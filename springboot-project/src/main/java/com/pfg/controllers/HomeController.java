@@ -244,6 +244,7 @@ public class HomeController {
         model.addAttribute("user", userC);
         model.addAttribute("birth", userC.getFormattedBirthdate());
         model.addAttribute("interestList", intService.listByIndexes(userDataService.getInterestList(userC)));
+        model.addAttribute("interestList2", intService.listAllInterest());
         model.addAttribute("chatList", userC.getChats());
         model.addAttribute("friends", getFriends(userC, userC.getChats()));
         if (userC.getRol().isAdministrator()) {
@@ -381,6 +382,21 @@ public class HomeController {
         return "redirect:/home/userpage/" + sessionUser.getId();
 
     }
+
+    @PostMapping("/interestUpdate")
+    public String postMethodName(@RequestParam(name = "interests", required = false) List<Long> interests, Model model) {
+        UserData data = getSessionUser().getUserData();
+        data.getInterests().clear();
+        for(Long id : interests){
+            Interest interest = intService.findById(Long.valueOf(id));
+            if (interest != null) {
+                data.getInterests().add(interest);
+            }
+        }
+        userDataService.saveUserPreferences(data);
+        return "redirect:/home/userpage/" + getSessionUser().getId();
+    }
+    
 
     //CHECKEO DE SESION DE USUARIO
     @PostMapping("/checkuser")

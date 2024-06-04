@@ -127,6 +127,24 @@
               </div>
             </div>
             <a th:href="@{/home/meet/{id}(id=${user.id})}" class="btn btn-info">Descubrir gente</a>
+            <!--CAMBIO DE INTERESES-->
+            <a href="" class="btn btn-link" id="changeView1">Cambiar intereses</a>
+            <div class="card text-center interestChange">
+              <div class="card-header">Cambio de intereses</div>
+              <div class="card-body">
+                <h5 class="card-title">Selecciona los 5 intereses por los cuales se quiera cambiar</h5>
+                <form th:action="@{/home/interestUpdate}" method="POST" onsubmit="return validateForm()">
+                  <div class="row">
+                    <div class="custom-control custom-checkbox mr-sm-2 col-lg-3" th:each="interest : ${interestList2}">
+											<input type="checkbox" name="interests" class="custom-control-input" id="interests" th:value="${interest.id}" >
+											<label class="custom-control -label" for="interests" th:text="${interest.name}"></label>
+										</div>
+                  </div>
+                    <button type="submit" class="btn btn-success">Guardar</button>
+                </form>
+              </div>
+            </div>
+            <!---->
           </div>
           <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
             <a th:href="@{/events/new}" class="btn btn-danger">Crear evento</a>
@@ -223,7 +241,31 @@
   <script>
     $(document).ready(function () {
       $('#v-pills-tab a:first').tab('show');
+      $('.interestChange').hide();
+      $('#changeView1').click(function(event){
+        event.preventDefault();
+        $('.interestChange').toggle();
+      });
     });
+  </script>
+  <script>
+    function validateForm() {
+			var checkboxes = document.getElementsByName("interests");
+			var checkedCount = 0;
+
+			for (var i = 0; i < checkboxes.length; i++) {
+				if (checkboxes[i].checked) {
+					checkedCount++;
+				}
+			}
+
+			if (checkedCount < 5 || checkedCount > 5) {
+				alert("Debe seleccionar al menos 5 intereses.");
+				return false;
+			}
+
+			return true;
+		}
   </script>
 </body>
 

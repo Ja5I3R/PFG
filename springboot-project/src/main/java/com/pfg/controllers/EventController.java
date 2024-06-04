@@ -165,8 +165,6 @@ public class EventController {
         return "redirect:/events/view/" + actualEvent.getId();
     }
     
-    
-
     //IR A BUSQUEDA DE EVENTOS
     @GetMapping("/search")
     public String goToEventSearch(Model model) {
@@ -176,7 +174,8 @@ public class EventController {
             return "redirect:/";
         }
         //---------------------
-        List<Event> eventList = service.listAllEvents(); 
+        //List<Event> eventList = service.listAllEvents(); 
+        List<Event> eventList = service.listEventsByList(getSessionUser().getUserData().getInterests());
         model.addAttribute("interestList", intService.listAllInterest());
         model.addAttribute("eventList", eventList);
         model.addAttribute("usersession", getSessionUser());

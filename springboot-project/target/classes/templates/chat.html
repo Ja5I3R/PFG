@@ -133,13 +133,13 @@
                             <div class="modal-dialog modal-dialog-centered" role="document">
                               <div class="modal-content">
                                 <div class="modal-header">
-                                  <h5 class="modal-title" id="exampleModalLongTitle">Eliminacion de cuenta</h5>
+                                  <h5 class="modal-title" id="exampleModalLongTitle">Salida de chat</h5>
                                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                   </button>
                                 </div>
                                 <div class="modal-body">
-                                  Estas a punto de eliminar tu cuenta con todos sus datos de manera permanente, ¿deseas hacerlo?
+                                  Estas a punto de salir del chat sin poder acceder al mismo mas
                                 </div>
                                 <div class="modal-footer">
                                   <button type="button" class="btn btn-secondary" data-dismiss="modal">No, quiero mantenerme en el chat</button>
@@ -166,6 +166,13 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
     <script type="text/javascript">
+
+        function enterPressed(e){
+            if (e.keycode === 13 && !e.shiftKey){
+                e.preventDefault();
+                document.getElementById("send").click();
+            }
+        }
 
         const stompClient = new StompJs.Client({
             brokerURL: 'ws://localhost:8080/chat'
@@ -202,14 +209,20 @@
             var text = document.getElementById('message').value;
             var id = document.getElementById('id').value;
 
-            if (stompClient.connected) {
-                stompClient.publish({
-                    destination: "/app/messages",
-                    body: JSON.stringify({'user':from, 'message':text, 'id':id})
-                });
-            } else {
-                connect();
+            if(text != ""){
+                if (stompClient.connected) {
+                    stompClient.publish({
+                        destination: "/app/messages",
+                        body: JSON.stringify({'user':from, 'message':text, 'id':id})
+                    });
+                } else {
+                    connect();
+                }
             }
+            else{
+                alert("No se puede enviar un mensaje vacio");
+            }
+
         }
         
         function showMessageOutput(messageOutput) {
@@ -252,6 +265,11 @@
         }
 
         $(function () {
+            $("#message").keydown((event) => {
+                if(event.keyCode == 13){
+                    sendMessage();
+                }
+            });
             $( "#send" ).click(() => sendMessage());
         });
     </script>

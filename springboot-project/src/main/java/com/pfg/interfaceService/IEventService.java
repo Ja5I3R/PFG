@@ -1,12 +1,16 @@
 package com.pfg.interfaceService;
 
 import java.util.List;
+import java.util.Set;
 
 import com.pfg.models.Event;
+import com.pfg.models.Interest;
 
 public interface IEventService {
 
     public List<Event>listAllEvents();
+
+	public List<Event>listEventsByList(Set<Interest> interests);
 
 	public Event createEvent(Event event);
 	
