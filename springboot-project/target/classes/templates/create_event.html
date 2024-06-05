@@ -85,9 +85,15 @@
 		initialDate.addEventListener("change", function(event){
 			var actualDate = new Date();
 			var userDate = new Date(initialDate.value);
+			var iDate = new Date(initialDate.value);
+			var eDate = new Date(endDate.value);
 
 			if(userDate < actualDate){
 				alert("La fecha de inicio no puede ser anterior al dia de hoy");
+				initialDate.value = '';
+			}
+			else if(eDate < iDate){
+				alert("La fecha de inicio no puede ser posterior a la fecha de fin");
 				initialDate.value = '';
 			}
 		});

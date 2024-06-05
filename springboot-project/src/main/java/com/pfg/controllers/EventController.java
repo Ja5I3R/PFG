@@ -213,8 +213,11 @@ public class EventController {
         HttpSession session = attr.getRequest().getSession(false);
         User actualUser = (User) session.getAttribute("user");
         Event actualEvent = service.readEventId(id);
+        actualEvent.getUsers().add(actualUser);
+        service.createEvent(actualEvent);
         actualUser.getEvents().add(actualEvent);
         userService.createUser(actualUser);
+        
         return "redirect:/events/view/" + actualEvent.getId();
     }
 
@@ -234,7 +237,7 @@ public class EventController {
 
         actualUser.getEvents().removeIf(event -> event.getId().equals(actualEvent.getId()));
         userService.createUser(actualUser);
-        actualEvent.getUsers().removeIf(user -> user.getId().equals(actualUser.getId()));
+        actualEvent.getUsers().removeIf(user -> user.getId().equals(userService.readUserId(actualUser.getId()).getId()));
         service.createEvent(actualEvent);
         return "redirect:/events/view/" + actualEvent.getId();
     }

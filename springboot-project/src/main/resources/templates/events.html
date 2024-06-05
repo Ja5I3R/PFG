@@ -107,7 +107,6 @@
         </div>
         <!---->
         <div th:if="${not #lists.isEmpty(eventList)}">
-            <div>
                 <div class="container-fluid">
                     <div class="row m-3 justify-content-center events-container" th:if="${#strings.isEmpty(param.name)}">
                         <div th:each="event : ${eventList}" class="col-3">
@@ -123,7 +122,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row gx-5 gy-5" th:if="${not #strings.isEmpty(param.name)}">
+                    <div class="row gx-5 gy-5 events-container" th:if="${not #strings.isEmpty(param.name)}">
                         <div th:each="event : ${eventList}"
                             th:if="${#strings.containsIgnoreCase(event.name, param.name)}" class="col-3">
                             <div class="card mb-3">
@@ -139,7 +138,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
         </div>
         <div th:if="${#lists.isEmpty(eventList)}">
             <p>No se encontraron eventos.</p>

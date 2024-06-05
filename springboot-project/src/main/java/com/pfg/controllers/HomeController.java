@@ -133,6 +133,22 @@ public class HomeController {
         return "meet_page";
     }
 
+    @GetMapping({ "/meet" })
+    public String meetPage(Model model) {
+        //COMPROBACION DE SESION
+        boolean sessionN = SU.checkSession(getSession());
+        if (!sessionN) {
+            return "redirect:/";
+        }
+        //---------------------
+
+        model.addAttribute("matchedUsers", service.listAllUsers());
+        model.addAttribute("interestList", intService.listAllInterest());
+        model.addAttribute("usersession", getSessionUser());
+
+        return "meet_page";
+    }
+
     // OBTENER AMIGOS
     public Set<User> getFriends(User currentUser, Set<Chat> chats) {
         Set<User> friends = new HashSet<>();

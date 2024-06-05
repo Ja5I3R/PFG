@@ -35,8 +35,7 @@
             width: 40px;
         }
     </style>
-     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-     <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
+     <!--<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>-->
      <link rel="stylesheet" th:href="@{/css/style.css}">
      <!-- Font Awesome -->
     <link
@@ -53,7 +52,7 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css"
     rel="stylesheet"
     />
-    </head>
+</head>
 
 <body class="p-5">
     <div class="container text-center">
@@ -72,7 +71,7 @@
                         </div>
                     </div>
                     <div th:if="${chat.chatType == 1}">
-                        <h3 th:text="${otherUser.username}"></h3>
+                        <a class="h3 fw-bold fst-italic" th:href="@{/home/view/{id}(id=${otherUser.id})}" th:text="${otherUser.username}"></a>
                     </div>
                 </div>
                 <div class="col-10">
@@ -139,7 +138,7 @@
                                   </button>
                                 </div>
                                 <div class="modal-body">
-                                  Estas a punto de salir del chat sin poder acceder al mismo mas
+                                  Estas a punto de salir del chat sin poder acceder al mismo otra vez
                                 </div>
                                 <div class="modal-footer">
                                   <button type="button" class="btn btn-secondary" data-dismiss="modal">No, quiero mantenerme en el chat</button>
@@ -163,6 +162,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
     <script type="text/javascript">

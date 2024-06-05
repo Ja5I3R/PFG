@@ -28,116 +28,83 @@
         <div class="container">
             <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
                 <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-                    <a class="navbar-brand" href="#">
-                        <img src="https://cdn-icons-png.freepik.com/512/12082/12082882.png?ga=GA1.1.647944042.1714035643"
-                            alt="logo" width="30" height="24" class="d-inline-block align-text-top">
+                    <a class="navbar-brand" th:href="@{/}">
+                        <img class="logo" th:src="@{/img/logo/logo.png}" alt="Logo">
                     </a>
                 </a>
-
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                    <li><a th:href="@{/users/login}" class="nav-link px-2 text-secondary">Sobre nosotros</a></li>
-                    <li><a th:href="@{/users/new}" class="nav-link px-2 text-white">Contacto</a></li>
+                    <li><a th:href="@{/users/login}" class="nav-link px-2 text-white">Sobre nosotros</a></li>
+                    <li><a th:href="@{/home/contact}" class="nav-link px-2 text-white">Contacto</a></li>
                 </ul>
-
                 <div class="text-end">
                     <a th:href="@{/home/login}" class="btn btn-outline-light me-2">Log In</a>
                     <a th:href="@{/home/new}" class="btn btn-warning">Sign Up</a>
                 </div>
             </div>
-        </div>
+        </div>  
     </header>
-    <div class="container">
-        <h1 class="text-center">PalLynk, la red mas sociable</h1>
-        <p class="text-center">
-            Interesado en conocer gente nueva 🙋‍♂️?
-            Entra desde <a th:href="@{/users/new}" class="btn btn-info">Aqui</a> para conocer un mundo de posibilidades
-        </p>
-        <div class="row">
-            <div class="col-1"></div>
-            <div class="col">
-                <img src="../static/img/templates/computer_pallynk.png" alt="prueba" class="shadow mb-5 rounded"
-                    style="width: 1000px;">
+    <div class="container-fluid">
+        <div class="row p-5">
+            <div class="col-sm-12 col-md-6">
+                <img src="../static/img/templates/computer_pallynk.png" alt="prueba" class="shadow mb-5 rounded w-100">
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <h1 class="text-center fst-italic">PalLynk, la red mas sociable</h1>
+                <hr class="hrStilized">
+                <p class="p-3">
+                    Interesado en conocer gente nueva 🙋‍♂️?
+                    Entra desde <a th:href="@{/home/new}" class="h6 fw-bold fst-italic">Aqui</a> y descubre un mundo de posibilidades infinitas. Ya sea que busques hacer nuevos amigos, encontrar compañeros de viaje, conocer a tu alma gemela o simplemente ampliar tu red de contactos profesionales, PalLynk es el lugar perfecto para ti. Únete hoy y empieza a vivir experiencias inolvidables con gente increíble. ¡No esperes más y sé parte de la comunidad más sociable de la web!
+                </p>
             </div>
         </div>
     </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-5"></div>
-            <div class="col-3">
-                <h3>
-                    Nuestro objetivo
-                </h3>
-            </div>
-            <div class="col-4"></div>
-        </div>
-
-        <div class="row">
-            <div class="col-3">
-
-            </div>
-            <div class="col">
+    <div class="container-fluid">
+        <div class="row p-5">
+            <div class="col-sm-12 col-md-6">
+                <h1 class="text-center fst-italic">Nuestro objetivo</h1>
+                <hr class="hrStilized">
                 <p>
                     Nuestra misión es proporcionar un espacio acogedor donde puedas conocer gente nueva, hacer amigos
                     auténticos y disfrutar de experiencias significativas juntos. ¡Únete a nuestra vibrante comunidad y
                     descubre la alegría de tener amigos que realmente te entienden!
+                    En PalLynk, creemos en la importancia de las relaciones humanas verdaderas y profundas. Queremos que cada interacción sea una oportunidad para crecer, aprender y compartir momentos inolvidables. Ya sea que estés buscando una amistad duradera, un compañero de aventuras o simplemente alguien con quien hablar, aquí encontrarás el entorno perfecto para hacerlo.
                 </p>
             </div>
-            <div class="col-3">
-
+            <div class="col-sm-12 col-md-6">
+                <img src="../static/img/templates/friends.jpg" alt="" class="shadow mb-5 rounded w-100">
             </div>
         </div>
     </div>
     <div class="container">
         <div class="row">
-            <div class="col-1">
-
+            <div class="col-12">
+                <h1 class="text-center fst-italic">Empieza ya a descubrir</h1>
+                <hr class="hrStilized">
             </div>
-            <div class="col">
-                <img src="../static/img/templates/friends.jpg" alt="" style="width: 1000px;"
-                    class="shadow mb-5 rounded">
-            </div>
-
-            <!--<div class="col-6">
-                <img src="https://cdn-icons-png.freepik.com/512/12082/12082882.png?ga=GA1.1.647944042.1714035643"
-                    alt="prueba" class="shadow p-3 mb-5 bg-body rounded">
-            </div>-->
         </div>
-    </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-5"></div>
-            <div class="col-3">
-                <h3>
-                    Empieza ya
-                </h3>
-            </div>
-            <div class="col-4"></div>
-        </div>
-
-        <div class="row"><!--Row con fotos de las características-->
-            <div class="col">
-                <div>
+    <div class="container-fluid">
+        <div class="row mx-auto"><!--Row con fotos de las características-->
+            <div class="col-sm-12 col-md-4 p-3">
+                <div class="hstack spa">
+                    <img src="../static/img/templates/avatar.jpg" alt="" class=" mb-5 rounded imageMidWid">
                     <p>Selecciona tu avatar preferido</p>
-                    <img src="../static/img/templates/avatar.jpg" alt="" style="width: 300px;"
-                        class="shadow mb-5 rounded">
                 </div>
             </div>
-            <div class="col">
-                <div>
+            <div class="col-sm-12 col-md-4 p-3">
+                <div class="hstack">
+                    <img src="../static/img/templates/intereses.png" alt="" class=" mb-5 rounded imageMidWid">
                     <p>Selecciona tus intereses</p>
-                    <img src="../static/img/templates/intereses.png" alt="" style="width: 300px;"
-                        class="shadow mb-5 rounded">
                 </div>
             </div>
-            <div class="col">
-                <div>
+            <div class="col-sm-12 col-md-4 p-3">
+                <div class="hstack">
+                    <img src="../static/img/templates/check.png" alt="" class=" mb-5 rounded imageMidWid">
                     <p>Ya estás listo</p>
-                    <img src="../static/img/templates/check.png" alt="" style="width: 300px;"
-                        class="shadow mb-5 rounded">
                 </div>
             </div>
         </div>
     </div>
+</div>
 
 
     <section>
@@ -153,7 +120,7 @@
                     <div class="col-6">
                         <p class="d-flex justify-content-center align-items-center">
                             <span class="me-3">Registrate gratis</span>
-                            <a th:href="@{/users/new}" data-mdb-ripple-init type="button"
+                            <a th:href="@{/home/new}" data-mdb-ripple-init type="button"
                                 class="btn btn-outline-light btn-rounded">
                                 Registro
                             </a>

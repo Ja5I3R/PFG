@@ -16,6 +16,13 @@
     .logo{
       width: 40px;
     }
+    .userPic {
+        width: 40px;
+    }
+    .card-img-top {
+      max-height: 100px; 
+      object-fit: cover; 
+    }
   </style>
   <!-- Font Awesome -->
   <link
@@ -59,7 +66,7 @@
         <h1 class="pt-3">Bienvenido: <span th:text="${user.name}"></span></h1>
       </div>
       <div class="col-2">
-        <img class="img-fluid rounded-circle border shadow" th:src="@{/img/avatars/__${user.avatar_id}__.jpg}"
+        <img class="rounded-pill img-fluid shadow" th:src="@{/img/usersImg/__${user.image_url}__}"
           th:alt="${user.image_url}">
       </div>
       <div class="col-6"></div>
@@ -69,8 +76,6 @@
         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
           <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
             aria-controls="v-pills-home" aria-selected="true">Datos del usuario</a>
-          <a class="nav-link " id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
-            aria-controls="v-pills-profile" aria-selected="false">Acciones</a>
           <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab"
             aria-controls="v-pills-messages" aria-selected="false">Intereses</a>
           <a class="nav-link " id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab"
@@ -84,16 +89,6 @@
       <div class="col-8">
         <div class="tab-content" id="v-pills-tabContent">
           <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-            <ul class="list-group list-group-light">
-              <li class="list-group-item"><strong>Usuario: </strong> <span th:text="${user.username}"></span></li>
-              <li class="list-group-item"><strong>Email: </strong> <span th:text="${user.email}"></span></li>
-              <li class="list-group-item"><strong>Nombre: </strong><span th:text="${user.name}"></span></li>
-              <li class="list-group-item"><strong>Apellidos: </strong><span th:text="${user.surname}"></span></li>
-              <li class="list-group-item"><strong>Edad: </strong><span th:text="${user.age}"></span></li>
-              <li class="list-group-item"><strong>Fecha de nacimiento: </strong><span th:text="${birth}"></span></li>
-            </ul>
-          </div>
-          <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
             <a th:href="@{/home/edit/{id}(id=${user.id})}" class="btn btn-info">Editar</a>
             <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteUser">
               Eliminar cuenta
@@ -118,17 +113,26 @@
                 </div>
               </div>
             </div>
+            <ul class="list-group list-group-light">
+              <li class="list-group-item"><strong>Usuario: </strong> <span th:text="${user.username}"></span></li>
+              <li class="list-group-item"><strong>Email: </strong> <span th:text="${user.email}"></span></li>
+              <li class="list-group-item"><strong>Nombre: </strong><span th:text="${user.name}"></span></li>
+              <li class="list-group-item"><strong>Apellidos: </strong><span th:text="${user.surname}"></span></li>
+              <li class="list-group-item"><strong>Edad: </strong><span th:text="${user.age}"></span></li>
+              <li class="list-group-item"><strong>Fecha de nacimiento: </strong><span th:text="${birth}"></span></li>
+            </ul>
           </div>
           <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
             <h4>Lista de interes</h4>
-            <div class="row">
+            <div class="row hstack">
               <div class="col-3 text-center m-2" th:each="interest : ${interestList}">
-                <button type="button" class="btn btn-primary" th:text="${interest.name}" disabled></button>
+                <button type="button" class="btn btn-primary w-100" th:text="${interest.name}" disabled></button>
               </div>
             </div>
-            <a th:href="@{/home/meet/{id}(id=${user.id})}" class="btn btn-info">Descubrir gente</a>
-            <!--CAMBIO DE INTERESES-->
-            <a href="" class="btn btn-link" id="changeView1">Cambiar intereses</a>
+            <div class="hstack">
+              <a th:href="@{/home/meet/{id}(id=${user.id})}" class="btn btn-info">Descubrir gente</a>
+              <a href="" class="btn btn-link" id="changeView1">Cambiar intereses</a>
+            </div>
             <div class="card text-center interestChange">
               <div class="card-header">Cambio de intereses</div>
               <div class="card-body">
@@ -144,14 +148,32 @@
                 </form>
               </div>
             </div>
-            <!---->
           </div>
           <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
             <a th:href="@{/events/new}" class="btn btn-danger">Crear evento</a>
             <a th:href="@{/events/search}" class="btn btn-danger">Eventos</a>
+            <h3 class="text-center">Mis eventos</h3>
+            <hr class="hr hr-blurry" />
             <div class="container-fluid">
-              <div class="row gx-5 p-4">
-                <div class="col-4" th:each="event : ${eventList}">
+              <div class="row gx-5 p-4 hstack">
+                <div class="col-4" th:each="event : ${eventList}" th:if="${event.idCreator == user.id}">
+                  <div class="card">
+                    <img class="card-img-top" th:src="@{/img/eventsImg/__${event.image_url}__}"
+                      th:alt="${event.image_url}">
+                    <div class="card-body">
+                      <h5 class="card-title" th:text="${event.name}"></h5>
+                      <p class="card-text event-desc" th:text="${event.description}"></p>
+                      <a th:href="@{/events/view/{id}(id=${event.id})}" class="btn btn-info">Ver</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <h3 class="text-center">Otros eventos</h3>
+            <hr class="hr hr-blurry" />
+            <div class="container-fluid">
+              <div class="row gx-5 p-4 hstack">
+                <div class="col-4" th:each="event : ${eventList}" th:unless="${event.idCreator == user.id}">
                   <div class="card">
                     <img class="card-img-top" th:src="@{/img/eventsImg/__${event.image_url}__}"
                       th:alt="${event.image_url}">
@@ -170,29 +192,42 @@
               <a th:href="@{/chat/create/group}" class="btn btn-info">Crear chat grupal</a>
             </div>
             <br>
+            <h3 class="text-center">Chats individuales</h3>
+            <hr class="hr hr-blurry" />
             <div class="container-fluid">
               <div class="row gx-5 p-4">
-                <div class="col-4" th:each="chat : ${chatList}">
-                  <div th:if="${chat.chatType == 2}"> <!-- Mostrar chat grupal -->
-                    <div class="card">
-                      <div class="card-body">
-                        <h5 class="card-title" th:text="'Chat grupal - ' + ${chat.name}"></h5>
-                        <a th:href="@{/chat/view/{id}(id=${chat.id})}" class="btn btn-info">Entrar</a>
-                      </div>
-                    </div>
-                  </div>
-                  <div th:if="${chat.chatType == 1}">
+                <div class="col-4" th:each="chat : ${chatList}" th:if="${chat.chatType == 1L}">
                     <div th:each="userA : ${chat.users}">
                       <div th:unless="${userA.id == user.id}">
                         <div class="card">
                           <div class="card-body">
-                            <h5 class="card-title" th:text="${userA.username}"></h5>
-                            <a th:href="@{/chat/view/{id}(id=${chat.id})}" class="btn btn-info">Entrar</a>
+                            <div class="m-2">
+                              <img class="img-fluid rounded userPic d-inline" th:src="@{/img/avatars/__${userA.avatar_id}__.jpg}"
+                                  th:alt="${userA.avatar_id}">
+                              <h5 class="card-title d-inline m-2" th:text="${userA.username}"></h5>
+                            </div>
+                            <a th:href="@{/chat/view/{id}(id=${chat.id})}" class="btn btn-info">Entrar a chat</a>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
+                </div>
+              </div>
+            </div>
+            <h3 class="text-center">Chats grupales</h3>
+            <hr class="hr hr-blurry" />
+            <div class="container-fluid">
+              <div class="row gx-5 p-4">
+                <div class="col-4" th:each="chat : ${chatList}" th:if="${chat.chatType == 2L}">
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="hstack">
+                          <img class="img-fluid rounded userPic d-inline p-2" th:src="@{/img/logo/logo.png}" alt="logo">
+                          <h5 class="card-title" th:text="${chat.name}"></h5>
+                        </div>
+                        <a th:href="@{/chat/view/{id}(id=${chat.id})}" class="btn btn-info">Entrar</a>
+                      </div>
+                    </div>
                 </div>
               </div>
             </div>

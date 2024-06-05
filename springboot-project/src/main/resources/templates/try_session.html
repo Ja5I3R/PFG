@@ -32,25 +32,24 @@
 
 <body>
 	<header class="p-3 text-white">
-		<div class="container">
-			<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-				<a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-					<img src="" alt="Logo">
-				</a>
-
-				<ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-					<li><a href="index.html" class="nav-link px-2 text-white">Home</a></li>
-					<li><a href="#" class="nav-link px-2 text-white">Contacto</a></li>
-					<li><a href="#" class="nav-link px-2 text-white">Sobre nosotros</a></li>
-				</ul>
-
-				<div class="text-end">
-					<a th:href="@{/home/login}" class="btn btn-outline-light me-2">Login</a>
-					<a th:href="@{/home/new}" class="btn" id="btn-signup">Sign-up</a>
-				</div>
-			</div>
-		</div>
-	</header>
+        <div class="container">
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                    <a class="navbar-brand" th:href="@{/}">
+                        <img class="logo" th:src="@{/img/logo/logo.png}" alt="Logo">
+                    </a>
+                </a>
+                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                    <li><a th:href="@{/users/login}" class="nav-link px-2 text-white">Sobre nosotros</a></li>
+                    <li><a th:href="@{/home/contact}" class="nav-link px-2 text-white">Contacto</a></li>
+                </ul>
+                <div class="text-end">
+                    <a th:href="@{/home/login}" class="btn btn-outline-light me-2">Log In</a>
+                    <a th:href="@{/home/new}" class="btn btn-warning">Sign Up</a>
+                </div>
+            </div>
+        </div>  
+    </header>
 	<br>
 	<section class="vh-75">
 		<div class="container-fluid h-custom">
@@ -76,7 +75,7 @@
 								class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;"
 								id="login">Iniciar sesión</button>
 							<p class="small fw-bold mt-2 pt-1 mb-0">¿No tiene cuenta?</p>
-							<a th:href="@{/users/new}" class="btn text-white" id="a-signup">Registrarse</a>
+							<a th:href="@{/home/new}" class="btn text-white" id="a-signup">Registrarse</a>
 						</div>
 
 					</form>

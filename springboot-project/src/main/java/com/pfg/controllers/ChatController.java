@@ -100,7 +100,7 @@ public class ChatController {
     //CREAR GRUPO
     @PostMapping("/create/group")
     public String createGroup(@RequestParam("name") String name,
-            @RequestParam("participants") List<Long> participantIds, @RequestParam("interest") Long interestId,
+            @RequestParam(value = "participants", required = false) List<Long> participantIds, @RequestParam("interest") Long interestId,
             Model model, HttpServletRequest request) {
                 //COMPROBACION DE SESION
         boolean sessionN = SU.checkSession(getSession());
@@ -143,9 +143,11 @@ public class ChatController {
         Set<User> chatUsers = new HashSet<>();
         chatUsers.add(sessionUser);
 
-        for (Long userId : participantIds) {
-            User participant = userService.readUserId(userId);
-            chatUsers.add(participant);
+        if(participantIds != null){
+            for (Long userId : participantIds) {
+                User participant = userService.readUserId(userId);
+                chatUsers.add(participant);
+            }
         }
         chat.setUsers(chatUsers);
 
@@ -183,6 +185,7 @@ public class ChatController {
         List<Interest> interestList = intService.listByIndexes(udService.getInterestList(sessionUser));
 
         model.addAttribute("friends", friends);
+        model.addAttribute("user", sessionUser);
         model.addAttribute("interestList", interestList);
 
         return "create_group";

@@ -69,32 +69,68 @@
     <br>
     <div class="container">
         <h2>Recomendaciones de usuarios</h2>
-        <a name="return" id="return" class="btn btn-primary" th:href="@{/home/userpage/{id}(id=${usersession.id})}" role="button">Volver a pagina de usuario</a>
+        <form th:action="@{/home/meet/}" method="GET">
+            <div class="form-group">
+                <div data-mdb-input-init class="form-outline mb-4">
+                    <input type="text" name="name" id="form3Example3" class="form-control form-control-lg"/>
+                    <label class="form-label" for="form3Example3">Buscar por nombre</label>
+                </div>
+            </div>
+            <br>
+            <div class="box-footer d-inline">
+                <button type="submit" class="btn btn-success">Comprobar</button>
+                <a name="return" id="return" class="btn btn-primary" th:href="@{/home/userpage/{id}(id=${usersession.id})}" role="button">Volver a pagina de usuario</a>
+            </div>
+        </form>
         <div class="btn-group shadow-0 m-3" >
             <div th:each="interest : ${interestList}" class="m-2">
                 <input type="radio" class="btn-check" name="interest" th:id="'interest'+${interest.id}" th:value="${interest.id}">
                 <label class="btn btn-secondary" th:for="${'interest' + interest.id}" th:text="${interest.name}"></label>
             </div>
         </div>
-        <div class="container-fluid">
-            <div class="row m-3 justify-content-center users-container">
-                <div th:each="matchedUser, stat : ${matchedUsers}" class="col-3">
-                    <div class="card mb-3">
-                        <img class="card-img-top" th:src="@{/img/avatars/__${matchedUser.avatar_id}__.jpg}"
-                            th:alt="${matchedUser.avatar_id}">
-                        <div class="card-body">
-                            <h5 class="card-title" th:text="${matchedUser.username}"></h5>
-                            <div class="inline">
-                                <a th:href="@{/home/view/{id}(id=${matchedUser.id})}" class="btn btn-info">Ver más
-                                    datos</a>
-                                <a th:href="@{/chat/create/{id}(id=${matchedUser.id})}" class="btn btn-info">Iniciar
-                                    chat</a>
-                                <p th:text="${interestNumber[stat.index]}"></p>
+        <div th:if="${not #lists.isEmpty(matchedUsers)}">
+            <div class="container-fluid">
+                <div class="row m-3 justify-content-center users-container" th:if="${#strings.isEmpty(param.name)}">
+                    <div th:each="matchedUser, stat : ${matchedUsers}" class="col-3">
+                        <div class="card mb-3">
+                            <img class="card-img-top" th:src="@{/img/avatars/__${matchedUser.avatar_id}__.jpg}"
+                                th:alt="${matchedUser.avatar_id}">
+                            <div class="card-body">
+                                <h5 class="card-title" th:text="${matchedUser.username}"></h5>
+                                <div class="inline">
+                                    <a th:href="@{/home/view/{id}(id=${matchedUser.id})}" class="btn btn-info">Ver más
+                                        datos</a>
+                                    <a th:href="@{/chat/create/{id}(id=${matchedUser.id})}" class="btn btn-info">Iniciar
+                                        chat</a>
+                                    <p th:text="${interestNumber[stat.index]}"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row m-3 justify-content-center users-container" th:if="${not #strings.isEmpty(param.name)}">
+                    <div th:each="matchedUser, stat : ${matchedUsers}" class="col-3" th:if="${#strings.containsIgnoreCase(matchedUser.username, param.name)}">
+                        <div class="card mb-3">
+                            <img class="card-img-top" th:src="@{/img/avatars/__${matchedUser.avatar_id}__.jpg}"
+                                th:alt="${matchedUser.avatar_id}">
+                            <div class="card-body">
+                                <h5 class="card-title" th:text="${matchedUser.username}"></h5>
+                                <div class="inline">
+                                    <a th:href="@{/home/view/{id}(id=${matchedUser.id})}" class="btn btn-info">Ver más
+                                        datos</a>
+                                    <a th:href="@{/chat/create/{id}(id=${matchedUser.id})}" class="btn btn-info">Iniciar
+                                        chat</a>
+                                    <!--<p th:text="${interestNumber[stat.index]}"></p> DA ERROR AL BUSCAR-->
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+        <div th:if="${#lists.isEmpty(matchedUsers)}">
+            <p>No se encontraron personas.</p>
         </div>
     </div>
 
