@@ -221,6 +221,7 @@ public class HomeController {
         }
         //---------------------
         User user = service.readUserId(id);
+        model.addAttribute("uSession", getSessionUser());
         model.addAttribute("user", user);
         model.addAttribute("birth", user.getFormattedBirthdate());
         model.addAttribute("interestList", intService.listByIndexes(userDataService.getInterestList(user)));

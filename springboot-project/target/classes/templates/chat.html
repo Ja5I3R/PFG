@@ -71,6 +71,10 @@
                         </div>
                     </div>
                     <div th:if="${chat.chatType == 1}">
+                        <div class="m-2">
+                            <img class="img-fluid rounded userPic d-inline" th:src="@{/img/avatars/__${otherUser.avatar_id}__.jpg}"
+                                th:alt="${otherUser.avatar_id}">
+                          </div>
                         <a class="h3 fw-bold fst-italic" th:href="@{/home/view/{id}(id=${otherUser.id})}" th:text="${otherUser.username}"></a>
                     </div>
                 </div>
