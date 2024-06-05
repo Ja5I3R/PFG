@@ -19,11 +19,15 @@
       width: 40px;
     }
 
-    .userPic {
+    .userImg{
       width: 200px;
       border-radius: 50%;
       aspect-ratio: 1; /* Se ajusta al mismo valor que el width */
       object-fit: cover;
+    }
+
+    .userPic {
+      width: 40px;
     }
 
     .card-img-top {
@@ -113,11 +117,11 @@
         <div class="flip-card">
           <div class="flip-card-inner">
             <div class="flip-card-front">
-              <img class="rounded-circle img-fluid shadow userPic" th:src="@{/img/usersImg/__${user.image_url}__}"
+              <img class="rounded-circle img-fluid shadow userImg" th:src="@{/img/usersImg/__${user.image_url}__}"
           th:alt="${user.image_url}">
             </div>
             <div class="flip-card-back">
-              <img class="rounded-circle img-fluid shadow userPic"
+              <img class="rounded-circle img-fluid shadow userImg"
           th:src="@{/img/avatars/__${user.avatar_id}__.jpg}" th:alt="${user.avatar_id}">
             </div>
           </div>

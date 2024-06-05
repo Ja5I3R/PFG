@@ -429,6 +429,7 @@ public class HomeController {
             return "redirect:/home/userpage/" + userC.getId();
 
         } else {
+            model.addAttribute("error", "Los datos son incorrectos");
             return "try_session";
         }
     }
