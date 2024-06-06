@@ -60,12 +60,10 @@
 				</div>
 				<div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
 					<!--ALERTA PERSONALIZADA-->
-					<div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${error != null}">
+					<div data-mdb-alert-init class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${error != null}">
 						<p th:text="${error}"></p>
-						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-						  <span aria-hidden="true">&times;</span>
-						</button>
-					  </div>
+						<button type="button" class="btn-close" data-mdb-dismiss="alert" aria-label="Close"></button>
+					</div>
 					<!---->
 					<form th:action="@{/home/checkuser}" method="POST">
 						<div data-mdb-input-init class="form-outline mb-4">
@@ -93,30 +91,29 @@
 		  </div>
 		</div>
 	</section>
-	<section class="footer">
-		<footer class="text-center text-white">
-			<div class="container p-3">
-				<div class="container">
-					<div class="row">
-						<div class="col-6">
-							<p class="d-flex justify-content-center align-items-center">
-								<span class="me-3">Proyecto desarrollado por Javier Trujillo, Pilar Soriano y Luis
-									Miguel Yglesias</span>
-							</p>
-						</div>
-						<div class="col-6">
-							<p class="d-flex justify-content-center align-items-center">
-								<span class="me-3">Registrate gratis</span>
-								<a th:href="@{/users/new}" data-mdb-ripple-init type="button" class="btn btn-outline-light btn-rounded">
-									Registro
-								</a>
-							</p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</footer>
-	</section>
+	<section>
+        <footer class="text-center text-white">
+            <div class="container p-3">
+                <div class="row">
+                    <div class="col-6">
+                        <p class="d-flex justify-content-center align-items-center">
+                            <span class="me-3">Proyecto desarrollado por Javier Trujillo, Pilar Soriano y
+                                Luis Miguel Yglesias</span>
+                        </p>
+                    </div>
+                    <div class="col-6">
+                        <p class="d-flex justify-content-center align-items-center">
+                            <span class="me-3">Registrate gratis</span>
+                            <a th:href="@{/home/new}" data-mdb-ripple-init type="button"
+                                class="btn btn-outline-light btn-rounded">
+                                Registro
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </section>
 	  <!-- MDB -->
 	  <script
 	  type="text/javascript"

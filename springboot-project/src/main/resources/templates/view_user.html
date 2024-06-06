@@ -48,8 +48,18 @@
           <h1 class="pt-3"><span th:text="${user.name}"></span></h1>
         </div>
         <div class="col-2">
-          <img class="rounded-pill img-fluid shadow" th:src="@{/img/usersImg/__${user.image_url}__}"
-          th:alt="${user.image_url}">
+          <div class="flip-card">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <img class="rounded-circle img-fluid shadow userImg" th:src="@{/img/usersImg/__${user.image_url}__}"
+            th:alt="${user.image_url}">
+              </div>
+              <div class="flip-card-back">
+                <img class="rounded-circle img-fluid shadow userImg"
+            th:src="@{/img/avatars/__${user.avatar_id}__.jpg}" th:alt="${user.avatar_id}">
+              </div>
+            </div>
+          </div>
         </div>
         <div class="col-6"></div>
       </div>

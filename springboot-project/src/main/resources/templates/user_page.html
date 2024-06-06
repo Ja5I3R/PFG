@@ -8,77 +8,9 @@
   <link rel="stylesheet" th:href="@{/css/style.css}">
   <link rel="icon" type="image/ico" th:href="@{/img/favicon.ico}">
   <style>
-    .event-desc {
-      overflow: hidden;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-    }
+    
 
-    .logo {
-      width: 40px;
-    }
-
-    .userImg{
-      width: 200px;
-      border-radius: 50%;
-      aspect-ratio: 1; /* Se ajusta al mismo valor que el width */
-      object-fit: cover;
-    }
-
-    .userPic {
-      width: 40px;
-    }
-
-    .card-img-top {
-      max-height: 100px;
-      object-fit: cover;
-    }
-
-    /* The flip card container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect */
-    .flip-card {
-      background-color: transparent;
-      width: 300px;
-      height: 200px;
-      perspective: 1000px;
-      /* Remove this if you don't want the 3D effect */
-    }
-
-    /* This container is needed to position the front and back side */
-    .flip-card-inner {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      text-align: center;
-      transition: transform 0.8s;
-      transform-style: preserve-3d;
-    }
-
-    /* Do an horizontal flip when you move the mouse over the flip box container */
-    .flip-card:hover .flip-card-inner {
-      transform: rotateY(180deg);
-    }
-
-    /* Position the front and back side */
-    .flip-card-front,
-    .flip-card-back {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      -webkit-backface-visibility: hidden;
-      backface-visibility: hidden;
-    }
-
-    /* Style the front side (fallback if image is missing) */
-    .flip-card-front {
-      color: black;
-    }
-
-    /* Style the back side */
-    .flip-card-back {
-      color: white;
-      transform: rotateY(180deg);
-    }
+    
   </style>
   <!-- Font Awesome -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
@@ -130,7 +62,7 @@
       <div class="col-6"></div>
     </div>
     <div class="row">
-      <div class="col-4">
+      <div class="col-md-4 col-xs-12">
         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
           <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
             aria-controls="v-pills-home" aria-selected="true">Datos del usuario</a>
@@ -144,7 +76,7 @@
             href="#v-pills-users" role="tab" aria-controls="v-pills-chats" aria-selected="false">Usuarios</a>
         </div>
       </div>
-      <div class="col-8">
+      <div class="col-md-8 col-xs-12">
         <div class="tab-content" id="v-pills-tabContent">
           <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
             <a th:href="@{/home/edit/{id}(id=${user.id})}" class="btn btn-info">Editar</a>
@@ -194,8 +126,8 @@
               <a th:href="@{/home/meet/{id}(id=${user.id})}" class="btn btn-info">Descubrir gente</a>
               <a href="" class="btn btn-link" id="changeView1">Cambiar intereses</a>
             </div>
-            <div class="card text-center interestChange">
-              <div class="card-header">Cambio de intereses</div>
+            <br>
+            <div class="card text-center interestChange fade show">
               <div class="card-body">
                 <h5 class="card-title">Selecciona los 5 intereses por los cuales se quiera cambiar</h5>
                 <form th:action="@{/home/interestUpdate}" method="POST" onsubmit="return validateForm()">
@@ -217,8 +149,8 @@
             <h3 class="text-center">Mis eventos</h3>
             <hr class="hr hr-blurry" />
             <div class="container-fluid">
-              <div class="row gx-5 p-4 hstack">
-                <div class="col-4" th:each="event : ${eventList}" th:if="${event.idCreator == user.id}">
+              <div class="row gx-5 p-4 hstack" th:unless="${eventList.isEmpty()}">
+                <div class="col-md-4 col-xs-12 p-2" th:each="event : ${eventList}" th:if="${event.idCreator == user.id}">
                   <div class="card">
                     <img class="card-img-top" th:src="@{/img/eventsImg/__${event.image_url}__}"
                       th:alt="${event.image_url}">
@@ -231,11 +163,14 @@
                 </div>
               </div>
             </div>
+            <div th:if="${eventList.isEmpty()}">
+              <h4 class="text-center">No se encontraron eventos</h4>
+            </div>
             <h3 class="text-center">Otros eventos</h3>
             <hr class="hr hr-blurry" />
             <div class="container-fluid">
-              <div class="row gx-5 p-4 hstack">
-                <div class="col-4" th:each="event : ${eventList}" th:unless="${event.idCreator == user.id}">
+              <div class="row gx-5 p-4 hstack" th:unless="${eventList.isEmpty()}">
+                <div class="col-md-4 col-xs-12 p-2" th:each="event : ${eventList}" th:unless="${event.idCreator == user.id}">
                   <div class="card">
                     <img class="card-img-top" th:src="@{/img/eventsImg/__${event.image_url}__}"
                       th:alt="${event.image_url}">
@@ -247,6 +182,9 @@
                   </div>
                 </div>
               </div>
+            </div>
+            <div th:if="${eventList.isEmpty()}">
+              <h4 class="text-center">No se encontraron eventos</h4>
             </div>
           </div>
           <div class="tab-pane fade" id="v-pills-chats" role="tabpanel" aria-labelledby="v-pills-chats-tab">
@@ -258,7 +196,7 @@
             <hr class="hr hr-blurry" />
             <div class="container-fluid">
               <div class="row gx-5 p-4">
-                <div class="col-4" th:each="chat : ${chatList}" th:if="${chat.chatType == 1L}">
+                <div class="col-md-4 col-xs-12 p-2" th:each="chat : ${chatList}" th:if="${chat.chatType == 1L}">
                   <div th:each="userA : ${chat.users}">
                     <div th:unless="${userA.id == user.id}">
                       <div class="card">
@@ -280,7 +218,7 @@
             <hr class="hr hr-blurry" />
             <div class="container-fluid">
               <div class="row gx-5 p-4">
-                <div class="col-4" th:each="chat : ${chatList}" th:if="${chat.chatType == 2L}">
+                <div class="col-md-4 col-xs-12 p-2" th:each="chat : ${chatList}" th:if="${chat.chatType == 2L}">
                   <div class="card">
                     <div class="card-body">
                       <div class="hstack">

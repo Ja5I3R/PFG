@@ -53,63 +53,84 @@
 		<div class="row">
 			<div class="col-md-8 col-sm-8 container justify-content-center card mb-5">
 				<div class="card-body">
-					<form id="userForm" th:action="@{/home/users}" th:object="${user}" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
+					<form id="userForm" novalidate class="needs-validation" th:action="@{/home/users}" th:object="${user}" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
 						<div class="container-fluid">
 							<div class="row">
 								<div class="col-sm-12 col-md-6">
 									<div class="form-group">
-										<label>Nombre de usuario:</label> <input type="text" name="username" th:field="*{username}" class="form-control" placeholder="Escriba el nombre" required>
+										<label class="fw-bold">Nombre de usuario:</label> <input type="text" name="username" th:field="*{username}" class="form-control" placeholder="Escriba el nombre" required>
+										<div class="invalid-feedback">Por favor introduce un nombre de usuario</div>
 									</div>
 									<br>
 									<div class="form-group">
-										<label>Contraseña:</label> <input type="password" name="password" th:field="*{password}" class="form-control" placeholder="Escriba la contraseña" required>
+										<label class="fw-bold">Contraseña:</label> <input type="password" name="password" th:field="*{password}" class="form-control" placeholder="Escriba la contraseña" required>
+										<div class="invalid-feedback">Por favor introduce una contraseña</div>
 									</div>
 									<br>
 									<div class="form-group">
-										<label>Nombre:</label> <input type="text" name="name" th:field="*{name}" class="form-control" placeholder="Escriba el nombre" required>
+										<label class="fw-bold">Nombre:</label> <input type="text" name="name" th:field="*{name}" class="form-control" placeholder="Escriba el nombre" required>
+										<div class="invalid-feedback">Por favor introduce un nombre</div>
 									</div>
 									<br>
 									<div class="form-group">
-										<label>Apellido:</label> <input type="text" name="surname" th:field="*{surname}" class="form-control" placeholder="Escriba sus apellidos" required>
+										<label class="fw-bold">Apellido:</label> <input type="text" name="surname" th:field="*{surname}" class="form-control" placeholder="Escriba sus apellidos" required>
+										<div class="invalid-feedback">Por favor introduce un apellido</div>
 									</div>
 									<br>
 									<div class="form-group">
-										<label>Email:</label> <input type="email" name="email" th:field="*{email}" class="form-control" placeholder="Escriba su email" required>
+										<label class="fw-bold">Email:</label> <input type="email" name="email" th:field="*{email}" class="form-control" placeholder="Escriba su email" required>
+										<div class="invalid-feedback">Por favor introduce un email</div>
 									</div>
 									<br>
 									<div class="form-group">
-										<label>Fecha de nacimiento:</label> <input type="date" id="birthdate" name="birthdate" th:field="*{birthdate}" class="form-control" required>
+										<label class="fw-bold">Fecha de nacimiento:</label> <input type="date" id="birthdate" name="birthdate" th:field="*{birthdate}" class="form-control" required>
+										<div class="invalid-feedback">Por favor introduce una fecha</div>
 									</div>
+									<br>
+									<!--ALERTA PERSONALIZADA-->
+									<div data-mdb-alert-init class="alert1 alert alert-danger alert-dismissible fade" role="alert">
+										<p>La fecha no puede ser mayor a la actual</p>
+									</div>
+									<!---->
 									<br>
 								</div>
 								<div class="col-sm-12 col-md-6">
 									<div class="form-group">
-										<label class="form-label" for="customFile">Imagen de perfil:</label>
+										<label class="form-label fw-bold" for="customFile">Imagen de perfil:</label>
 										<input type="file" class="form-control" name="profileImage" id="customFile" accept="image/*" required/>
+										<div class="invalid-feedback">Por favor selecciona una imagen</div>
 									</div>
 									<br>
-									<label>Avatar</label><br>
+									<label class="fw-bold">Avatar</label><br>
 									<div class="form-group d-inline" th:each="avatar : ${avatarList}">
 										<input type="radio" th:id="'avatar'+${avatar}" name="avatar_id" class="form-control-file" th:field="*{avatar_id}" th:value="@{${avatar}}" required hidden>
 										<label th:for="'avatar'+${avatar}" class="imgContainer"><img class="avatar" th:src="@{/img/avatars/__${avatar}__.jpg}" th:alt="@{${avatar}__.jpg}" onclick="selectAvatar(this)"></label>
+										<div class="invalid-feedback p-3">Por favor selecciona un avatar</div>
 									</div>
 									<br>
-									<div class="form-group">
-										<label>Género:</label>
+									<div class="form-group pt-4">
+										<label class="fw-bold">Género:</label>
 										<select name="gender" th:field="*{gender}" class="form-control" required>
 											<option value="1">Hombre</option>
 											<option value="2">Mujer</option>
 											<option value="3">Otro</option>
 										</select>
+										<div class="invalid-feedback">Por favor seleccione un genero</div>
 									</div>
 									<br>
 									<div class="form-group">
-										<label>Intereses</label><br>
+										<label class="fw-bold">Intereses</label><br>
 										<div class="custom-control custom-checkbox mr-sm-2 form-check" th:each="interest : ${interestList}">
 											<input type="checkbox" name="interests" class="form-check-input" th:id="'interest'+${interest.id}" th:value="${interest.id}" >
 											<label class="form-check-label" th:for="${'interest' + interest.id}" th:text="${interest.name}"></label>
 										</div>
 									</div>
+									<br>
+									<!--ALERTA PERSONALIZADA-->
+									<div data-mdb-alert-init class="alert2 alert alert-danger alert-dismissible fade" role="alert">
+										<p>Es necesario seleccionar 5 intereses</p>
+									</div>
+									<!---->
 								</div>
 							</div>
 						</div>
@@ -132,7 +153,11 @@
 
 				if(userDate > actualDate){
 					alert("La fecha no puede ser mayor a la actual");
+					$(".alert1").addClass("show");
 					birthdate.value = '';
+				}
+				else{
+					$(".alert1").removeClass("show");
 				}
 			});
 
@@ -148,6 +173,18 @@
 			element.classList.add('border-primary');
 			element.classList.add('border-4');
         }
+
+		$(".form-check-input").change(function(){
+			var checkboxes = document.getElementsByName("interests");
+			var checkedCount = 0;
+
+			for (var i = 0; i < checkboxes.length; i++) {
+				if (checkboxes[i].checked) {
+					checkedCount++;
+					$(".alert2").remove("show");
+				}
+			}
+		});
 		
 		function validateForm() {
 			var checkboxes = document.getElementsByName("interests");
@@ -159,14 +196,35 @@
 				}
 			}
 
+			$(".alert2").remove("show");
+
 			if (checkedCount < 5 || checkedCount > 5) {
-				alert("Debe seleccionar al menos 5 intereses.");
+				$(".alert2").addClass("show");
 				return false;
 			}
 
 			return true;
 		}
 	</script>
-
+	<script>
+		// Example starter JavaScript for disabling form submissions if there are invalid fields
+		(function() {
+		  'use strict';
+		  window.addEventListener('load', function() {
+			// Fetch all the forms we want to apply custom Bootstrap validation styles to
+			var forms = document.getElementsByClassName('needs-validation');
+			// Loop over them and prevent submission
+			var validation = Array.prototype.filter.call(forms, function(form) {
+			  form.addEventListener('submit', function(event) {
+				if (form.checkValidity() === false) {
+				  event.preventDefault();
+				  event.stopPropagation();
+				}
+				form.classList.add('was-validated');
+			  }, false);
+			});
+		  }, false);
+		})();
+	</script>
 </body>
 </html>
