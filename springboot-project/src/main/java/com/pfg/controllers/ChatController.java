@@ -102,7 +102,7 @@ public class ChatController {
     public String createGroup(@RequestParam("name") String name,
             @RequestParam(value = "participants", required = false) List<Long> participantIds, @RequestParam("interest") Long interestId,
             Model model, HttpServletRequest request) {
-                //COMPROBACION DE SESION
+        //COMPROBACION DE SESION
         boolean sessionN = SU.checkSession(getSession());
         if (!sessionN) {
             return "redirect:/";
@@ -122,8 +122,13 @@ public class ChatController {
         chat.setName(name);
         chat.setChatType(2L);
         chat.setCreationDate(LocalDateTime.now());
-        chat.setContentURL("chat_group_" + name + ".json");
         chat.setChatInterest(intService.findById(interestId));
+        chat.setContentURL("");
+
+        service.createChat(chat);
+
+        String contentURL = "chat_group_" + chat.getId() + ".json";
+        chat.setContentURL(contentURL);
 
         String filePath = "data/chats/" + chat.getContentURL();
         try {
@@ -162,6 +167,8 @@ public class ChatController {
 
         return "redirect:/chat/view/" + chat.getId();
     }
+
+    
 
     @GetMapping("/create/group")
     public String createGroupPage(Model model) {
