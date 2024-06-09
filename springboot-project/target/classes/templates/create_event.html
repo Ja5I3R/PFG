@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Registro de usuario</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" th:href="@{/css/style.css}">
@@ -31,7 +32,7 @@
 			<ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
 			</ul>
 	
-			<div class="text-end">
+			<div class="text-end text-center">
 			  <a th:href="@{/home/userpage/{id}(id=${user.id})}" class="btn btn-outline-light me-2">Volver a pagina
 				personal</a>
 			  <a th:href="@{/home/logout}" class="btn" id="btn-signup">Cerrar sesion</a>
@@ -42,7 +43,7 @@
 	<br>
 	<div class="container">
 		<div class="row">
-			<div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
+			<div class="col-lg-6 col-md-6 col-sm-6 pt-5 container justify-content-center card">
 				<h1 class="text-center">Registro de evento</h1>
 				<div class="card-body">
 					<form id="eventForm" th:action="@{/events/create}" th:object="${event}" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
@@ -78,8 +79,8 @@
 								<option th:each="interest : ${interestList}" th:value="${interest.id}" th:text="${interest.name}"></option>
 							</select>
 						</div>
-						<div class="box-footer">
-							<button type="submit" class="btn btn-success">Guardar</button>
+						<div class="box-footer text-center">
+							<button type="submit" class="btn btn-success mt-3">Guardar</button>
 						</div>
 
 					</form>
