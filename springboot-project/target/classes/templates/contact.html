@@ -6,10 +6,40 @@
     <title>Contacto</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .stilizedList>li{
+            background-color: white;
+            padding: 5%;
+            border-radius: 10px;
+            margin: 5px;
+        }
+        .stilizedList{
+            list-style: none;
+        }
+    </style>
 </head>
 <body>
+    <header class="p-3 text-white">
+        <div class="container">
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                    <a class="navbar-brand" th:href="@{/}">
+                        <img class="logo" th:src="@{/img/logo/logo.png}" alt="Logo">
+                    </a>
+                </a>
+                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                    <li><a th:href="@{/users/login}" class="nav-link px-2 text-white">Sobre nosotros</a></li>
+                    <li><a th:href="@{/home/contact}" class="nav-link px-2 text-white">Contacto</a></li>
+                </ul>
+                <div class="text-end">
+                    <a th:href="@{/home/login}" class="btn btn-outline-light me-2">Log In</a>
+                    <a th:href="@{/home/new}" class="btn btn-warning">Sign Up</a>
+                </div>
+            </div>
+        </div>  
+    </header>
     <div class="container-fluid">
-        <div class="row">
+        <div class="row p-5">
             <div class="col">
                 <h3 class="text-center">Bienvenid@ a la página de contacto</h3>
                 <p th:text="${message}" class="text-center"></p>
@@ -19,7 +49,8 @@
         <div class="row p-5 bg-info">
             <div class="col-12 col-md-6">
                 <h3 class="text-center">Configuración y Gestión de la Cuenta</h3>
-                <ul>
+                <hr>
+                <ul class="stilizedList">
                     <li><strong>P1: ¿Cómo creo una cuenta?</strong>
                         <p>Para crear una cuenta, haz clic en el botón "Registrarse" en la página de inicio, completa tus datos (nombre, correo electrónico, contraseña) y sigue los pasos de verificación enviados a tu correo electrónico.</p>
                     </li>
@@ -36,7 +67,7 @@
             </div>
             <div class="col-12 col-md-6">
                 <h3 class="text-center">Privacidad y Seguridad</h3>
-                <ul>
+                <ul class="stilizedList">
                     <li><strong>P5: ¿Cómo hago que mi perfil sea privado?</strong>
                         <p>Para hacer tu perfil privado, ve a la configuración de privacidad, selecciona "Privacidad de la Cuenta" y activa el interruptor para hacer tu cuenta privada. Esto restringirá tus publicaciones y la información de tu perfil solo a los seguidores aprobados.</p>
                     </li>
@@ -52,7 +83,7 @@
         <div class="row p-5 bg-info">
             <div class="col-12 col-md-6">
                 <h3 class="text-center">Funciones y Funcionalidades</h3>
-                <ul>
+                <ul class="stilizedList">
                     <li><strong>P8: ¿Cómo creo una nueva publicación?</strong>
                         <p>Para crear una nueva publicación, haz clic en el botón "Crear Publicación" en tu feed, escribe tu contenido, añade cualquier medio (fotos, videos) y haz clic en "Publicar".</p>
                     </li>
@@ -69,7 +100,7 @@
             </div>
             <div class="col-12 col-md-6">
                 <h3 class="text-center">Solución de Problemas</h3>
-                <ul>
+                <ul class="stilizedList">
                     <li><strong>P12: ¿Por qué no puedo iniciar sesión en mi cuenta?</strong>
                         <p>Si tienes problemas para iniciar sesión, asegúrate de que estás ingresando el correo electrónico y la contraseña correctos. Si aún no puedes iniciar sesión, intenta restablecer tu contraseña o contacta con el soporte para obtener más ayuda.</p>
                     </li>

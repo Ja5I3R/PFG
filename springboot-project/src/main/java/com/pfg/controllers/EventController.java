@@ -76,6 +76,7 @@ public class EventController {
         Event EV = new Event();
         model.addAttribute("event", EV);
         model.addAttribute("interestList", intService.listAllInterest());
+        model.addAttribute("user", getSessionUser());
         return "create_event";
     }
 
@@ -217,7 +218,7 @@ public class EventController {
         actualUser.getEvents().add(actualEvent);
         userService.createUser(actualUser);
         
-        return "redirect:/events/view/" + actualEvent.getId();
+        return "redirect:/home/userpage/" + actualUser.getId();
     }
 
     //ELIMINAR DE EVENTO
@@ -238,7 +239,7 @@ public class EventController {
         userService.createUser(actualUser);
         actualEvent.getUsers().removeIf(user -> user.getId().equals(userService.readUserId(actualUser.getId()).getId()));
         service.createEvent(actualEvent);
-        return "redirect:/events/view/" + actualEvent.getId();
+        return "redirect:/home/userpage/" + actualUser.getId();
     }
 
     //ELIMINAR EVENTO
