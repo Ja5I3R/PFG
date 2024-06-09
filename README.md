@@ -1,5 +1,5 @@
 
-![Logo](logoGH.png)
+![Logo](logo_GH.png)
 
 
 # Pallynk
