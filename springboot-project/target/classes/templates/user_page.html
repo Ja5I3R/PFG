@@ -6,6 +6,7 @@
   <title>Pagina de usuario</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" th:href="@{/css/style.css}">
+<<<<<<< Updated upstream
   <style>
     .event-desc{
       overflow: hidden;
@@ -17,6 +18,12 @@
       width: 40px;
     }
   </style>
+=======
+  <link rel="icon" type="image/ico" th:href="@{/img/favicon.ico}">
+  
+  <!-- Animate CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+>>>>>>> Stashed changes
   <!-- Font Awesome -->
   <link
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -45,6 +52,7 @@
 				<ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
 				</ul>
 
+<<<<<<< Updated upstream
 				<div class="text-end">
 					<a th:href="@{/userpage/{id}(id=${user.id})}" class="btn btn-outline-light me-2">Volver a pagina personal</a>
 					<a th:href="@{/users/logout}" class="btn" id="btn-signup">Cerrar sesion</a>
@@ -52,15 +60,43 @@
 			</div>
 		</div>
 	</header>
+=======
+        <div class="text-end">
+          <a th:href="@{/home/userpage/{id}(id=${user.id})}" class="btn btn-outline-light me-2" id="pulseButton">Volver a pagina
+            personal</a>
+          <a th:href="@{/home/logout}" class="btn" id="btn-signup">Cerrar sesion</a>
+        </div>
+      </div>
+    </div>
+  </header>
+>>>>>>> Stashed changes
 
   <div class="container">
     <div class="row p-3">
       <div class="col-4">
+<<<<<<< Updated upstream
         <h1 class="pt-3">Bienvenido: <span th:text="${user.name}"></span></h1>
       </div>
       <div class="col-2">
         <img class="img-fluid rounded-circle border shadow" th:src="@{/img/avatars/__${user.avatar_id}__.jpg}"
           th:alt="${user.image_url}">
+=======
+        <h2 class="pt-3 fst-italic mx-auto" id="nameUserPage">Bienvenido: <span th:text="${user.name}"></span></h2>
+      </div>
+      <div class="col-2">
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img class="rounded-circle img-fluid shadow userImg" th:src="@{/img/usersImg/__${user.image_url}__}"
+                th:alt="${user.image_url}">
+            </div>
+            <div class="flip-card-back">
+              <img class="rounded-circle img-fluid shadow userImg" th:src="@{/img/avatars/__${user.avatar_id}__.jpg}"
+                th:alt="${user.avatar_id}">
+            </div>
+          </div>
+        </div>
+>>>>>>> Stashed changes
       </div>
       <div class="col-6"></div>
     </div>
@@ -84,6 +120,36 @@
       <div class="col-8">
         <div class="tab-content" id="v-pills-tabContent">
           <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+<<<<<<< Updated upstream
+=======
+            <a th:href="@{/home/edit/{id}(id=${user.id})}" class="btn btn-info" id="pulseButton">Editar</a>
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteUser" id="pulseButton">
+              Eliminar cuenta
+            </button>
+            <a th:href="@{/home/logout}" class="btn btn-danger" id="pulseButton">Cerrar sesion</a>
+            <div class="modal fade" id="deleteUser" tabindex="-1" role="dialog"
+              aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Eliminacion de cuenta</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    Estas a punto de eliminar tu cuenta con todos sus datos de manera permanente, ¿deseas hacerlo?
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No, quiero mantener mi
+                      cuenta</button>
+                    <a th:href="@{/home/{id}(id=${user.id})}" class="btn btn-danger">Si, quiero eliminar mi cuenta
+                      permanentemente</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+>>>>>>> Stashed changes
             <ul class="list-group list-group-light">
               <li class="list-group-item"><strong>Usuario: </strong> <span th:text="${user.username}"></span></li>
               <li class="list-group-item"><strong>Email: </strong> <span th:text="${user.email}"></span></li>
@@ -102,43 +168,120 @@
             <h4>Lista de interes</h4>
             <div class="row">
               <div class="col-3 text-center m-2" th:each="interest : ${interestList}">
+<<<<<<< Updated upstream
                 <button type="button" class="btn btn-primary" th:text="${interest.name}" disabled></button>
+=======
+                <button type="button" class="btn btn-primary w-100" th:text="${interest.name}" disabled></button>
+              </div>
+            </div>
+            <div class="hstack">
+              <a th:href="@{/home/meet/{id}(id=${user.id})}" class="btn btn-info" id="pulseButton">Descubrir gente</a>
+              <a href="" class="btn btn-link" id="changeView1">Cambiar intereses</a>
+            </div>
+            <br>
+            <div class="card text-center interestChange fade show">
+              <div class="card-body">
+                <h5 class="card-title">Selecciona los 5 intereses por los cuales se quiera cambiar</h5>
+                <form th:action="@{/home/interestUpdate}" method="POST" onsubmit="return validateForm()">
+                  <div class="row">
+                    <div class="custom-control custom-checkbox mr-sm-2 col-lg-3" th:each="interest : ${interestList2}">
+                      <input type="checkbox" name="interests" class="custom-control-input" id="interests"
+                        th:value="${interest.id}">
+                      <label class="custom-control -label" for="interests" th:text="${interest.name}"></label>
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-success">Guardar</button>
+                </form>
+>>>>>>> Stashed changes
               </div>
             </div>
             <a th:href="@{/meet/{id}(id=${user.id})}" class="btn btn-info">Descubrir gente</a>
           </div>
           <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+<<<<<<< Updated upstream
             <a th:href="@{/events/new}" class="btn btn-danger">Crear evento</a>
             <a th:href="@{/events/search}" class="btn btn-danger">Eventos</a>
             <div class="container-fluid">
               <div class="row gx-5 p-4">
                 <div class="col-4" th:each="event : ${eventList}">
+=======
+            <a th:href="@{/events/new}" class="btn btn-danger" id="pulseButton">Crear evento</a>
+            <a th:href="@{/events/search}" class="btn btn-danger" id="pulseButton">Eventos</a>
+            <h3 class="text-center">Mis eventos</h3>
+            <hr class="hr hr-blurry" />
+            <div class="container-fluid">
+              <div class="row gx-5 p-4 hstack" th:unless="${eventList.isEmpty()}">
+                <div class="col-md-4 col-xs-12 p-2" th:each="event : ${eventList}"
+                  th:if="${event.idCreator == user.id}">
+>>>>>>> Stashed changes
                   <div class="card">
                     <img class="card-img-top" th:src="@{/img/eventsImg/__${event.image_url}__}"
                       th:alt="${event.image_url}">
                     <div class="card-body">
                       <h5 class="card-title" th:text="${event.name}"></h5>
                       <p class="card-text event-desc" th:text="${event.description}"></p>
-                      <a th:href="@{/events/view/{id}(id=${event.id})}" class="btn btn-info">Ver</a>
+                      <a th:href="@{/events/view/{id}(id=${event.id})}" class="btn btn-info" id="flashButton">Ver</a>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+<<<<<<< Updated upstream
+=======
+            <div th:if="${eventList.isEmpty()}">
+              <h4 class="text-center">No se encontraron eventos</h4>
+            </div>
+            <h3 class="text-center">Otros eventos</h3>
+            <hr class="hr hr-blurry" />
+            <div class="container-fluid">
+              <div class="row gx-5 p-4 hstack" th:unless="${eventList.isEmpty()}">
+                <div class="col-md-4 col-xs-12 p-2" th:each="event : ${eventList}"
+                  th:unless="${event.idCreator == user.id}">
+                  <div class="card">
+                    <img class="card-img-top" th:src="@{/img/eventsImg/__${event.image_url}__}"
+                      th:alt="${event.image_url}">
+                    <div class="card-body">
+                      <h5 class="card-title" th:text="${event.name}"></h5>
+                      <p class="card-text event-desc" th:text="${event.description}"></p>
+                      <a th:href="@{/events/view/{id}(id=${event.id})}" class="btn btn-info" id="flashButton">Ver</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div th:if="${eventList.isEmpty()}">
+              <h4 class="text-center">No se encontraron eventos</h4>
+            </div>
+>>>>>>> Stashed changes
           </div>
           <div class="tab-pane fade" id="v-pills-chats" role="tabpanel" aria-labelledby="v-pills-chats-tab">
             <div th:if="${#lists.size(chatList) >= 2}">
-              <a th:href="@{/chat/create/group}" class="btn btn-info">Crear chat grupal</a>
+              <a th:href="@{/chat/create/group}" class="btn btn-info" id="pulseButton">Crear chat grupal</a>
             </div>
             <br>
             <div class="container-fluid">
               <div class="row gx-5 p-4">
+<<<<<<< Updated upstream
                 <div class="col-4" th:each="chat : ${chatList}">
                   <div th:if="${chat.chatType == 2}"> <!-- Mostrar chat grupal -->
                     <div class="card">
                       <div class="card-body">
                         <h5 class="card-title" th:text="'Chat grupal - ' + ${chat.name}"></h5>
                         <a th:href="@{/chat/view/{id}(id=${chat.id})}" class="btn btn-info">Entrar</a>
+=======
+                <div class="col-md-4 col-xs-12 p-2" th:each="chat : ${chatList}" th:if="${chat.chatType == 1L}">
+                  <div th:each="userA : ${chat.users}">
+                    <div th:unless="${userA.id == user.id}">
+                      <div class="card">
+                        <div class="card-body">
+                          <div class="m-2">
+                            <img class="img-fluid rounded userPic d-inline"
+                              th:src="@{/img/avatars/__${userA.avatar_id}__.jpg}" th:alt="${userA.avatar_id}">
+                            <h5 class="card-title d-inline m-2" th:text="${userA.username}"></h5>
+                          </div>
+                          <a th:href="@{/chat/view/{id}(id=${chat.id})}" class="btn btn-info" id="flashButton">Entrar a chat</a>
+                        </div>
+>>>>>>> Stashed changes
                       </div>
                     </div>
                   </div>
@@ -152,6 +295,10 @@
                           </div>
                         </div>
                       </div>
+<<<<<<< Updated upstream
+=======
+                      <a th:href="@{/chat/view/{id}(id=${chat.id})}" class="btn btn-info" id="flashButton">Entrar</a>
+>>>>>>> Stashed changes
                     </div>
                   </div>
                 </div>

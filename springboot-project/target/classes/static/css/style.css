@@ -4,6 +4,7 @@
 
 /* Variables */
 @font-face {
+<<<<<<< Updated upstream
     font-family: 'Bebas';
     src: url(../../fonts/BebasNeue-Regular.otf);
 }
@@ -27,27 +28,343 @@
 body
 {
     background-color: var(--body-background);
+=======
+  font-family: 'Bebas';
+  src: url(../../fonts/BebasNeue-Regular.otf);
+>>>>>>> Stashed changes
 }
 
-header
-{
-    background-color: var(--primary-color);
+:root {
+  /* Colores */
+  --danger-color: #ffff;
+  --danger-background: #dc3546;
+  --danger-border: #a50213;
+  --warning-color: #ffc107;
+  --warning-border: #b38600;
+  --success-color: #198754;
+  --success-border: #1a6040;
+  --info-color: #0dcaf0;
+  --info-border: #1e8ea4;
+  --primary-color: #03AED2;
+  --secondary-color: #FDDE55;
+  /* */
+  --body-background: #f0f0f0;
 }
-#btn-signup
-{
-    background-color: var(--secondary-color);
+
+body {
+  /*background-image: linear-gradient(rgba(255, 255, 255, 0.4),rgba(255, 255, 255, 0.4)), url('/img/templates/background.jpg');
+    background-image: url('/img/templates/background.jpg');*/
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
-#a-signup
-{
-    background-color: var(--primary-color);
+
+header {
+  background-color: var(--primary-color);
 }
-footer
-{
-    background-color: var(--primary-color);
+
+#btn-signup {
+  background-color: var(--secondary-color);
 }
+<<<<<<< Updated upstream
 #login
 {
     padding-left: 2.5rem; 
     padding-right: 2.5rem;
     background-color: var(--primary-color);
 }
+=======
+
+#a-signup {
+  background-color: var(--primary-color);
+}
+
+footer {
+  background-color: var(--primary-color);
+}
+
+#login {
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+  background-color: var(--primary-color);
+}
+
+.logo {
+  width: 40px;
+}
+
+.imageMidWid {
+  width: 40%;
+}
+
+/*FLIPCARD*/
+/* The flip card container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect */
+.flip-card {
+  background-color: transparent;
+  width: 300px;
+  height: 200px;
+  perspective: 1000px;
+  /* Remove this if you don't want the 3D effect */
+}
+
+/* This container is needed to position the front and back side */
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+/* Do an horizontal flip when you move the mouse over the flip box container */
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+/* Position the front and back side */
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+/* Style the front side (fallback if image is missing) */
+.flip-card-front {
+  color: black;
+}
+
+/* Style the back side */
+.flip-card-back {
+  color: white;
+  transform: rotateY(180deg);
+}
+
+.userImg {
+  width: 200px;
+  border-radius: 50%;
+  aspect-ratio: 1;
+  /* Se ajusta al mismo valor que el width */
+  object-fit: cover;
+}
+
+/*HR STYLISED*/
+.hrStilized {
+  height: 10px;
+  background-image: linear-gradient(-45deg,
+      transparent,
+      transparent 25%,
+      var(--primary-color) 25%,
+      var(--primary-color) 50%,
+      transparent 50%,
+      transparent 75%,
+      var(--primary-color) 75%);
+  background-size: 10px 10px;
+  width: 250px;
+  margin: auto;
+}
+
+/*EVENTS*/
+.event-desc {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.logo {
+  width: 40px;
+}
+
+.userPic {
+  width: 40px;
+}
+
+.card-img-top {
+  max-height: 100px;
+  object-fit: cover;
+}
+
+/* CSS Animate */
+
+#pulseButton:hover
+{
+  animation: pulse;
+  animation-duration: 1s;
+}
+
+#flashButton:hover
+{
+  animation: flash;
+  animation-duration: 1s;
+}
+
+#btn-signup:hover
+{
+  animation: pulse;
+  animation-duration: 1s;
+}
+
+#changeView1:hover
+{
+  animation: pulse;
+  animation-duration: 1s;
+}
+#nameUserPage {
+  display: inline-block;
+
+  animation: backInLeft;
+  animation-duration: 1.25s;
+}
+
+#v-pills-home-tab {
+  display: inline-block;
+
+  animation: backInLeft;
+  animation-duration: 1.75s;
+}
+
+#v-pills-messages-tab {
+  display: inline-block;
+
+  animation: backInLeft;
+  animation-duration: 2.25s;
+}
+
+#v-pills-settings-tab {
+  display: inline-block;
+
+  animation: backInLeft;
+  animation-duration: 2.75s;
+}
+
+#v-pills-chats-tab {
+  display: inline-block;
+
+  animation: backInLeft;
+  animation-duration: 3s;
+}
+
+/* Sección Empieza ya a descubrir */
+
+.reveal-section * {
+  box-sizing: border-box;
+}
+
+.reveal-section p {
+  margin: 0;
+  font-size: 2.25rem;
+  color: hsl(0 0% 40%);
+  text-align: center;
+  background: linear-gradient(hsl(0 0% 80%), hsl(0 0% 50%));
+  color: transparent;
+  background-clip: text;
+}
+
+.reveal-section .container-fluid {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.reveal-section .picture {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  padding: 2rem 1rem;
+  transition: transform 0.5s, filter 0.5s;
+}
+
+.reveal-section .picture:hover {
+  cursor: pointer;
+  filter: blur(0);
+}
+
+.reveal-section .picture img {
+  filter: blur(10px);
+  transition: filter 0.5s;
+}
+
+.reveal-section .picture:hover img {
+  filter: blur(0);
+}
+
+.reveal-section .picture p {
+  color: black;
+  /* Change text color to black */
+  font-size: 1.25rem;
+}
+
+.reveal-section :root {
+  --lerp-0: 1;
+  --lerp-1: calc(sin(50deg));
+  --lerp-2: calc(sin(45deg));
+  --lerp-3: calc(sin(35deg));
+  --lerp-4: calc(sin(25deg));
+  --lerp-5: calc(sin(15deg));
+}
+
+.reveal-section .picture:is(:hover, :focus-visible) {
+  --active: var(--lerp-0);
+}
+
+/*.reveal-section .picture Recordar código restante*/
+
+/* Apply styles only to the specified HTML */
+ul.nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  color: grey;
+}
+
+ul.nav li {
+  padding: 0 .5em .25em;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: .3s;
+}
+
+ul.nav li:hover {
+  color: #fff;
+}
+
+ul.nav li:before {
+  content: "";
+  position: absolute;
+  inset: calc(100% - 3px) 0 0 0;
+  /* 3px = the thickness */
+  background: #ce4f20;
+  /* the color */
+  transform: scale(0, 1);
+  transition: .3s, transform 0s .3s;
+}
+
+ul.nav:hover li:before {
+  transform: scale(1);
+}
+
+ul.nav li:hover:before {
+  transform: translate(0);
+  transition: .3s;
+}
+
+ul.nav:hover li:has(~ li:hover):before {
+  transform: translate(100%, 0);
+  transition: .2s .2s, transform 0s .4s;
+}
+
+ul.nav:hover li:hover~li:before {
+  transform: translate(-100%, 0);
+  transition: .2s .2s, transform 0s .4s;
+}
+
+
+>>>>>>> Stashed changes
