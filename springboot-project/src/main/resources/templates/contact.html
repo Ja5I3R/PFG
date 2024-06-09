@@ -1,13 +1,95 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="ISO-8859-1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contacto</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-    <h3>Bienvenid@ a la página de contacto</h3>
-    <p th:text="${message}"></p>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <h3 class="text-center">Bienvenid@ a la página de contacto</h3>
+                <p th:text="${message}" class="text-center"></p>
+                <h4 class="text-center">Consulte las preguntas frecuentes</h4>
+            </div>
+        </div>
+        <div class="row p-5 bg-info">
+            <div class="col-12 col-md-6">
+                <h3 class="text-center">Configuración y Gestión de la Cuenta</h3>
+                <ul>
+                    <li><strong>P1: ¿Cómo creo una cuenta?</strong>
+                        <p>Para crear una cuenta, haz clic en el botón "Registrarse" en la página de inicio, completa tus datos (nombre, correo electrónico, contraseña) y sigue los pasos de verificación enviados a tu correo electrónico.</p>
+                    </li>
+                    <li><strong>P2: ¿Cómo puedo restablecer mi contraseña?</strong>
+                        <p>Si has olvidado tu contraseña, haz clic en el enlace "¿Olvidaste tu contraseña?" en la página de inicio de sesión, ingresa tu dirección de correo electrónico registrada y sigue las instrucciones para restablecer tu contraseña.</p>
+                    </li>
+                    <li><strong>P3: ¿Cómo elimino mi cuenta?</strong>
+                        <p>Para eliminar tu cuenta, ve a la configuración de la cuenta, selecciona "Gestión de la Cuenta" y haz clic en "Eliminar Cuenta". Sigue las instrucciones en pantalla para confirmar la eliminación.</p>
+                    </li>
+                    <li><strong>P4: ¿Cómo puedo cambiar mi nombre de usuario?</strong>
+                        <p>Para cambiar tu nombre de usuario, ve a la configuración de tu perfil, encuentra la sección "Editar Perfil" y actualiza tu nombre de usuario. Recuerda guardar los cambios.</p>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-12 col-md-6">
+                <h3 class="text-center">Privacidad y Seguridad</h3>
+                <ul>
+                    <li><strong>P5: ¿Cómo hago que mi perfil sea privado?</strong>
+                        <p>Para hacer tu perfil privado, ve a la configuración de privacidad, selecciona "Privacidad de la Cuenta" y activa el interruptor para hacer tu cuenta privada. Esto restringirá tus publicaciones y la información de tu perfil solo a los seguidores aprobados.</p>
+                    </li>
+                    <li><strong>P6: ¿Cómo puedo bloquear o reportar a alguien?</strong>
+                        <p>Para bloquear o reportar a un usuario, visita su perfil, haz clic en los tres puntos (menú de opciones) y selecciona "Bloquear" o "Reportar". Sigue las indicaciones para completar la acción.</p>
+                    </li>
+                    <li><strong>P7: ¿Cómo controlo quién puede ver mis publicaciones?</strong>
+                        <p>Al crear una publicación, puedes seleccionar la audiencia haciendo clic en la opción de visibilidad (por ejemplo, Público, Amigos, Solo yo) antes de publicar. También puedes ajustar la configuración de visibilidad predeterminada en tu configuración de privacidad.</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row p-5 bg-info">
+            <div class="col-12 col-md-6">
+                <h3 class="text-center">Funciones y Funcionalidades</h3>
+                <ul>
+                    <li><strong>P8: ¿Cómo creo una nueva publicación?</strong>
+                        <p>Para crear una nueva publicación, haz clic en el botón "Crear Publicación" en tu feed, escribe tu contenido, añade cualquier medio (fotos, videos) y haz clic en "Publicar".</p>
+                    </li>
+                    <li><strong>P9: ¿Qué son los hashtags y cómo los uso?</strong>
+                        <p>Los hashtags son palabras clave precedidas por un símbolo `#` que categorizan tus publicaciones y las hacen buscables. Para usarlos, simplemente añade `#` seguido de una palabra clave (por ejemplo, #viaje) en tu publicación.</p>
+                    </li>
+                    <li><strong>P10: ¿Cómo inicio conversación con alguien?</strong>
+                        <p>Para iniciar conversación con un usuario, visita su perfil y haz clic en el botón "Seguir". Para dejar de seguir, haz clic en el botón "Siguiendo" y selecciona "Dejar de Seguir".</p>
+                    </li>
+                    <li><strong>P11: ¿Cómo puedo unirme o crear un grupo?</strong>
+                        <p>Para unirte a un grupo, busca el nombre del grupo y haz clic en "Unirse". Para crear un grupo, ve a la sección de grupos, haz clic en "Crear Grupo" y sigue las indicaciones para configurarlo.</p>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-12 col-md-6">
+                <h3 class="text-center">Solución de Problemas</h3>
+                <ul>
+                    <li><strong>P12: ¿Por qué no puedo iniciar sesión en mi cuenta?</strong>
+                        <p>Si tienes problemas para iniciar sesión, asegúrate de que estás ingresando el correo electrónico y la contraseña correctos. Si aún no puedes iniciar sesión, intenta restablecer tu contraseña o contacta con el soporte para obtener más ayuda.</p>
+                    </li>
+                    <li><strong>P13: ¿Qué debo hacer si mi cuenta ha sido hackeada?</strong>
+                        <p>Si sospechas que tu cuenta ha sido hackeada, cambia tu contraseña de inmediato y contacta a nuestro equipo de soporte para asegurar tu cuenta e investigar cualquier actividad sospechosa.</p>
+                    </li>
+                    <li><strong>P14: ¿Cómo reporto un error o problema técnico?</strong>
+                        <p>Para reportar un error, contacte con nuestro equipo en <a href="mailto:someone@example.com">esta dirección</a>, proporciona información detallada sobre el problema y nuestro equipo técnico lo revisará y te responderá.</p>
+                    </li>
+                    <li><strong>P15: ¿Por qué no aparecen mis eventos?</strong>
+                        <p>Si tus eventos no aparecen, asegúrate de que tu conexión a internet sea estable y prueba refrescar la página.</p>
+                    </li>
+                </ul>
+            </div>
+            <div class="col text-center pt-5">
+                <h3>También puede enviarnos un correo</h3>
+                <p><a href="mailto:someone@example.com">Enviar correo</a></p>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

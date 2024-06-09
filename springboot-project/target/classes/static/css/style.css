@@ -5,26 +5,36 @@
 /* Variables */
 @font-face {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     font-family: 'Bebas';
     src: url(../../fonts/BebasNeue-Regular.otf);
+=======
+  font-family: 'Bebas';
+  src: url(../../fonts/BebasNeue-Regular.otf);
+>>>>>>> Stashed changes
 }
-:root 
-{
-    /* Colores */
-    --danger-color: #ffff;
-    --danger-background: #dc3546;
-    --danger-border: #a50213;
-    --warning-color: #ffc107;
-    --warning-border: #b38600;
-    --success-color: #198754;
-    --success-border: #1a6040;
-    --info-color: #0dcaf0;
-    --info-border: #1e8ea4;
-    --primary-color: #03AED2;
-    --secondary-color:#FDDE55;
-    /* */
-    --body-background: #f0f0f0;
+
+:root {
+  /* Colores */
+  --danger-color: #ffff;
+  --danger-background: #dc3546;
+  --danger-border: #a50213;
+  --warning-color: #ffc107;
+  --warning-border: #b38600;
+  --success-color: #198754;
+  --success-border: #1a6040;
+  --info-color: #0dcaf0;
+  --info-border: #1e8ea4;
+  --primary-color: #03AED2;
+  --secondary-color: #FDDE55;
+  /* */
+  --body-background: #f0f0f0;
+  --scroll-size: 15px;
+  --scroll-radius: 20px;
+  --scroll-track: rgb(255 255 255 / 10%);
+  --scroll-thumb: linear-gradient(45deg, #00aeff, #a68eff);
 }
+<<<<<<< Updated upstream
 body
 {
     background-color: var(--body-background);
@@ -50,6 +60,8 @@ body
   /* */
   --body-background: #f0f0f0;
 }
+=======
+>>>>>>> Stashed changes
 
 body {
   /*background-image: linear-gradient(rgba(255, 255, 255, 0.4),rgba(255, 255, 255, 0.4)), url('/img/templates/background.jpg');
@@ -60,9 +72,38 @@ body {
 }
 
 header {
+<<<<<<< Updated upstream
+=======
   background-color: var(--primary-color);
 }
 
+#btn-signup {
+  background-color: var(--secondary-color);
+}
+
+#a-signup {
+  background-color: var(--primary-color);
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
+}
+
+footer {
+>>>>>>> Stashed changes
+  background-color: var(--primary-color);
+}
+
+<<<<<<< Updated upstream
 #btn-signup {
   background-color: var(--secondary-color);
 }
@@ -93,6 +134,18 @@ footer {
   width: 40px;
 }
 
+=======
+#login {
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+  background-color: var(--primary-color);
+}
+
+.logo {
+  width: 40px;
+}
+
+>>>>>>> Stashed changes
 .imageMidWid {
   width: 40%;
 }
@@ -188,6 +241,7 @@ footer {
   object-fit: cover;
 }
 
+<<<<<<< Updated upstream
 /* CSS Animate */
 
 #pulseButton:hover
@@ -367,4 +421,31 @@ ul.nav:hover li:hover~li:before {
 }
 
 
+>>>>>>> Stashed changes
+=======
+.DivWithScroll {
+  height: 500px;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+
+.DivWithScroll::-webkit-scrollbar {
+  width: var(--scroll-size, 10px);
+  height: var(--scroll-size, 10px);
+}
+
+.DivWithScroll::-webkit-scrollbar-track {
+  background-color: var(--scroll-track, transparent);
+  border-radius: var(--scroll-track-radius, var(--scroll-radius));
+}
+
+.DivWithScroll::-webkit-scrollbar-thumb {
+  background-color: var(--scroll-thumb-color, grey);
+  background-image: var(--scroll-thumb, none);
+  border-radius: var(--scroll-thumb-radius, var(--scroll-radius));
+}
+
+.userPic {
+  width: 40px;
+}
 >>>>>>> Stashed changes

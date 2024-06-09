@@ -8,6 +8,24 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
+    <header class="p-3 text-white">
+		<div class="container">
+		  <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+			<a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+			  <img class="logo" th:src="@{/img/logo/logo.png}" alt="Logo">
+			</a>
+	
+			<ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+			</ul>
+	
+			<div class="text-end">
+			  <a th:href="@{/home/userpage/{id}(id=${user.id})}" class="btn btn-outline-light me-2">Volver a pagina
+				personal</a>
+			  <a th:href="@{/home/logout}" class="btn" id="btn-signup">Cerrar sesion</a>
+			</div>
+		  </div>
+		</div>
+	  </header>
     <h1 th:text="${error}"></h1>
     <p th:text="${date}"></p>
 </body>

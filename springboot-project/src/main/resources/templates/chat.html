@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WebSocket Chat</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<<<<<<< Updated upstream
     <style>
         .DivWithScroll{
             height: 500px;
@@ -54,12 +55,24 @@
     rel="stylesheet"
     />
     </head>
+=======
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+  <!-- MDB -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css" rel="stylesheet" />
+</head>
+>>>>>>> Stashed changes
 
 <body class="p-5">
     <div class="container text-center">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-2">
+                <!-- Columna de nombre/participantes -->
+                <div class="col-sm-auto col-lg-2">
+                    <!-- Si es chat grupal -->
                     <div th:if="${chat.chatType == 2}">
                         <div>
                             <h3 class="fw-bold fst-italic" th:text="${chatName}"></h3>
@@ -71,11 +84,13 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Si es chat individual -->
                     <div th:if="${chat.chatType == 1}">
                         <h3 th:text="${otherUser.username}"></h3>
                     </div>
                 </div>
-                <div class="col-10">
+                <!-- Columna -->
+                <div class="col-sm-auto col-lg-10">
                     <div class="container-fluid border align-content-center p-3 rounded shadow">
                         <div class="messagesBody border-5 DivWithScroll" id="scrollDiv" data-spy="scroll" data-offset="50">
                             <div th:unless="${#lists.isEmpty(messages)}">
@@ -83,9 +98,9 @@
                                     <div class="row" th:each="message : ${messages}">
                                         <div th:unless="${message.user == null}">
                                             <div class="d-flex justify-content-end" th:if="${message.user == usersession.username}">
-                                                <div class="col-6"></div>
-                                                <div class="col-6">
-                                                        <div class="card mt-5 m-b-5 w-75 bg-info shadow">
+                                                <div class="col-sm-auto col-lg-6"></div>
+                                                <div class="col-sm-auto col-lg-6">
+                                                        <div class="card mt-lg-5 mb-5 w-lg-75 mt-sm-auto mb-sm-auto w-sm-auto bg-info shadow">
                                                             <div class="card-body">
                                                               <p class="card-text text-left" th:text="${message.message}"></p>
                                                             </div>
@@ -93,14 +108,14 @@
                                                 </div>
                                             </div>
                                             <div class="d-flex justify-content-start" th:unless="${message.user == usersession.username}">
-                                                <div class="col-6" >
-                                                        <div class="card mt-5 m-b-5 w-75 shadow">
+                                                <div class="col-sm-auto col-lg-6" >
+                                                        <div class="card mt-lg-5 mb-5 w-lg-75 mt-sm-auto mb-sm-auto w-sm-auto shadow">
                                                             <div class="card-body">
                                                               <p class="card-text text-left" th:text="${message.user} + ': ' + ${message.message}"></p>
                                                             </div>
                                                         </div>
                                                 </div>
-                                                <div class="col-6"></div>
+                                                <div class="col-sm-auto col-lg-6"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -110,8 +125,9 @@
                                 <p>No hay mensajes</p>
                             </div>
                         </div>
+                        <!-- Fila de escritura -->
                         <div class="row m-3">
-                            <div class="col-6">
+                            <div class="col-sm-auto col-lg-6">
                                 <div class="form-outline" data-mdb-input-init>
                                     <input type="text" name="message" id="message" class="form-control" />
                                     <label class="form-label" for="form12">Mensaje</label>
@@ -119,7 +135,7 @@
                                 <input type="hidden" name="user" id="user" th:value="${usersession.username}">
                                 <input type="hidden" name="id" id="id" th:value="${chat.id}">
                             </div>
-                            <div class="col-6">
+                            <div class="col-sm-auto col-lg-6">
                                 <button id="send" class="btn text-white" data-mdb-ripple-init style="background-color: #3b5998;" href="#!" role="button">
                                     <i class="fas fa-paper-plane"></i>
                                 </button>
@@ -197,8 +213,8 @@
             if(from  == messageOutput.user){
                 var htmlString = '<div class="row">' +
                             '<div class="d-flex justify-content-end">' +
-                                '<div class="col-6"></div>' +
-                                '<div class="col-6">' +
+                                '<div class="col-sm-auto col-lg-6"></div>' +
+                                '<div class="col-sm-auto col-lg-6">' +
                                     '<div class="card mt-5 m-b-5 w-75 bg-info shadow">' +
                                         '<div class="card-body">' +
                                             '<p class="card-text text-left">'+messageOutput.message+'</p>' +
@@ -211,14 +227,14 @@
             else{
                 var htmlString = '<div class="row">' +
                             '<div class="d-flex justify-content-start">' +
-                                '<div class="col-6">' +
+                                '<div class="col-sm-auto col-lg-6">' +
                                     '<div class="card mt-5 m-b-5 w-75 shadow">' +
                                         '<div class="card-body">' +
                                             '<p class="card-text text-left">'+messageOutput.user+': '+messageOutput.message+'</p>' +
                                         '</div>' +
                                     '</div>' +
                                 '</div>' +
-                                '<div class="col-6"></div>' +
+                                '<div class="col-sm-auto col-lg-6"></div>' +
                             '</div>' +
                             '</div>';
             }

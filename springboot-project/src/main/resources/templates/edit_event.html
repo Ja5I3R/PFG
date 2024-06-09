@@ -4,6 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Registro de usuario</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
 	<!-- Google Fonts -->
@@ -13,38 +14,23 @@
 </head>
 
 <body>
-	<header class="p-3 text-white">
-		<div class="container">
-			<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-				<a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-					<img class="logo" th:src="@{/img/logo/logo.png}" alt="Logo">
-				</a>
-
-				<ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-				</ul>
-
-				<div class="text-end">
-					<a th:href="@{/home/userpage/{id}(id=${user.id})}" class="btn btn-outline-light me-2">Volver a
-						pagina
-						personal</a>
-					<a th:href="@{/home/logout}" class="btn" id="btn-signup">Cerrar sesion</a>
-				</div>
-			</div>
+	<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+		<a class="navbar-brand" href="#">Control de estudiantes</a>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav">
+				<li class="nav-item"><a class="nav-link" th:href="@{/estudiantes}">Estudiantes</a></li>
+			</ul>
 		</div>
-	</header>
+	</nav>
 	<br>
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
-				<h1 class="text-center">Registro de evento</h1>
+				<h1 class="text-center">Edicion de evento</h1>
 				<div class="card-body">
-					<form id="eventForm" th:action="@{/events/create}" th:object="${event}" method="POST"
+					<form id="eventForm" th:action="@{/events/update}" th:object="${event}" method="POST"
 						enctype="multipart/form-data" onsubmit="return validateForm()">
-						<br>
-						<div class="form-group">
-							<label>Imagen del evento:</label> <input type="file" name="eventImage"
-								class="form-control-file" accept="image/*" required>
-						</div>
+						<input type="hidden" name="id" th:field="*{id}">
 						<br>
 						<div class="form-group">
 							<label>Nombre:</label> <input type="text" name="name" th:field="*{name}"
@@ -108,13 +94,6 @@
 				alert("La fecha de inicio no puede ser anterior al dia de hoy");
 				initialDate.value = '';
 			}
-<<<<<<< Updated upstream
-=======
-			else if (eDate < iDate) {
-				alert("La fecha de inicio no puede ser posterior a la fecha de fin");
-				initialDate.value = '';
-			}
->>>>>>> Stashed changes
 		});
 		endDate.addEventListener("change", function (event) {
 			var actualDate = new Date();
