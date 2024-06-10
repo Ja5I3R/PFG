@@ -1,95 +1,95 @@
-/* CREATE_EVENT */
-var initialDate = document.getElementById("initialDate");
-var endDate = document.getElementById("endDate");
-initialDate.addEventListener("change", function (event) {
-    var actualDate = new Date();
-    var userDate = new Date(initialDate.value);
-    var iDate = new Date(initialDate.value);
-    var eDate = new Date(endDate.value);
+document.addEventListener("DOMContentLoaded", function () {
+    /* CREATE_EVENT */
+    var initialDate = document.getElementById("initialDate");
+    var endDate = document.getElementById("endDate");
+    initialDate.addEventListener("change", function (event) {
+        var actualDate = new Date();
+        var userDate = new Date(initialDate.value);
+        var iDate = new Date(initialDate.value);
+        var eDate = new Date(endDate.value);
 
-    if (userDate < actualDate) {
-        alert("La fecha de inicio no puede ser anterior al dia de hoy");
-        initialDate.value = '';
-    }
-    else if (eDate < iDate) {
-        alert("La fecha de inicio no puede ser posterior a la fecha de fin");
-        initialDate.value = '';
-    }
-});
-endDate.addEventListener("change", function (event) {
-    var actualDate = new Date();
-    var iDate = new Date(initialDate.value);
-    var eDate = new Date(endDate.value);
-
-    if (eDate < iDate) {
-        alert("La fecha de finalizacion no puede ser anterior a la fecha de comienzo");
-        endDate.value = '';
-    }
-});
-
-/* CREATE_USER */
-
-var birthdate = document.getElementById("birthdate");
-birthdate.addEventListener("change", function (event) {
-    var actualDate = new Date();
-    var userDate = new Date(birthdate.value);
-
-    if (userDate > actualDate) {
-        alert("La fecha no puede ser mayor a la actual");
-        $(".alert1").addClass("show");
-        birthdate.value = '';
-    }
-    else {
-        $(".alert1").removeClass("show");
-    }
-});
-
-
-function selectAvatar(element) {
-    var avatarImages = document.querySelectorAll('.avatar');
-    avatarImages.forEach(function (img) {
-        img.classList.remove('border');
-        img.classList.remove('border-primary');
-        img.classList.remove('border-4');
+        if (userDate < actualDate) {
+            alert("La fecha de inicio no puede ser anterior al dia de hoy");
+            initialDate.value = '';
+        }
+        else if (eDate < iDate) {
+            alert("La fecha de inicio no puede ser posterior a la fecha de fin");
+            initialDate.value = '';
+        }
     });
-    element.classList.add('border');
-    element.classList.add('border-primary');
-    element.classList.add('border-4');
-}
+    endDate.addEventListener("change", function (event) {
+        var actualDate = new Date();
+        var iDate = new Date(initialDate.value);
+        var eDate = new Date(endDate.value);
 
-$(".form-check-input").change(function () {
-    var checkboxes = document.getElementsByName("interests");
-    var checkedCount = 0;
-
-    for (var i = 0; i < checkboxes.length; i++) {
-        if (checkboxes[i].checked) {
-            checkedCount++;
-            $(".alert2").remove("show");
+        if (eDate < iDate) {
+            alert("La fecha de finalizacion no puede ser anterior a la fecha de comienzo");
+            endDate.value = '';
         }
-    }
-});
+    });
 
-function validateForm() {
-    var checkboxes = document.getElementsByName("interests");
-    var checkedCount = 0;
+    /* CREATE_USER */
 
-    for (var i = 0; i < checkboxes.length; i++) {
-        if (checkboxes[i].checked) {
-            checkedCount++;
+    var birthdate = document.getElementById("birthdate");
+    birthdate.addEventListener("change", function (event) {
+        var actualDate = new Date();
+        var userDate = new Date(birthdate.value);
+
+        if (userDate > actualDate) {
+            alert("La fecha no puede ser mayor a la actual");
+            $(".alert1").addClass("show");
+            birthdate.value = '';
         }
+        else {
+            $(".alert1").removeClass("show");
+        }
+    });
+
+    function selectAvatar(element) {
+        var avatarImages = document.querySelectorAll('.avatar');
+        avatarImages.forEach(function (img) {
+            img.classList.remove('border');
+            img.classList.remove('border-primary');
+            img.classList.remove('border-4');
+        });
+        element.classList.add('border');
+        element.classList.add('border-primary');
+        element.classList.add('border-4');
     }
 
-    $(".alert2").remove("show");
+    $(".form-check-input").change(function () {
+        var checkboxes = document.getElementsByName("interests");
+        var checkedCount = 0;
 
-    if (checkedCount < 5 || checkedCount > 5) {
-        $(".alert2").addClass("show");
-        return false;
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked) {
+                checkedCount++;
+                $(".alert2").remove("show");
+            }
+        }
+    });
+
+    function validateForm() {
+        var checkboxes = document.getElementsByName("interests");
+        var checkedCount = 0;
+
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked) {
+                checkedCount++;
+            }
+        }
+
+        $(".alert2").remove("show");
+
+        if (checkedCount < 5 || checkedCount > 5) {
+            $(".alert2").addClass("show");
+            return false;
+        }
+
+        return true;
     }
 
-    return true;
-}
-
-	// Example starter JavaScript for disabling form submissions if there are invalid fields
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
     (function () {
         'use strict';
         window.addEventListener('load', function () {
@@ -107,3 +107,4 @@ function validateForm() {
             });
         }, false);
     })();
+});
