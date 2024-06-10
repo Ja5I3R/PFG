@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio de sesion</title>
+    <title>Chat grupal</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
       <!-- Font Awesome -->
@@ -35,16 +35,16 @@
 				<ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
 				</ul>
 
-				<div class="text-end">
+				<div class="text-end text-center">
 					<a th:href="@{/home/userpage/{id}(id=${user.id})}" class="btn btn-outline-light me-2">Volver a pagina personal</a>
-					<a th:href="@{/home/logout}" class="btn" id="btn-signup">Cerrar sesion</a>
+					<a th:href="@{/home/logout}" class="btn mt-3" id="btn-signup">Cerrar sesion</a>
 				</div>
 			</div>
 		</div>
 	</header>
     <br>
     <div class="container-fluid">
-        <h1 class="text-center fst-italic">Creacion de chat grupal</h1>
+        <h1 class="text-center fst-italic mt-3 mb-3">Creacion de chat grupal</h1>
         <div class="row">
             <div class="col-md-8 col-sm-8 container justify-content-center card mb-5">
                 <div class="card-body">
@@ -71,7 +71,7 @@
                                 <label th:for="${interest.id}" th:text="${interest.name}"></label><br>
                             </div>
                         </div>
-                        <div class="box-footer">
+                        <div class="box-footer text-center mt-3">
                             <button type="submit" class="btn btn-success">Guardar</button>
                         </div>
                     </form>

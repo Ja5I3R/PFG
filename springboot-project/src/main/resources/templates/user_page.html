@@ -9,9 +9,9 @@
   <link rel="stylesheet" th:href="@{/css/style.css}">
   <link rel="icon" type="image/ico" th:href="@{/img/favicon.ico}">
   <style>
-    
 
-    
+
+
   </style>
   <!-- Font Awesome -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
@@ -35,7 +35,7 @@
         <div class="text-end text-center">
           <a th:href="@{/home/userpage/{id}(id=${user.id})}" class="btn btn-outline-light me-2">Volver a pagina
             personal</a>
-          <a th:href="@{/home/logout}" class="btn" id="btn-signup">Cerrar sesion</a>
+          <a th:href="@{/home/logout}" class="btn mt-3" id="btn-signup">Cerrar sesion</a>
         </div>
       </div>
     </div>
@@ -51,11 +51,11 @@
           <div class="flip-card-inner">
             <div class="flip-card-front">
               <img class="rounded-circle img-fluid shadow userImg" th:src="@{/img/usersImg/__${user.image_url}__}"
-          th:alt="${user.image_url}">
+                th:alt="${user.image_url}">
             </div>
             <div class="flip-card-back">
-              <img class="rounded-circle img-fluid shadow userImg"
-          th:src="@{/img/avatars/__${user.avatar_id}__.jpg}" th:alt="${user.avatar_id}">
+              <img class="rounded-circle img-fluid shadow userImg" th:src="@{/img/avatars/__${user.avatar_id}__.jpg}"
+                th:alt="${user.avatar_id}">
             </div>
           </div>
         </div>
@@ -80,11 +80,10 @@
       <div class="col-md-8 col-xs-12">
         <div class="tab-content" id="v-pills-tabContent">
           <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-            <a th:href="@{/home/edit/{id}(id=${user.id})}" class="btn btn-info">Editar</a>
-            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteUser">
+            <a th:href="@{/home/edit/{id}(id=${user.id})}" class="btn btn-info mb-3 mt-3">Editar</a>
+            <button type="button" class="btn btn-danger m-3" data-toggle="modal" data-target="#deleteUser">
               Eliminar cuenta
             </button>
-            <a th:href="@{/home/logout}" class="btn btn-danger">Cerrar sesion</a>
             <div class="modal fade" id="deleteUser" tabindex="-1" role="dialog"
               aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered" role="document">
@@ -116,14 +115,14 @@
               <li class="list-group-item"><strong>Fecha de nacimiento: </strong><span th:text="${birth}"></span></li>
             </ul>
           </div>
-          <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+          <div class="tab-pane fade mt-3" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
             <h4>Lista de interes</h4>
             <div class="row hstack">
               <div class="col-3 text-center m-2" th:each="interest : ${interestList}">
                 <button type="button" class="btn btn-primary w-100" th:text="${interest.name}" disabled></button>
               </div>
             </div>
-            <div class="hstack">
+            <div class="hstack m-3">
               <a th:href="@{/home/meet/{id}(id=${user.id})}" class="btn btn-info">Descubrir gente</a>
               <a href="" class="btn btn-link" id="changeView1">Cambiar intereses</a>
             </div>
@@ -145,17 +144,20 @@
             </div>
           </div>
           <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-            <a th:href="@{/events/new}" class="btn btn-danger">Crear evento</a>
-            <a th:href="@{/events/search}" class="btn btn-danger">Eventos</a>
+            <div class="text-center">
+              <a th:href="@{/events/new}" id="btn-signup" class="btn mt-3 mb-3">Crear evento</a>
+              <a th:href="@{/events/search}" id="btn-signup" class="btn mt-3 mb-3">Eventos</a>
+            </div>
             <h3 class="text-center">Mis eventos</h3>
             <hr class="hr hr-blurry" />
             <div class="container-fluid">
               <div class="row gx-5 p-4 hstack" th:unless="${eventList.isEmpty()}">
-                <div class="col-md-4 col-xs-12 p-2" th:each="event : ${eventList}" th:if="${event.idCreator == user.id}">
+                <div class="col-md-4 col-xs-12 p-2" th:each="event : ${eventList}"
+                  th:if="${event.idCreator == user.id}">
                   <div class="card">
                     <img class="card-img-top" th:src="@{/img/eventsImg/__${event.image_url}__}"
                       th:alt="${event.image_url}">
-                    <div class="card-body">
+                    <div class="card-body text-center">
                       <h5 class="card-title" th:text="${event.name}"></h5>
                       <p class="card-text event-desc" th:text="${event.description}"></p>
                       <a th:href="@{/events/view/{id}(id=${event.id})}" class="btn btn-info">Ver</a>
@@ -171,11 +173,12 @@
             <hr class="hr hr-blurry" />
             <div class="container-fluid">
               <div class="row gx-5 p-4 hstack" th:unless="${eventList.isEmpty()}">
-                <div class="col-md-4 col-xs-12 p-2" th:each="event : ${eventList}" th:unless="${event.idCreator == user.id}">
+                <div class="col-md-4 col-xs-12 p-2" th:each="event : ${eventList}"
+                  th:unless="${event.idCreator == user.id}">
                   <div class="card">
                     <img class="card-img-top" th:src="@{/img/eventsImg/__${event.image_url}__}"
                       th:alt="${event.image_url}">
-                    <div class="card-body">
+                    <div class="card-body text-center">
                       <h5 class="card-title" th:text="${event.name}"></h5>
                       <p class="card-text event-desc" th:text="${event.description}"></p>
                       <a th:href="@{/events/view/{id}(id=${event.id})}" class="btn btn-info">Ver</a>
@@ -189,8 +192,8 @@
             </div>
           </div>
           <div class="tab-pane fade" id="v-pills-chats" role="tabpanel" aria-labelledby="v-pills-chats-tab">
-            <div th:if="${#lists.size(chatList) >= 2}">
-              <a th:href="@{/chat/create/group}" class="btn btn-info">Crear chat grupal</a>
+            <div th:if="${#lists.size(chatList) >= 2}" class="text-center">
+              <a th:href="@{/chat/create/group}" class="btn btn-info mt-3">Crear chat grupal</a>
             </div>
             <br>
             <h3 class="text-center">Chats individuales</h3>
@@ -201,7 +204,7 @@
                   <div th:each="userA : ${chat.users}">
                     <div th:unless="${userA.id == user.id}">
                       <div class="card">
-                        <div class="card-body">
+                        <div class="card-body text-center">
                           <div class="m-2">
                             <img class="img-fluid rounded userPic d-inline"
                               th:src="@{/img/avatars/__${userA.avatar_id}__.jpg}" th:alt="${userA.avatar_id}">
@@ -221,7 +224,7 @@
               <div class="row gx-5 p-4">
                 <div class="col-md-4 col-xs-12 p-2" th:each="chat : ${chatList}" th:if="${chat.chatType == 2L}">
                   <div class="card">
-                    <div class="card-body">
+                    <div class="card-body text-center">
                       <div class="hstack">
                         <img class="img-fluid rounded userPic d-inline p-2" th:src="@{/img/logo/logo.png}" alt="logo">
                         <h5 class="card-title" th:text="${chat.name}"></h5>
