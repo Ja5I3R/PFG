@@ -28,7 +28,8 @@
 				</ul>
 
 				<div class="text-end text-center">
-					<a th:href="@{/home/userpage/{id}(id=${user.id})}" class="btn btn-outline-light me-2" id="pulseButton">Volver a
+					<a th:href="@{/home/userpage/{id}(id=${user.id})}" class="btn btn-outline-light me-2"
+						id="pulseButton">Volver a
 						pagina
 						personal</a>
 					<a th:href="@{/home/logout}" class="btn mt-3" id="btn-signup">Cerrar sesion</a>
@@ -125,35 +126,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"
 		integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
 		crossorigin="anonymous"></script>
-	<script>
-		var initialDate = document.getElementById("initialDate");
-		var endDate = document.getElementById("endDate");
-		initialDate.addEventListener("change", function (event) {
-			var actualDate = new Date();
-			var userDate = new Date(initialDate.value);
-			var iDate = new Date(initialDate.value);
-			var eDate = new Date(endDate.value);
-
-			if (userDate < actualDate) {
-				alert("La fecha de inicio no puede ser anterior al dia de hoy");
-				initialDate.value = '';
-			}
-			else if (eDate < iDate) {
-				alert("La fecha de inicio no puede ser posterior a la fecha de fin");
-				initialDate.value = '';
-			}
-		});
-		endDate.addEventListener("change", function (event) {
-			var actualDate = new Date();
-			var iDate = new Date(initialDate.value);
-			var eDate = new Date(endDate.value);
-
-			if (eDate < iDate) {
-				alert("La fecha de finalizacion no puede ser anterior a la fecha de comienzo");
-				endDate.value = '';
-			}
-		});
-	</script>
+	<script src="../static/js/script.js"></script>
 	<!-- MDB -->
 	<script type="text/javascript"
 		src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.umd.min.js"></script>
