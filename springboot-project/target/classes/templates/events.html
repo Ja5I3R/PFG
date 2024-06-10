@@ -9,20 +9,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <!-- Font Awesome -->
-  <link
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-  rel="stylesheet"
-  />
-  <!-- Google Fonts -->
-  <link
-  href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-  rel="stylesheet"
-  />
-  <!-- MDB -->
-  <link
-  href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css"
-  rel="stylesheet"
-  />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <!-- MDB -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css" rel="stylesheet" />
     <script>
         $(document).ready(function () {
             $('input[type=radio][name=interest]').change(function () {
@@ -33,18 +24,18 @@
                     url: "/events/interest",
                     contentType: "application/json",
                     data: JSON.stringify({ value: value }),
-                    dataType: "json", 
-                    success: function(result){
-                        if(result.length === 0){
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.length === 0) {
                             $(".events-container").html("<p>No se encontraron eventos</p>");
                         } else {
-                            $.each(result, function(index, event){
-                                var eventHtml = "<div class='col-md-3 col-xs-12 p-2'><div class='card mb-3'><img class='card-img-top' src='/img/eventsImg/" + event.image_url + "'th:alt='" + event.image_url + "'><div class='card-body'><h5 class='card-title'>"+event.name+"</h5><p class='card-text event-desc'>"+event.description+"</p><a href='/events/view/"+event.id+"' class='btn btn-info'>Ver más datos</a></div></div></div>";
+                            $.each(result, function (index, event) {
+                                var eventHtml = "<div class='col-md-3 col-xs-12 p-2'><div class='card mb-3'><img class='card-img-top' src='/img/eventsImg/" + event.image_url + "'th:alt='" + event.image_url + "'><div class='card-body'><h5 class='card-title'>" + event.name + "</h5><p class='card-text event-desc'>" + event.description + "</p><a href='/events/view/" + event.id + "' class='btn btn-info'>Ver más datos</a></div></div></div>";
                                 $(".events-container").append(eventHtml);
-                            });  
+                            });
                         }
                     },
-                    error: function(xhr, status, error){
+                    error: function (xhr, status, error) {
                         alert("Error: " + error);
                         console.log("Error: ", xhr.responseText);
                     }
@@ -53,63 +44,66 @@
         });
     </script>
     <style>
-        .event-desc{
-          overflow: hidden;
-          display: -webkit-box;
-          -webkit-line-clamp: 3;
-          -webkit-box-orient: vertical;
+        .event-desc {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
         }
-      </style>
+    </style>
 </head>
 
 <body>
     <header class="p-3 text-white">
         <div class="container">
-          <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-              <img class="logo" th:src="@{/img/logo/logo.png}" alt="Logo">
-            </a>
-    
-            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-            </ul>
-    
-            <div class="text-end text-center">
-              <a th:href="@{/home/userpage/{id}(id=${usersession.id})}" class="btn btn-outline-light me-2">Volver a pagina
-                personal</a>
-              <a th:href="@{/home/logout}" class="btn mt-3" id="btn-signup">Cerrar sesion</a>
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                    <img class="logo" th:src="@{/img/logo/logo.png}" alt="Logo">
+                </a>
+
+                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                </ul>
+
+                <div class="text-end text-center">
+                    <a th:href="@{/home/userpage/{id}(id=${usersession.id})}" class="btn btn-outline-light me-2">Volver
+                        a pagina
+                        personal</a>
+                    <a th:href="@{/home/logout}" class="btn mt-3" id="btn-signup">Cerrar sesion</a>
+                </div>
             </div>
-          </div>
         </div>
-      </header>
+    </header>
     <br>
-    <div class="container">
-        <h1>Eventos</h1>
-        <form th:action="@{/events/search}" method="GET">
-            <div class="form-group">
-                <div data-mdb-input-init class="form-outline mb-4">
-                    <input type="text" name="name" id="form3Example3" class="form-control form-control-lg"/>
-                    <label class="form-label" for="form3Example3">Buscar por nombre</label>
+    <div class="content">
+        <div class="container">
+            <h1 class=" text-center mt-3">Eventos</h1>
+            <form th:action="@{/events/search}" method="GET">
+                <div class="form-group">
+                    <div data-mdb-input-init class="form-outline mb-4">
+                        <input type="text" name="name" id="form3Example3" class="form-control form-control-lg" />
+                        <label class="form-label" for="form3Example3">Buscar por nombre</label>
+                    </div>
+                </div>
+                <br>
+                <div class="box-footer d-inline">
+                    <button type="submit" class="btn btn-success">Comprobar</button>
+                </div>
+            </form>
+            <!--PARTE NUEVA POR INTERESES-->
+            <div class="btn-group shadow-0 m-3 container-fluid">
+                <div class="row">
+                    <div th:each="interest : ${interestList}" class="m-2 col">
+                        <input type="radio" class="btn-check" name="interest" th:id="'interest'+${interest.id}"
+                            th:value="${interest.id}">
+                        <label class="btn btn-secondary" th:for="${'interest' + interest.id}"
+                            th:text="${interest.name}"></label>
+                    </div>
                 </div>
             </div>
-            <br>
-            <div class="box-footer d-inline">
-                <button type="submit" class="btn btn-success">Comprobar</button>
-                <a name="return" id="return" class="btn btn-primary" th:href="@{/home/userpage/{id}(id=${usersession.id})}" role="button">Volver a pagina de usuario</a>
-            </div>
-        </form>
-        <!--PARTE NUEVA POR INTERESES-->
-        <div class="btn-group shadow-0 m-3 container-fluid">
-            <div class="row">
-                <div th:each="interest : ${interestList}" class="m-2 col">
-                    <input type="radio" class="btn-check" name="interest" th:id="'interest'+${interest.id}" th:value="${interest.id}">
-                    <label class="btn btn-secondary" th:for="${'interest' + interest.id}" th:text="${interest.name}"></label>
-                </div>
-            </div>
-        </div>
-        <!---->
-        <div th:if="${not #lists.isEmpty(eventList)}">
+            <div th:if="${not #lists.isEmpty(eventList)}">
                 <div class="container-fluid">
-                    <div class="row m-3 justify-content-center events-container" th:if="${#strings.isEmpty(param.name)}">
+                    <div class="row m-3 justify-content-center events-container"
+                        th:if="${#strings.isEmpty(param.name)}">
                         <div th:each="event : ${eventList}" class="col-md-3 col-xs-12 p-2">
                             <div class="card mb-3 ">
                                 <img class="card-img-top" th:src="@{/img/eventsImg/__${event.image_url}__}"
@@ -125,7 +119,8 @@
                     </div>
                     <div class="row gx-5 gy-5 events-container" th:if="${not #strings.isEmpty(param.name)}">
                         <div th:each="event : ${eventList}"
-                            th:if="${#strings.containsIgnoreCase(event.name, param.name)}" class="col-md-3 col-xs-12 p-2">
+                            th:if="${#strings.containsIgnoreCase(event.name, param.name)}"
+                            class="col-md-3 col-xs-12 p-2">
                             <div class="card mb-3">
                                 <img class="card-img-top" th:src="@{/img/eventsImg/__${event.image_url}__}"
                                     th:alt="${event.image_url}">
@@ -139,16 +134,35 @@
                         </div>
                     </div>
                 </div>
-        </div>
-        <div th:if="${#lists.isEmpty(eventList)}">
-            <p>No se encontraron eventos.</p>
+            </div>
+            <div th:if="${#lists.isEmpty(eventList)}">
+                <p>No se encontraron eventos.</p>
+            </div>
         </div>
     </div>
+
+    <section>
+        <footer class="text-center text-white">
+          <div class="container p-3">
+            <div class="row">
+              <div class="col-6">
+                <p class="d-flex justify-content-center align-items-center">
+                  <span class="me-3">Proyecto desarrollado por Javier Trujillo, Pilar Soriano y
+                    Luis Miguel Yglesias</span>
+                </p>
+              </div>
+              <div class="col-6">
+                <p class="d-flex justify-content-center align-items-center">
+                  <span>Bienvenido</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </section>
     <!-- MDB -->
-    <script
-    type="text/javascript"
-    src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.umd.min.js"
-    ></script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.umd.min.js"></script>
 </body>
 
 </html>

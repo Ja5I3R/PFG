@@ -41,239 +41,266 @@
     </div>
   </header>
 
-  <div class="container">
-    <div class="row p-3">
-      <div class="col-md-4 col-xs-12">
-        <h2 class="pt-3 fst-italic mx-auto">Bienvenido: <span th:text="${user.name}"></span></h2>
-      </div>
-      <div class="col-md-2 col-xs-12">
-        <div class="flip-card">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <img class="rounded-circle img-fluid shadow userImg" th:src="@{/img/usersImg/__${user.image_url}__}"
-                th:alt="${user.image_url}">
-            </div>
-            <div class="flip-card-back">
-              <img class="rounded-circle img-fluid shadow userImg" th:src="@{/img/avatars/__${user.avatar_id}__.jpg}"
-                th:alt="${user.avatar_id}">
+  <div class="content">
+    <div class="container">
+      <div class="row p-3">
+        <div class="col-md-4 col-xs-12">
+          <h2 class="pt-3 fst-italic mx-auto">Bienvenido: <span th:text="${user.name}"></span></h2>
+        </div>
+        <div class="col-md-2 col-xs-12">
+          <div class="flip-card">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <img class="rounded-circle img-fluid shadow userImg" th:src="@{/img/usersImg/__${user.image_url}__}"
+                  th:alt="${user.image_url}">
+              </div>
+              <div class="flip-card-back">
+                <img class="rounded-circle img-fluid shadow userImg" th:src="@{/img/avatars/__${user.avatar_id}__.jpg}"
+                  th:alt="${user.avatar_id}">
+              </div>
             </div>
           </div>
         </div>
+        <div class="col-6"></div>
       </div>
-      <div class="col-6"></div>
-    </div>
-    <div class="row">
-      <div class="col-md-4 col-xs-12">
-        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-          <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
-            aria-controls="v-pills-home" aria-selected="true">Datos del usuario</a>
-          <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab"
-            aria-controls="v-pills-messages" aria-selected="false">Intereses</a>
-          <a class="nav-link " id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab"
-            aria-controls="v-pills-settings" aria-selected="false">Eventos</a>
-          <a class="nav-link " id="v-pills-chats-tab" data-toggle="pill" href="#v-pills-chats" role="tab"
-            aria-controls="v-pills-chats" aria-selected="false">Chats</a>
-          <a th:if="${user.rol.id == 1}" class="nav-link " id="v-pills-users-tab" data-toggle="pill"
-            href="#v-pills-users" role="tab" aria-controls="v-pills-chats" aria-selected="false">Usuarios</a>
+      <div class="row">
+        <div class="col-md-4 col-xs-12">
+          <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
+              aria-controls="v-pills-home" aria-selected="true">Datos del usuario</a>
+            <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab"
+              aria-controls="v-pills-messages" aria-selected="false">Intereses</a>
+            <a class="nav-link " id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab"
+              aria-controls="v-pills-settings" aria-selected="false">Eventos</a>
+            <a class="nav-link " id="v-pills-chats-tab" data-toggle="pill" href="#v-pills-chats" role="tab"
+              aria-controls="v-pills-chats" aria-selected="false">Chats</a>
+            <a th:if="${user.rol.id == 1}" class="nav-link " id="v-pills-users-tab" data-toggle="pill"
+              href="#v-pills-users" role="tab" aria-controls="v-pills-chats" aria-selected="false">Usuarios</a>
+          </div>
         </div>
-      </div>
-      <div class="col-md-8 col-xs-12">
-        <div class="tab-content" id="v-pills-tabContent">
-          <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-            <a th:href="@{/home/edit/{id}(id=${user.id})}" class="btn btn-info mb-3 mt-3">Editar</a>
-            <button type="button" class="btn btn-danger m-3" data-toggle="modal" data-target="#deleteUser">
-              Eliminar cuenta
-            </button>
-            <div class="modal fade" id="deleteUser" tabindex="-1" role="dialog"
-              aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Eliminacion de cuenta</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    Estas a punto de eliminar tu cuenta con todos sus datos de manera permanente, ¿deseas hacerlo?
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No, quiero mantener mi
-                      cuenta</button>
-                    <a th:href="@{/home/{id}(id=${user.id})}" class="btn btn-danger">Si, quiero eliminar mi cuenta
-                      permanentemente</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <ul class="list-group list-group-light">
-              <li class="list-group-item"><strong>Usuario: </strong> <span th:text="${user.username}"></span></li>
-              <li class="list-group-item"><strong>Email: </strong> <span th:text="${user.email}"></span></li>
-              <li class="list-group-item"><strong>Nombre: </strong><span th:text="${user.name}"></span></li>
-              <li class="list-group-item"><strong>Apellidos: </strong><span th:text="${user.surname}"></span></li>
-              <li class="list-group-item"><strong>Edad: </strong><span th:text="${user.age}"></span></li>
-              <li class="list-group-item"><strong>Fecha de nacimiento: </strong><span th:text="${birth}"></span></li>
-            </ul>
-          </div>
-          <div class="tab-pane fade mt-3" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-            <h4>Lista de interes</h4>
-            <div class="row hstack">
-              <div class="col-3 text-center m-2" th:each="interest : ${interestList}">
-                <button type="button" class="btn btn-primary w-100" th:text="${interest.name}" disabled></button>
-              </div>
-            </div>
-            <div class="hstack m-3">
-              <a th:href="@{/home/meet/{id}(id=${user.id})}" class="btn btn-info">Descubrir gente</a>
-              <a href="" class="btn btn-link" id="changeView1">Cambiar intereses</a>
-            </div>
-            <br>
-            <div class="card text-center interestChange fade show">
-              <div class="card-body">
-                <h5 class="card-title">Selecciona los 5 intereses por los cuales se quiera cambiar</h5>
-                <form th:action="@{/home/interestUpdate}" method="POST" onsubmit="return validateForm()">
-                  <div class="row">
-                    <div class="custom-control custom-checkbox mr-sm-2 col-lg-3" th:each="interest : ${interestList2}">
-                      <input type="checkbox" name="interests" class="custom-control-input" id="interests"
-                        th:value="${interest.id}">
-                      <label class="custom-control -label" for="interests" th:text="${interest.name}"></label>
+        <div class="col-md-8 col-xs-12">
+          <div class="tab-content" id="v-pills-tabContent">
+            <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+              <a th:href="@{/home/edit/{id}(id=${user.id})}" class="btn btn-info mb-3 mt-3">Editar</a>
+              <button type="button" class="btn btn-danger m-3" data-toggle="modal" data-target="#deleteUser">
+                Eliminar cuenta
+              </button>
+              <div class="modal fade" id="deleteUser" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLongTitle">Eliminacion de cuenta</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
                     </div>
-                  </div>
-                  <button type="submit" class="btn btn-success">Guardar</button>
-                </form>
-              </div>
-            </div>
-          </div>
-          <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-            <div class="text-center">
-              <a th:href="@{/events/new}" id="btn-signup" class="btn mt-3 mb-3">Crear evento</a>
-              <a th:href="@{/events/search}" id="btn-signup" class="btn mt-3 mb-3">Eventos</a>
-            </div>
-            <h3 class="text-center">Mis eventos</h3>
-            <hr class="hr hr-blurry" />
-            <div class="container-fluid">
-              <div class="row gx-5 p-4 hstack" th:unless="${eventList.isEmpty()}">
-                <div class="col-md-4 col-xs-12 p-2" th:each="event : ${eventList}"
-                  th:if="${event.idCreator == user.id}">
-                  <div class="card">
-                    <img class="card-img-top" th:src="@{/img/eventsImg/__${event.image_url}__}"
-                      th:alt="${event.image_url}">
-                    <div class="card-body text-center">
-                      <h5 class="card-title" th:text="${event.name}"></h5>
-                      <p class="card-text event-desc" th:text="${event.description}"></p>
-                      <a th:href="@{/events/view/{id}(id=${event.id})}" class="btn btn-info">Ver</a>
+                    <div class="modal-body">
+                      Estas a punto de eliminar tu cuenta con todos sus datos de manera permanente, ¿deseas hacerlo?
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">No, quiero mantener mi
+                        cuenta</button>
+                      <a th:href="@{/home/{id}(id=${user.id})}" class="btn btn-danger">Si, quiero eliminar mi cuenta
+                        permanentemente</a>
                     </div>
                   </div>
                 </div>
               </div>
+              <ul class="list-group list-group-light">
+                <li class="list-group-item"><strong>Usuario: </strong> <span th:text="${user.username}"></span></li>
+                <li class="list-group-item"><strong>Email: </strong> <span th:text="${user.email}"></span></li>
+                <li class="list-group-item"><strong>Nombre: </strong><span th:text="${user.name}"></span></li>
+                <li class="list-group-item"><strong>Apellidos: </strong><span th:text="${user.surname}"></span></li>
+                <li class="list-group-item"><strong>Edad: </strong><span th:text="${user.age}"></span></li>
+                <li class="list-group-item"><strong>Fecha de nacimiento: </strong><span th:text="${birth}"></span></li>
+              </ul>
             </div>
-            <div th:if="${eventList.isEmpty()}">
-              <h4 class="text-center">No se encontraron eventos</h4>
+            <div class="tab-pane fade mt-3" id="v-pills-messages" role="tabpanel"
+              aria-labelledby="v-pills-messages-tab">
+              <h4>Lista de interes</h4>
+              <div class="row hstack">
+                <div class="col-3 text-center m-2" th:each="interest : ${interestList}">
+                  <button type="button" class="btn btn-primary w-100" th:text="${interest.name}" disabled></button>
+                </div>
+              </div>
+              <div class="hstack m-3">
+                <a th:href="@{/home/meet/{id}(id=${user.id})}" class="btn btn-info">Descubrir gente</a>
+                <a href="" class="btn btn-link" id="changeView1">Cambiar intereses</a>
+              </div>
+              <br>
+              <div class="card text-center interestChange fade show">
+                <div class="card-body">
+                  <h5 class="card-title">Selecciona los 5 intereses por los cuales se quiera cambiar</h5>
+                  <form th:action="@{/home/interestUpdate}" method="POST" onsubmit="return validateForm()">
+                    <div class="row">
+                      <div class="custom-control custom-checkbox mr-sm-2 col-lg-3"
+                        th:each="interest : ${interestList2}">
+                        <input type="checkbox" name="interests" class="custom-control-input" id="interests"
+                          th:value="${interest.id}">
+                        <label class="custom-control -label" for="interests" th:text="${interest.name}"></label>
+                      </div>
+                    </div>
+                    <button type="submit" class="btn btn-success">Guardar</button>
+                  </form>
+                </div>
+              </div>
             </div>
-            <h3 class="text-center">Otros eventos</h3>
-            <hr class="hr hr-blurry" />
-            <div class="container-fluid">
-              <div class="row gx-5 p-4 hstack" th:unless="${eventList.isEmpty()}">
-                <div class="col-md-4 col-xs-12 p-2" th:each="event : ${eventList}"
-                  th:unless="${event.idCreator == user.id}">
-                  <div class="card">
-                    <img class="card-img-top" th:src="@{/img/eventsImg/__${event.image_url}__}"
-                      th:alt="${event.image_url}">
-                    <div class="card-body text-center">
-                      <h5 class="card-title" th:text="${event.name}"></h5>
-                      <p class="card-text event-desc" th:text="${event.description}"></p>
-                      <a th:href="@{/events/view/{id}(id=${event.id})}" class="btn btn-info">Ver</a>
+            <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+              <div class="text-center">
+                <a th:href="@{/events/new}" id="btn-signup" class="btn mt-3 mb-3">Crear evento</a>
+                <a th:href="@{/events/search}" id="btn-signup" class="btn mt-3 mb-3">Eventos</a>
+              </div>
+              <h3 class="text-center">Mis eventos</h3>
+              <hr class="hr hr-blurry" />
+              <div class="container-fluid">
+                <div class="row gx-5 p-4 hstack" th:unless="${eventList.isEmpty()}">
+                  <div class="col-md-4 col-xs-12 p-2" th:each="event : ${eventList}"
+                    th:if="${event.idCreator == user.id}">
+                    <div class="card">
+                      <img class="card-img-top" th:src="@{/img/eventsImg/__${event.image_url}__}"
+                        th:alt="${event.image_url}">
+                      <div class="card-body text-center">
+                        <h5 class="card-title" th:text="${event.name}"></h5>
+                        <p class="card-text event-desc" th:text="${event.description}"></p>
+                        <a th:href="@{/events/view/{id}(id=${event.id})}" class="btn btn-info">Ver</a>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
+              <div th:if="${eventList.isEmpty()}">
+                <h4 class="text-center">No se encontraron eventos</h4>
+              </div>
+              <h3 class="text-center">Otros eventos</h3>
+              <hr class="hr hr-blurry" />
+              <div class="container-fluid">
+                <div class="row gx-5 p-4 hstack" th:unless="${eventList.isEmpty()}">
+                  <div class="col-md-4 col-xs-12 p-2" th:each="event : ${eventList}"
+                    th:unless="${event.idCreator == user.id}">
+                    <div class="card">
+                      <img class="card-img-top" th:src="@{/img/eventsImg/__${event.image_url}__}"
+                        th:alt="${event.image_url}">
+                      <div class="card-body text-center">
+                        <h5 class="card-title" th:text="${event.name}"></h5>
+                        <p class="card-text event-desc" th:text="${event.description}"></p>
+                        <a th:href="@{/events/view/{id}(id=${event.id})}" class="btn btn-info">Ver</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div th:if="${eventList.isEmpty()}">
+                <h4 class="text-center">No se encontraron eventos</h4>
+              </div>
             </div>
-            <div th:if="${eventList.isEmpty()}">
-              <h4 class="text-center">No se encontraron eventos</h4>
-            </div>
-          </div>
-          <div class="tab-pane fade" id="v-pills-chats" role="tabpanel" aria-labelledby="v-pills-chats-tab">
-            <div th:if="${#lists.size(chatList) >= 2}" class="text-center">
-              <a th:href="@{/chat/create/group}" class="btn btn-info mt-3">Crear chat grupal</a>
-            </div>
-            <br>
-            <h3 class="text-center">Chats individuales</h3>
-            <hr class="hr hr-blurry" />
-            <div class="container-fluid">
-              <div class="row gx-5 p-4">
-                <div class="col-md-4 col-xs-12 p-2" th:each="chat : ${chatList}" th:if="${chat.chatType == 1L}">
-                  <div th:each="userA : ${chat.users}">
-                    <div th:unless="${userA.id == user.id}">
-                      <div class="card">
-                        <div class="card-body text-center">
-                          <div class="m-2">
-                            <img class="img-fluid rounded userPic d-inline"
-                              th:src="@{/img/avatars/__${userA.avatar_id}__.jpg}" th:alt="${userA.avatar_id}">
-                            <h5 class="card-title d-inline m-2" th:text="${userA.username}"></h5>
+            <div class="tab-pane fade" id="v-pills-chats" role="tabpanel" aria-labelledby="v-pills-chats-tab">
+              <div th:if="${#lists.size(chatList) >= 2}" class="text-center">
+                <a th:href="@{/chat/create/group}" class="btn btn-info mt-3">Crear chat grupal</a>
+              </div>
+              <br>
+              <h3 class="text-center">Chats individuales</h3>
+              <hr class="hr hr-blurry" />
+              <div class="container-fluid">
+                <div class="row gx-5 p-4">
+                  <div class="col-md-4 col-xs-12 p-2" th:each="chat : ${chatList}" th:if="${chat.chatType == 1L}">
+                    <div th:each="userA : ${chat.users}">
+                      <div th:unless="${userA.id == user.id}">
+                        <div class="card">
+                          <div class="card-body text-center">
+                            <div class="m-2">
+                              <img class="img-fluid rounded userPic d-inline"
+                                th:src="@{/img/avatars/__${userA.avatar_id}__.jpg}" th:alt="${userA.avatar_id}">
+                              <h5 class="card-title d-inline m-2" th:text="${userA.username}"></h5>
+                            </div>
+                            <a th:href="@{/chat/view/{id}(id=${chat.id})}" class="btn btn-info">Entrar a chat</a>
                           </div>
-                          <a th:href="@{/chat/view/{id}(id=${chat.id})}" class="btn btn-info">Entrar a chat</a>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <h3 class="text-center">Chats grupales</h3>
-            <hr class="hr hr-blurry" />
-            <div class="container-fluid">
-              <div class="row gx-5 p-4">
-                <div class="col-md-4 col-xs-12 p-2" th:each="chat : ${chatList}" th:if="${chat.chatType == 2L}">
-                  <div class="card">
-                    <div class="card-body text-center">
-                      <div class="hstack">
-                        <img class="img-fluid rounded userPic d-inline p-2" th:src="@{/img/logo/logo.png}" alt="logo">
-                        <h5 class="card-title" th:text="${chat.name}"></h5>
+              <h3 class="text-center">Chats grupales</h3>
+              <hr class="hr hr-blurry" />
+              <div class="container-fluid">
+                <div class="row gx-5 p-4">
+                  <div class="col-md-4 col-xs-12 p-2" th:each="chat : ${chatList}" th:if="${chat.chatType == 2L}">
+                    <div class="card">
+                      <div class="card-body text-center">
+                        <div class="hstack">
+                          <img class="img-fluid rounded userPic d-inline p-2" th:src="@{/img/logo/logo.png}" alt="logo">
+                          <h5 class="card-title" th:text="${chat.name}"></h5>
+                        </div>
+                        <a th:href="@{/chat/view/{id}(id=${chat.id})}" class="btn btn-info">Entrar</a>
                       </div>
-                      <a th:href="@{/chat/view/{id}(id=${chat.id})}" class="btn btn-info">Entrar</a>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="tab-pane fade" id="v-pills-users" role="tabpanel" aria-labelledby="v-pills-users-tab"
-            th:if="${user.rol.id == 1}">
-            <table class="table table-hover align-middle mb-0 bg-white rounded">
-              <thead class="table-info">
-                <tr>
-                  <th>Usuario</th>
-                  <th>Apellido</th>
-                  <th>Email</th>
-                  <th>Reportes</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr th:each="user : ${userList}">
-                  <td>
-                    <div class="d-flex align-items-center">
-                      <img th:src="@{/img/avatars/__${user.avatar_id}__.jpg}" alt="" style="width: 45px; height: 45px"
-                        class="rounded-circle" />
-                      <div class="ms-3">
-                        <p class="fw-bold mb-1" th:text="${user.surname}"></p>
+            <div class="tab-pane fade" id="v-pills-users" role="tabpanel" aria-labelledby="v-pills-users-tab"
+              th:if="${user.rol.id == 1}">
+              <table class="table table-hover align-middle mb-0 bg-white rounded">
+                <thead class="table-info">
+                  <tr>
+                    <th>Usuario</th>
+                    <th>Apellido</th>
+                    <th>Email</th>
+                    <th>Reportes</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="user : ${userList}">
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <img th:src="@{/img/avatars/__${user.avatar_id}__.jpg}" alt="" style="width: 45px; height: 45px"
+                          class="rounded-circle" />
+                        <div class="ms-3">
+                          <p class="fw-bold mb-1" th:text="${user.surname}"></p>
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                  <td th:text="${user.surname}"></td>
-                  <td th:text="${user.email}"></td>
-                  <td th:text="${user.userData.report_number}"></td>
-                  <td>
-                    <a th:href="@{/home/edit/{id}(id=${user.id})}" class="btn btn-info">Editar</a>
-                    <a th:href="@{/home/{id}(id=${user.id})}" class="btn btn-danger">Eliminar</a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                    </td>
+                    <td th:text="${user.surname}"></td>
+                    <td th:text="${user.email}"></td>
+                    <td th:text="${user.userData.report_number}"></td>
+                    <td>
+                      <a th:href="@{/home/edit/{id}(id=${user.id})}" class="btn btn-info">Editar</a>
+                      <a th:href="@{/home/{id}(id=${user.id})}" class="btn btn-danger">Eliminar</a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+
+
+
+  <section>
+    <footer class="text-center text-white">
+      <div class="container p-3">
+        <div class="row">
+          <div class="col-6">
+            <p class="d-flex justify-content-center align-items-center">
+              <span class="me-3">Proyecto desarrollado por Javier Trujillo, Pilar Soriano y
+                Luis Miguel Yglesias</span>
+            </p>
+          </div>
+          <div class="col-6">
+            <p class="d-flex justify-content-center align-items-center">
+              <span>Bienvenido</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </section>
+
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

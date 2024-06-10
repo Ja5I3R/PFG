@@ -47,106 +47,128 @@
             </div>
         </div>
     </header>
-    <div class="container text-center p-3">
-        <div class="container-fluid">
-            <div class="row">
-                <!-- Columna de nombre/participantes -->
-                <div class="col-sm-auto col-lg-2">
-                    <!-- Si es chat grupal -->
-                    <div th:if="${chat.chatType == 2}">
-                        <div class="border p-2 shadow rounded">
-                            <h3 class="fw-bold fst-italic" th:text="${chatName}"></h3>
-                            <h5>Participantes</h5>
-                            <div class="m-2" th:each="user : ${userList}">
-                                <img class="img-fluid rounded userPic d-inline"
-                                    th:src="@{/img/avatars/__${user.avatar_id}__.jpg}" th:alt="${user.avatar_id}">
-                                <a class=" m-2 h4 fw-bold fst-italic" th:href="@{/home/view/{id}(id=${user.id})}"
-                                    th:text="${user.username}"></a>
+    <div class="content">
+        <div class="container text-center p-3">
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- Columna de nombre/participantes -->
+                    <div class="col-sm-auto col-lg-2">
+                        <!-- Si es chat grupal -->
+                        <div th:if="${chat.chatType == 2}">
+                            <div class="border p-2 shadow rounded">
+                                <h3 class="fw-bold fst-italic" th:text="${chatName}"></h3>
+                                <h5>Participantes</h5>
+                                <div class="m-2" th:each="user : ${userList}">
+                                    <img class="img-fluid rounded userPic d-inline"
+                                        th:src="@{/img/avatars/__${user.avatar_id}__.jpg}" th:alt="${user.avatar_id}">
+                                    <a class=" m-2 h4 fw-bold fst-italic" th:href="@{/home/view/{id}(id=${user.id})}"
+                                        th:text="${user.username}"></a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- Si es chat individual -->
-                    <div th:if="${chat.chatType == 1}" class="border rounded p-2 shadow">
-                        <div class="m-2">
-                            <img class="img-fluid rounded userPic d-inline"
-                                th:src="@{/img/avatars/__${otherUser.avatar_id}__.jpg}" th:alt="${otherUser.avatar_id}">
+                        <!-- Si es chat individual -->
+                        <div th:if="${chat.chatType == 1}" class="border rounded p-2 shadow">
+                            <div class="m-2">
+                                <img class="img-fluid rounded userPic d-inline"
+                                    th:src="@{/img/avatars/__${otherUser.avatar_id}__.jpg}"
+                                    th:alt="${otherUser.avatar_id}">
+                            </div>
+                            <a class="h3 fw-bold fst-italic" th:href="@{/home/view/{id}(id=${otherUser.id})}"
+                                th:text="${otherUser.username}"></a>
                         </div>
-                        <a class="h3 fw-bold fst-italic" th:href="@{/home/view/{id}(id=${otherUser.id})}"
-                            th:text="${otherUser.username}"></a>
                     </div>
-                </div>
-                <!-- Columna -->
-                <div class="col-sm-auto col-lg-10">
-                    <div class="container-fluid border align-content-center p-3 rounded shadow">
-                        <div class="messagesBody border-5 DivWithScroll" id="scrollDiv" data-spy="scroll"
-                            data-offset="50">
-                            <div th:unless="${#lists.isEmpty(messages)}">
-                                <div class="container-fluid" id="messagesBody">
-                                    <div class="row" th:each="message : ${messages}">
-                                        <div th:unless="${message.user == null}">
-                                            <div class="d-flex justify-content-end"
-                                                th:if="${message.user == usersession.username}">
-                                                <div class="col-sm-auto col-lg-6"></div>
-                                                <div class="col-sm-auto col-lg-6">
-                                                    <div
-                                                        class="card mt-lg-5 mb-5 w-lg-75 mt-sm-auto mb-sm-auto w-sm-auto bg-info shadow">
-                                                        <div class="card-body">
-                                                            <p class="card-text text-left" th:text="${message.message}">
-                                                            </p>
+                    <!-- Columna -->
+                    <div class="col-sm-auto col-lg-10">
+                        <div class="container-fluid border align-content-center p-3 rounded shadow">
+                            <div class="messagesBody border-5 DivWithScroll" id="scrollDiv" data-spy="scroll"
+                                data-offset="50">
+                                <div th:unless="${#lists.isEmpty(messages)}">
+                                    <div class="container-fluid" id="messagesBody">
+                                        <div class="row" th:each="message : ${messages}">
+                                            <div th:unless="${message.user == null}">
+                                                <div class="d-flex justify-content-end"
+                                                    th:if="${message.user == usersession.username}">
+                                                    <div class="col-sm-auto col-lg-6"></div>
+                                                    <div class="col-sm-auto col-lg-6">
+                                                        <div
+                                                            class="card mt-lg-5 mb-5 w-lg-75 mt-sm-auto mb-sm-auto w-sm-auto bg-info shadow">
+                                                            <div class="card-body">
+                                                                <p class="card-text text-left"
+                                                                    th:text="${message.message}">
+                                                                </p>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <!-- Mensajes recibidos -->
-                                            <div class="d-flex justify-content-start"
-                                                th:unless="${message.user == usersession.username}">
-                                                <div class="col-sm-auto col-lg-6">
-                                                    <div class="card mt-lg-5 mb-5 w-lg-75 mt-sm-auto mb-sm-auto w-sm-auto shadow"
-                                                        id="btn-signup">
-                                                        <div class="card-body">
-                                                            <p class="card-text text-left"
-                                                                th:text="${message.user} + ': ' + ${message.message}">
-                                                            </p>
+                                                <!-- Mensajes recibidos -->
+                                                <div class="d-flex justify-content-start"
+                                                    th:unless="${message.user == usersession.username}">
+                                                    <div class="col-sm-auto col-lg-6">
+                                                        <div class="card mt-lg-5 mb-5 w-lg-75 mt-sm-auto mb-sm-auto w-sm-auto shadow"
+                                                            id="btn-signup">
+                                                            <div class="card-body">
+                                                                <p class="card-text text-left"
+                                                                    th:text="${message.user} + ': ' + ${message.message}">
+                                                                </p>
+                                                            </div>
                                                         </div>
                                                     </div>
+                                                    <div class="col-sm-auto col-lg-6"></div>
                                                 </div>
-                                                <div class="col-sm-auto col-lg-6"></div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div th:if="${#lists.isEmpty(messages)}">
-                                <p>No hay mensajes</p>
-                            </div>
-                        </div>
-                        <!-- Fila de escritura -->
-                        <div class="row m-3">
-                            <div class="col-sm-auto col-lg-6">
-                                <div class="form-outline" data-mdb-input-init>
-                                    <input type="text" name="message" id="message" class="form-control" />
-                                    <label class="form-label" for="form12">Mensaje</label>
+                                <div th:if="${#lists.isEmpty(messages)}">
+                                    <p>No hay mensajes</p>
                                 </div>
-                                <input type="hidden" name="user" id="user" th:value="${usersession.username}">
-                                <input type="hidden" name="id" id="id" th:value="${chat.id}">
                             </div>
-                            <div class="col-sm-auto col-lg-6">
-                                <button id="send" class="btn text-white" data-mdb-ripple-init
-                                    style="background-color: #3b5998;" href="#!" role="button">
-                                    <i class="fas fa-paper-plane"></i>
-                                </button>
+                            <!-- Fila de escritura -->
+                            <div class="row m-3">
+                                <div class="col-sm-auto col-lg-6">
+                                    <div class="form-outline" data-mdb-input-init>
+                                        <input type="text" name="message" id="message" class="form-control" />
+                                        <label class="form-label" for="form12">Mensaje</label>
+                                    </div>
+                                    <input type="hidden" name="user" id="user" th:value="${usersession.username}">
+                                    <input type="hidden" name="id" id="id" th:value="${chat.id}">
+                                </div>
+                                <div class="col-sm-auto col-lg-6">
+                                    <button id="send" class="btn text-white" data-mdb-ripple-init
+                                        style="background-color: #3b5998;" href="#!" role="button">
+                                        <i class="fas fa-paper-plane"></i>
+                                    </button>
+                                </div>
                             </div>
+                            <a name="return" id="return" class="btn btn-danger"
+                                th:href="@{/chat/leave/{idC}/{idU}(idC=${chat.id}, idU=${usersession.id})}"
+                                role="button">Salir de chat</a>
                         </div>
-                        <a name="return" id="return" class="btn btn-danger"
-                            th:href="@{/chat/leave/{idC}/{idU}(idC=${chat.id}, idU=${usersession.id})}"
-                            role="button">Salir de chat</a>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 
+    <section>
+        <footer class="text-center text-white">
+          <div class="container p-3">
+            <div class="row">
+              <div class="col-6">
+                <p class="d-flex justify-content-center align-items-center">
+                  <span class="me-3">Proyecto desarrollado por Javier Trujillo, Pilar Soriano y
+                    Luis Miguel Yglesias</span>
+                </p>
+              </div>
+              <div class="col-6">
+                <p class="d-flex justify-content-center align-items-center">
+                  <span>Bienvenido</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </section>
     <!-- MDB -->
     <script type="text/javascript"
         src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.umd.min.js"></script>
@@ -258,7 +280,7 @@
         $(function () {
             $("#send").click(() => sendMessage());
             $("#message").keydown((event) => {
-                if(event.keyCode == 13){
+                if (event.keyCode == 13) {
                     sendMessage();
                 }
             });
