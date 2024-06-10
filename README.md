@@ -1,8 +1,4 @@
-
-![Logo](logo_GH.png)
-
-
-# Pallynk
+![Logo](logo_GH.png) # Pallynk
 
 Proyecto final de grado para Desarrollo de Aplicaciones Web
 
