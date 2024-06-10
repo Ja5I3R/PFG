@@ -8,6 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css">
+    <!-- CSS Animate-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
     <!-- Google Fonts -->
@@ -38,7 +40,7 @@
                 </ul>
 
                 <div class="text-end text-center">
-                    <a th:href="@{/home/userpage/{id}(id=${userS.id})}" class="btn btn-outline-light me-2">Volver a
+                    <a th:href="@{/home/userpage/{id}(id=${userS.id})}" class="btn btn-outline-light me-2" id="pulseButton">Volver a
                         pagina
                         personal</a>
                     <a th:href="@{/home/logout}" class="btn mt-3" id="btn-signup">Cerrar sesion</a>
@@ -46,98 +48,122 @@
             </div>
         </div>
     </header>
-    <div class="container-fluid">
-        <div class="row backgroundImage"></div>
-        <div class="row p-5">
-            <div class="col-md-6">
-                <h1 th:text="${event.name}"></h1>
-                <div class="mt-4 mb-4">
-                    <h5>Participantes</h5>
-                    <div class="d-inline" th:each="user : ${userList}">
-                        <img class="img-fluid rounded userPic d-inline"
-                            th:src="@{/img/avatars/__${user.avatar_id}__.jpg}" th:alt="${user.avatar_id}">
-                        <p class="d-inline m-2" th:text="${user.username}"></p>
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row backgroundImage"></div>
+            <div class="row p-5">
+                <div class="col-md-6">
+                    <h1 th:text="${event.name}"></h1>
+                    <div class="mt-4 mb-4">
+                        <h5>Participantes</h5>
+                        <div class="d-inline" th:each="user : ${userList}">
+                            <img class="img-fluid rounded userPic d-inline"
+                                th:src="@{/img/avatars/__${user.avatar_id}__.jpg}" th:alt="${user.avatar_id}">
+                            <p class="d-inline m-2" th:text="${user.username}"></p>
+                        </div>
                     </div>
-                </div>
-                <div class="mt-4 mb-4">
-                    <h5>Descripcion</h5>
-                    <p class="text-break" th:text="${event.description}"></p>
-                </div>
+                    <div class="mt-4 mb-4">
+                        <h5>Descripcion</h5>
+                        <p class="text-break" th:text="${event.description}"></p>
+                    </div>
 
-                <a th:if="${#lists.contains(userList.![id], userS.id)}" th:href="@{/events/leave/{id}(id=${event.id})}"
-                    class="btn btn-dark me-2 mb-3">Salir de evento</a>
-                <a th:unless="${#lists.contains(userList.![id], userS.id)}"
-                    th:href="@{/events/join/{id}(id=${event.id})}" class="btn btn-dark me-2">Entrar a evento</a>
-                <a th:if="${userS.id == author.id}" class="btn btn-warning"
-                    th:href="@{/events/edit/{id}(id=${event.id})}" role="button">Editar evento</a>
-                <button th:if="${userS.id == author.id}" type="button" class="btn btn-danger" data-toggle="modal"
-                    data-target="#deleteModal">
-                    Eliminar evento
-                </button>
-                <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog"
-                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLongTitle">Eliminacion de evento</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                Estas a punto de eliminar este evento con todos sus datos de manera permanente, ¿deseas
-                                hacerlo?
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <a class="btn btn-danger" th:href="@{/events/delete/{id}(id=${event.id})}"
-                                    role="button">Si, quiero eliminar este evento</a>
+                    <a th:if="${#lists.contains(userList.![id], userS.id)}"
+                        th:href="@{/events/leave/{id}(id=${event.id})}" class="btn btn-dark">Salir de evento</a>
+                    <a th:unless="${#lists.contains(userList.![id], userS.id)}"
+                        th:href="@{/events/join/{id}(id=${event.id})}" class="btn btn-dark me-2">Entrar a evento</a>
+                    <a th:if="${userS.id == author.id}" class="btn btn-warning mt-3"
+                        th:href="@{/events/edit/{id}(id=${event.id})}" role="button">Editar evento</a>
+                    <button th:if="${userS.id == author.id}" type="button" class="btn btn-danger mt-3"
+                        data-toggle="modal" data-target="#deleteModal">
+                        Eliminar evento
+                    </button>
+                    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Eliminacion de evento</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Estas a punto de eliminar este evento con todos sus datos de manera permanente,
+                                    ¿deseas
+                                    hacerlo?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <a class="btn btn-danger" th:href="@{/events/delete/{id}(id=${event.id})}"
+                                        role="button">Si, quiero eliminar este evento</a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-            </div>
-            <div class="col-md-6">
-                <h5>Datos sobre el evento</h5>
-                <div class="note note-info mb-3 shadow" data-mdb-toggle="animation" data-mdb-animation-start="onHover"
-                    data-mdb-animation="fade-in-right" data-mdb-animation-reset="true"
-                    style="animation-duration: 500ms;">
-                    <div class="d-inline">
-                        <strong>Autor: </strong>
-                        <p th:text="${author.username}"></p>
-                    </div>
                 </div>
-                <div class="note note-info mb-3 shadow">
-                    <div class="d-inline">
-                        <strong>Fecha de inicio: </strong>
-                        <p th:text="${event.initialDate}"></p>
+                <div class="col-md-6">
+                    <h5>Datos sobre el evento</h5>
+                    <div class="note note-info mb-3 shadow" data-mdb-toggle="animation"
+                        data-mdb-animation-start="onHover" data-mdb-animation="fade-in-right"
+                        data-mdb-animation-reset="true" style="animation-duration: 500ms;">
+                        <div class="d-inline">
+                            <strong>Autor: </strong>
+                            <p th:text="${author.username}"></p>
+                        </div>
                     </div>
+                    <div class="note note-info mb-3 shadow">
+                        <div class="d-inline">
+                            <strong>Fecha de inicio: </strong>
+                            <p th:text="${event.initialDate}"></p>
+                        </div>
+                    </div>
+                    <div class="note note-info mb-3 shadow">
+                        <div class="d-inline">
+                            <strong>Fecha de fin: </strong>
+                            <p th:text="${event.endDate}"></p>
+                        </div>
+                    </div>
+                    <div class="note note-info mb-3 shadow">
+                        <div class="d-inline">
+                            <strong>Interes: </strong>
+                            <p th:text="${event.interest.getName()}"></p>
+                        </div>
+                    </div>
+                    <div class="note note-info mb-3 shadow">
+                        <div class="d-inline">
+                            <strong>Localizacion</strong>
+                        </div>
+                        <div class="card-body divMap">
+                            <div id="map-container"></div>
+                        </div>
+                    </div>
+                    <div id="search-input" th:text="${event.location}"></div>
                 </div>
-                <div class="note note-info mb-3 shadow">
-                    <div class="d-inline">
-                        <strong>Fecha de fin: </strong>
-                        <p th:text="${event.endDate}"></p>
-                    </div>
-                </div>
-                <div class="note note-info mb-3 shadow">
-                    <div class="d-inline">
-                        <strong>Interes: </strong>
-                        <p th:text="${event.interest.getName()}"></p>
-                    </div>
-                </div>
-                <div class="note note-info mb-3 shadow">
-                    <div class="d-inline">
-                        <strong>Localizacion</strong>
-                    </div>
-                    <div class="card-body divMap">
-                        <div id="map-container"></div>
-                    </div>
-                </div>
-                <div id="search-input" th:text="${event.location}"></div>
             </div>
         </div>
     </div>
+
+    <section>
+        <footer class="text-center text-white">
+          <div class="container p-3">
+            <div class="row">
+              <div class="col-6">
+                <p class="d-flex justify-content-center align-items-center">
+                  <span class="me-3">Proyecto desarrollado por Javier Trujillo, Pilar Soriano y
+                    Luis Miguel Yglesias</span>
+                </p>
+              </div>
+              <div class="col-6">
+                <p class="d-flex justify-content-center align-items-center">
+                  <span>Bienvenido</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </section>
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

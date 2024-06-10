@@ -7,6 +7,8 @@
 	<title>Inicio de sesion</title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
 	<link rel="stylesheet" th:href="@{/css/style.css}">
+	<!-- CSS Animate-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 	<!-- Font Awesome -->
 	<link
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -22,26 +24,6 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css"
 	rel="stylesheet"
 	/>
-	<style>
-		/*PANTALLA PEQUEÑA*/
-		@media only screen and (max-width: 600px) {
-			.loginImg{
-				display: none;
-			}
-			.headingLogin{
-				display: block;
-			}
-		}
-		/*PANTALLA GRANDE*/
-		@media only screen and (min-width: 601px) {
-			.loginImg{
-				display: block;
-			}
-			.headingLogin{
-				display: none;
-			}
-		}
-	</style>
 </head>
 
 <body>
@@ -58,8 +40,8 @@
                     <li><a th:href="@{/home/contact}" class="nav-link px-2 text-white">Contacto</a></li>
                 </ul>
                 <div class="text-end">
-                    <a th:href="@{/home/login}" class="btn btn-outline-light me-2">Log In</a>
-                    <a th:href="@{/home/new}" class="btn btn-warning">Sign Up</a>
+                    <a th:href="@{/home/login}" class="btn btn-outline-light me-2" id="pulseButton">Log In</a>
+                    <a th:href="@{/home/new}" class="btn btn-warning" id="pulseButton">Sign Up</a>
                 </div>
             </div>
         </div>  

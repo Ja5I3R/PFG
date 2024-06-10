@@ -6,6 +6,8 @@
 <title>Registro de usuario</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" th:href="@{/css/style.css}">
+<!-- CSS Animate-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 <!-- Font Awesome -->
 <link
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -33,8 +35,8 @@ rel="stylesheet"
 			<ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
 			</ul>
 	
-			<div class="text-end">
-			  <a th:href="@{/home/userpage/{id}(id=${user.id})}" class="btn btn-outline-light me-2">Volver a pagina
+			<div class="text-end text-center">
+			  <a th:href="@{/home/userpage/{id}(id=${user.id})}" class="btn btn-outline-light me-2" id="pulseButton">Volver a pagina
 				personal</a>
 			  <a th:href="@{/home/logout}" class="btn mt-3" id="btn-signup">Cerrar sesion</a>
 			</div>
@@ -42,9 +44,10 @@ rel="stylesheet"
 		</div>
 	  </header>
 	<br>
+	<div class="content">
 	<div class="container">
 		<div class="row">
-			<div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
+			<div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card pt-4">
 				<h1 class="text-center">Edicion de usuario</h1>
 				<div class="card-body">
 					<form th:action="@{/home/update}" th:object="${user}" method="POST">
@@ -86,8 +89,8 @@ rel="stylesheet"
 							<p typeth:if="${#fields.hasErrors('gender')}" th:errors="*{gender}" class="alert alert-danger"></p>
 						</div>
 						<br>
-						<div class="box-footer">
-							<button class="btn btn-success">Actualizar</button>
+						<div class="box-footer text-center">
+							<button class="btn btn-success" id="pulseButton">Actualizar</button>
 						</div>
 
 					</form>
@@ -95,7 +98,27 @@ rel="stylesheet"
 			</div>
 		</div>
 	</div>
+</div>
 
+<section>
+	<footer class="text-center text-white">
+	  <div class="container p-3">
+		<div class="row">
+		  <div class="col-6">
+			<p class="d-flex justify-content-center align-items-center">
+			  <span class="me-3">Proyecto desarrollado por Javier Trujillo, Pilar Soriano y
+				Luis Miguel Yglesias</span>
+			</p>
+		  </div>
+		  <div class="col-6">
+			<p class="d-flex justify-content-center align-items-center">
+			  <span>Bienvenido</span>
+			</p>
+		  </div>
+		</div>
+	  </div>
+	</footer>
+  </section>
 
 </body>
 </html>

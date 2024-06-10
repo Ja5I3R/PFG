@@ -1,48 +1,42 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="ISO-8859-1">
-<title>Pagina de usuario</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" th:href="@{/css/style.css}">
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
-	rel="stylesheet">
-   <!-- Font Awesome -->
-   <link
-   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-   rel="stylesheet"
-   />
-   <!-- Google Fonts -->
-   <link
-   href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-   rel="stylesheet"
-   />
-   <!-- MDB -->
-   <link
-   href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css"
-   rel="stylesheet"
-   />
+  <meta charset="ISO-8859-1">
+  <title>Pagina de usuario</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- CSS Animate-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+  <!-- MDB -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css" rel="stylesheet" />
 </head>
+
 <body>
   <header class="p-3 text-white">
-		<div class="container">
-			<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-				<a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-					<img class="logo" th:src="@{/img/logo/logo.png}" alt="Logo">
-				</a>
+    <div class="container">
+      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+          <img class="logo" th:src="@{/img/logo/logo.png}" alt="Logo">
+        </a>
 
-				<ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-				</ul>
+        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+        </ul>
 
-				<div class="text-end text-center">
-					<a th:href="@{/home/userpage/{id}(id=${uSession.id})}" class="btn btn-outline-light me-2">Volver a pagina personal</a>
-					<a th:href="@{/home/logout}" class="btn mt-3" id="btn-signup">Cerrar sesion</a>
-				</div>
-			</div>
-		</div>
-	</header>
-
+        <div class="text-end text-center">
+          <a th:href="@{/home/userpage/{id}(id=${uSession.id})}" class="btn btn-outline-light me-2" id="pulseButton">Volver a pagina
+            personal</a>
+          <a th:href="@{/home/logout}" class="btn mt-3" id="btn-signup">Cerrar sesion</a>
+        </div>
+      </div>
+    </div>
+  </header>
+  <div class="content">
     <div class="container">
       <div class="row p-3">
         <div class="col-4">
@@ -53,11 +47,11 @@
             <div class="flip-card-inner">
               <div class="flip-card-front">
                 <img class="rounded-circle img-fluid shadow userImg" th:src="@{/img/usersImg/__${user.image_url}__}"
-            th:alt="${user.image_url}">
+                  th:alt="${user.image_url}">
               </div>
               <div class="flip-card-back">
-                <img class="rounded-circle img-fluid shadow userImg"
-            th:src="@{/img/avatars/__${user.avatar_id}__.jpg}" th:alt="${user.avatar_id}">
+                <img class="rounded-circle img-fluid shadow userImg" th:src="@{/img/avatars/__${user.avatar_id}__.jpg}"
+                  th:alt="${user.avatar_id}">
               </div>
             </div>
           </div>
@@ -78,21 +72,42 @@
         </div>
         <div class="col-xs-12 col-md-4">
           <h4 class="fst-italic">Lista de interes</h4>
-            <div class="row hstack">
-              <div class="col-12 text-center m-2 w-100" th:each="interest : ${interestList}">
-                <button type="button" class="btn btn-primary w-100" th:text="${interest.name}" disabled></button>
-              </div>
+          <div class="row hstack">
+            <div class="col-12 text-center m-2 w-100" th:each="interest : ${interestList}">
+              <button type="button" class="btn btn-primary w-100" th:text="${interest.name}" disabled></button>
             </div>
+          </div>
         </div>
-        <div class="col-xs-12 col-md-4">
+        <div class="col-xs-12 col-md-4 mb-5">
           <h4 class="fst-italic">Acciones</h4>
-          <a th:href="@{/home/report/{id}(id=${user.id})}" class="btn btn-danger btn-lg btn-block">Reportar</a> 
-          <a th:href="@{/chat/create/{id}(id=${user.id})}" class="btn btn-info btn-lg btn-block">Conectar</a>
+          <a th:href="@{/home/report/{id}(id=${user.id})}" class="btn btn-danger btn-lg btn-block" id="pulseButton">Reportar</a>
+          <a th:href="@{/chat/create/{id}(id=${user.id})}" class="btn btn-info btn-lg btn-block" id="pulseButton">Conectar</a>
         </div>
       </div>
     </div>
-      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </div>
+  <section>
+    <footer class="text-center text-white">
+      <div class="container p-3">
+        <div class="row">
+          <div class="col-6">
+            <p class="d-flex justify-content-center align-items-center">
+              <span class="me-3">Proyecto desarrollado por Javier Trujillo, Pilar Soriano y
+                Luis Miguel Yglesias</span>
+            </p>
+          </div>
+          <div class="col-6">
+            <p class="d-flex justify-content-center align-items-center">
+              <span>Bienvenido</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </section>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>
