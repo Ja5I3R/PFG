@@ -234,3 +234,82 @@ border-radius: var(--scroll-thumb-radius, var(--scroll-radius));
 .card-body{
   padding: 5%;
 }
+
+/* CSS Animate */
+
+#pulseButton:hover
+{
+  animation: pulse;
+  animation-duration: 1s;
+}
+
+#flashButton:hover
+{
+  animation: flash;
+  animation-duration: 1s;
+}
+
+#btn-signup:hover,#return:hover,#send:hover,#login:hover,#a-signup:hover
+{
+  animation: pulse;
+  animation-duration: 1s;
+}
+
+#changeView1:hover
+{
+  animation: pulse;
+  animation-duration: 1s;
+}
+#nameUserPage {
+  display: inline-block;
+
+  animation: backInLeft;
+  animation-duration: 1.25s;
+}
+
+#v-pills-home-tab {
+  display: inline-block;
+
+  animation: backInLeft;
+  animation-duration: 1.75s;
+}
+
+#v-pills-messages-tab {
+  display: inline-block;
+
+  animation: backInLeft;
+  animation-duration: 2.25s;
+}
+
+#v-pills-settings-tab {
+  display: inline-block;
+
+  animation: backInLeft;
+  animation-duration: 2.75s;
+}
+
+#v-pills-chats-tab {
+  display: inline-block;
+
+  animation: backInLeft;
+  animation-duration: 3s;
+}
+
+/*PANTALLA PEQUEÑA*/
+@media only screen and (max-width: 600px) {
+  .loginImg{
+    display: none;
+  }
+  .headingLogin{
+    display: block;
+  }
+}
+/*PANTALLA GRANDE*/
+@media only screen and (min-width: 601px) {
+  .loginImg{
+    display: block;
+  }
+  .headingLogin{
+    display: none;
+  }
+}

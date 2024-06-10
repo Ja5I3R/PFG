@@ -7,6 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" th:href="@{/css/style.css}">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- CSS Animate-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
   <!-- Font Awesome -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
   <!-- Google Fonts -->
@@ -27,7 +29,7 @@
         </ul>
 
         <div class="text-end text-center">
-          <a th:href="@{/home/userpage/{id}(id=${uSession.id})}" class="btn btn-outline-light me-2">Volver a pagina
+          <a th:href="@{/home/userpage/{id}(id=${uSession.id})}" class="btn btn-outline-light me-2" id="pulseButton">Volver a pagina
             personal</a>
           <a th:href="@{/home/logout}" class="btn mt-3" id="btn-signup">Cerrar sesion</a>
         </div>
@@ -78,8 +80,8 @@
         </div>
         <div class="col-xs-12 col-md-4 mb-5">
           <h4 class="fst-italic">Acciones</h4>
-          <a th:href="@{/home/report/{id}(id=${user.id})}" class="btn btn-danger btn-lg btn-block">Reportar</a>
-          <a th:href="@{/chat/create/{id}(id=${user.id})}" class="btn btn-info btn-lg btn-block">Conectar</a>
+          <a th:href="@{/home/report/{id}(id=${user.id})}" class="btn btn-danger btn-lg btn-block" id="pulseButton">Reportar</a>
+          <a th:href="@{/chat/create/{id}(id=${user.id})}" class="btn btn-info btn-lg btn-block" id="pulseButton">Conectar</a>
         </div>
       </div>
     </div>

@@ -18,7 +18,10 @@
     <!-- MDB -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css" rel="stylesheet" />
 </head>
+
 <link rel="stylesheet" th:href="@{/css/style.css}">
+<!-- CSS Animate-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 <!-- Font Awesome -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
 <!-- Google Fonts -->
@@ -39,7 +42,7 @@
                 </ul>
 
                 <div class="text-end text-center">
-                    <a th:href="@{/home/userpage/{id}(id=${usersession.id})}" class="btn btn-outline-light me-2">Volver
+                    <a th:href="@{/home/userpage/{id}(id=${usersession.id})}" class="btn btn-outline-light me-2" id="pulseButton">Volver
                         a pagina
                         personal</a>
                     <a th:href="@{/home/logout}" class="btn mt-3" id="btn-signup">Cerrar sesion</a>
@@ -152,23 +155,23 @@
 
     <section>
         <footer class="text-center text-white">
-          <div class="container p-3">
-            <div class="row">
-              <div class="col-6">
-                <p class="d-flex justify-content-center align-items-center">
-                  <span class="me-3">Proyecto desarrollado por Javier Trujillo, Pilar Soriano y
-                    Luis Miguel Yglesias</span>
-                </p>
-              </div>
-              <div class="col-6">
-                <p class="d-flex justify-content-center align-items-center">
-                  <span>Bienvenido</span>
-                </p>
-              </div>
+            <div class="container p-3">
+                <div class="row">
+                    <div class="col-6">
+                        <p class="d-flex justify-content-center align-items-center">
+                            <span class="me-3">Proyecto desarrollado por Javier Trujillo, Pilar Soriano y
+                                Luis Miguel Yglesias</span>
+                        </p>
+                    </div>
+                    <div class="col-6">
+                        <p class="d-flex justify-content-center align-items-center">
+                            <span>Bienvenido</span>
+                        </p>
+                    </div>
+                </div>
             </div>
-          </div>
         </footer>
-      </section>
+    </section>
     <!-- MDB -->
     <script type="text/javascript"
         src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.umd.min.js"></script>
