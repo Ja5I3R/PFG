@@ -1,5 +1,6 @@
 package com.pfg.controllers;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -129,6 +130,8 @@ public class EventController {
         model.addAttribute("event", actualEvent);
         model.addAttribute("author", author);
         model.addAttribute("userList", userList);
+        model.addAttribute("startDate", LocalDate.parse(actualEvent.getInitialDate()));
+        model.addAttribute("endDate", LocalDate.parse(actualEvent.getEndDate()));
         return "event_page";
     }
 
@@ -143,6 +146,7 @@ public class EventController {
         //---------------------
         Event actualEvent = service.readEventId(id);
         model.addAttribute("event", actualEvent);
+        model.addAttribute("userS", getSessionUser());
         model.addAttribute("interestList", intService.listAllInterest());
         return "edit_event";
     }

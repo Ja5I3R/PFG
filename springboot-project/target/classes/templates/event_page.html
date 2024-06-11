@@ -16,6 +16,7 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
     <!-- MDB -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css" rel="stylesheet" />
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar/main.min.css' rel='stylesheet' />
     <style>
         .backgroundImage {
             background-image: url('[[@{/img/eventsImg/__${event.image_url}__}]]');
@@ -114,20 +115,13 @@
                     </div>
                     <div class="note note-info mb-3 shadow">
                         <div class="d-inline">
-                            <strong>Fecha de inicio: </strong>
-                            <p th:text="${event.initialDate}"></p>
-                        </div>
-                    </div>
-                    <div class="note note-info mb-3 shadow">
-                        <div class="d-inline">
-                            <strong>Fecha de fin: </strong>
-                            <p th:text="${event.endDate}"></p>
-                        </div>
-                    </div>
-                    <div class="note note-info mb-3 shadow">
-                        <div class="d-inline">
                             <strong>Interes: </strong>
                             <p th:text="${event.interest.getName()}"></p>
+                        </div>
+                    </div>
+                    <div class="note note-info mb-3 shadow">
+                        <div class="d-inline">
+                            <div id="calendar"></div>
                         </div>
                     </div>
                     <div class="note note-info mb-3 shadow">
@@ -168,14 +162,39 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"></script>
+    
     <!-- MDB -->
-    <script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.umd.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.umd.min.js"></script>
+        <script src='https://cdn.jsdelivr.net/npm/fullcalendar/main.min.js'></script>
     <script>
         window.onload = function () {
             var searchString = document.getElementById('search-input').textContent.trim();
             showLocationOnMap(searchString);
+            showCalendar();
         };
+
+        function showCalendar(){
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                initialDate: '[[${startDate}]]',
+                locale: 'es',
+                firstDay: 1,
+                events: [
+                    {
+                        title: 'Inicio evento',
+                        start: '[[${startDate}]]',
+                        color: 'green'
+                    },
+                    {
+                        title: 'Fin evento',
+                        start: '[[${endDate}]]',
+                        color: 'red'
+                    }
+                ]
+            });
+            calendar.render();
+        }
 
         function showLocationOnMap(searchString) {
             fetch(`https://nominatim.openstreetmap.org/search?q=${searchString}&format=json`)
