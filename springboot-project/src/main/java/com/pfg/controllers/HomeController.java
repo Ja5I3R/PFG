@@ -73,12 +73,6 @@ public class HomeController {
     //ENCRIPTADOR PARA CONTRASEÑAS
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    //PAGINA DE CONTACTO
-    @GetMapping({ "/contact" })
-    public String contactPage(Model model) {
-        return "contact";
-    }
-
     //PAGINA DE SOPORTE
     @GetMapping({ "/support" })
     public String supportPage(Model model) {
@@ -117,11 +111,12 @@ public class HomeController {
         if (!sessionN) {
             return "redirect:/";
         }
-        //---------------------
+        //LISTA DE INTERESES Y USUARIOS QUE COINCIDEN CON ESE INTERES
         User user = service.readUserId(id);
         List<Interest> currentUserInterests = intService.listByIndexes(userDataService.getInterestList(user));
         List<User> matchedUsers = service.findUsersByInterests(currentUserInterests);
 
+        //RETIRADA DE USUARIO DE LA SESION DE LA LISTA
         matchedUsers.remove(user);
 
         List<User> topMatchedUsers = matchedUsers.subList(0, Math.min(3, matchedUsers.size()));
@@ -327,8 +322,8 @@ public class HomeController {
 
                 if (session == null) { // CASO SI ES UN USUARIO NUEVO DESDE EL INDEX
                     session = attr.getRequest().getSession(true);
+                    session.setMaxInactiveInterval(-1);
                     session.setAttribute("user", user);
-                    
                 }
             }
             return "redirect:/home/userpage/" + user.getId();
@@ -343,7 +338,6 @@ public class HomeController {
         if (!sessionN) {
             return "redirect:/";
         }
-        //---------------------
         User user = service.readUserId(id);
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);
@@ -391,6 +385,7 @@ public class HomeController {
         //---------------------
         User existingUser = service.readUserId(user.getId());
         existingUser.setUsername(user.getUsername());
+        existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
         existingUser.setName(user.getName());
         existingUser.setSurname(user.getSurname());
         existingUser.setEmail(user.getEmail());
@@ -431,6 +426,7 @@ public class HomeController {
         if (userC != null && passwordEncoder.matches(user.getPassword(), userC.getPassword())) {
             ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
             HttpSession session = attr.getRequest().getSession(true);
+            session.setMaxInactiveInterval(-1);
             session.setAttribute("user", userC);
             return "redirect:/home/userpage/" + userC.getId();
 

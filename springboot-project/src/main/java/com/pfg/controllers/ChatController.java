@@ -48,18 +48,23 @@ import org.springframework.messaging.handler.annotation.SendTo;
 @RequestMapping("/chat")
 public class ChatController {
 
+    //SERVICIO DE CHATS
     @Autowired
     private IChatService service;
 
+    //SERVICIO DE USUARIOS
     @Autowired
     private IUserService userService;
 
+    //SERVICIO DE SUBIDA DE ARCHIVOS
     @Autowired
     private UploadFileService uploadService;
 
+    //SERVICIO DE DATOS DE USUARIO
     @Autowired
     private IUserDataService udService;
 
+    //SERVICIO DE INTERESES
     @Autowired
     private IInterestService intService;
 
@@ -72,6 +77,7 @@ public class ChatController {
         return attr.getRequest().getSession(false);
     }
 
+    //OBTENER USUARIO DE SESION
     public User getUserSession(){
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);
@@ -80,19 +86,22 @@ public class ChatController {
 
     //INTERESES EN COMUN ENTRE USUARIOS
     private String[] getCommonInterests(User user1, User user2) {
+        //LISTA DE INTERESES DE CADA USUARIO
         List<Interest> user1Interests = intService.listByIndexes(udService.getInterestList(user1));
         List<Interest> user2Interests = intService.listByIndexes(udService.getInterestList(user2));
     
+        //NUMERO DE INTERESES EN COMUN
         long commonInterestsCount = user1Interests.stream()
                 .filter(user2Interests::contains)
                 .count();
     
         String fraction = commonInterestsCount + "/" + user1Interests.size();
     
+        //CONSTRUCCION DE LISTA DE INTERESES EN COMUN
         StringBuilder commonInterestsBuilder = new StringBuilder();
         for (Interest interest : user1Interests) {
-            if (user2Interests.contains(interest)) {
-                if (commonInterestsBuilder.length() > 0) {
+            if (user2Interests.contains(interest)) { //CONDICION SI CONTIENE EL INTERES
+                if (commonInterestsBuilder.length() > 0) { //CONDICION SI LA LISTA NO ESTA VACIA
                     commonInterestsBuilder.append(", ");
                 }
                 commonInterestsBuilder.append(interest.getName());
@@ -113,17 +122,16 @@ public class ChatController {
         if (!sessionN) {
             return "redirect:/";
         }
-        //---------------------
         HttpSession session = request.getSession(false);
         if (session == null) {
             return "redirect:/login";
         }
-
         User sessionUser = (User) session.getAttribute("user");
         if (sessionUser == null) {
             return "redirect:/login";
         }
 
+        //CREACION DE NUEVO CHAT CON ASIGNACION DE DATOS
         Chat chat = new Chat();
         chat.setName(name);
         chat.setChatType(2L);
@@ -131,15 +139,18 @@ public class ChatController {
         chat.setChatInterest(intService.findById(interestId));
         chat.setContentURL("");
 
+        //GUARDADO DE CHAT
         service.createChat(chat);
 
         String contentURL = "chat_group_" + chat.getId() + ".json";
         chat.setContentURL(contentURL);
 
+        //CREACION DE JSON DE CHAT
         String filePath = "data/chats/" + chat.getContentURL();
         try {
             Path path = Paths.get(filePath);
-            if (!Files.exists(path)) {
+            if (!Files.exists(path)) { //CONDICION SI EL ARCHIVO NO EXISTE
+                //CREACION DEL ARCHIVO CON INTRODUCCION DE CONTENIDO
                 Files.createDirectories(path.getParent());
                 Files.createFile(path);
 
@@ -151,9 +162,11 @@ public class ChatController {
             e.printStackTrace();
         }
 
+        //LISTA DE USUARIOS A METER EN EL CHAT
         Set<User> chatUsers = new HashSet<>();
         chatUsers.add(sessionUser);
 
+        //INTRODUCCION DE CHAT A LISTA DE CHAT DE USUARIOS
         if(participantIds != null){
             for (Long userId : participantIds) {
                 User participant = userService.readUserId(userId);
@@ -162,10 +175,12 @@ public class ChatController {
         }
         chat.setUsers(chatUsers);
 
+        //ACTUALIZACION DE CHAT
         service.createChat(chat);
 
         List<User> usersToUpdate = new ArrayList<>(chatUsers);
 
+        //ACTUALIZACION DE USUARIOS
         for (User user : usersToUpdate) {
             user.getChats().add(chat);
             userService.createUser(user);
@@ -183,7 +198,6 @@ public class ChatController {
         if (!sessionN) {
             return "redirect:/";
         }
-        //---------------------
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);
         User sessionUser = (User) session.getAttribute("user");
@@ -192,6 +206,7 @@ public class ChatController {
             return "redirect:/login";
         }
 
+        //INTRODUCCION DE DATOS PARA PAGINA DE CREAR GRUPO
         Set<User> friends;
         Set<Chat> chats = sessionUser.getChats();
         friends = userService.getFriends(sessionUser, chats);
@@ -212,12 +227,12 @@ public class ChatController {
         if (!sessionN) {
             return "redirect:/";
         }
-        //---------------------
+
         User userWith = userService.readUserId(id); // USUARIO CON QUIEN HABLAS
         for(Chat chat : getUserSession().getChats()){
-            if(chat.getChatType() == 1L){
+            if(chat.getChatType() == 1L){ //CONDICION SI EL CHAT ES DE TIPO 1
                 for(User user : chat.getUsers()){
-                    if(user.getId().equals(userWith.getId())){
+                    if(user.getId().equals(userWith.getId())){ //CONDICION SI EL USUARIO YA TIENE CHAT CON OTRO
                         return "redirect:/chat/view/" + chat.getId();
                     }
                 }
@@ -226,14 +241,18 @@ public class ChatController {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);
         User sessionUser = (User) session.getAttribute("user"); // USUARIO DE SESION
+
+        //CREACION DE NUEVO CHAT
         Chat chat = new Chat();
         chat.setContentURL("chat" + sessionUser.getId() + "_" + userWith.getId() + ".json");
 
         String filePath = "data/chats/" + chat.getContentURL();
 
+        //CREACION DE JSON DE CHAT
         try {
             Path path = Paths.get(filePath);
-            if (!Files.exists(path)) {
+            if (!Files.exists(path)) { //CONDICION SI EL ARCHIVO NO EXISTE
+                //CREACION DEL ARCHIVO CON INTRODUCCION DE CONTENIDO
                 Files.createDirectories(path.getParent());
                 Files.createFile(path);
 
@@ -245,12 +264,16 @@ public class ChatController {
             e.printStackTrace();
         }
 
+        //ASIGNACION DE DATOS DE CHAT
         LocalDateTime actualDate = LocalDateTime.now();
         chat.setCreationDate(actualDate);
         chat.setChatType(1L);
 
+        //ACTUALIZACION DE USUARIOS Y CHAT
         userWith.getChats().add(chat);
         sessionUser.getChats().add(chat);
+
+        //GUARDADO DE CHAT
         service.createChat(chat);
         userService.createUser(userWith);
         userService.createUser(sessionUser);
@@ -264,39 +287,47 @@ public class ChatController {
         boolean sessionN = SU.checkSession(getSession());
         if (!sessionN) {
             return "redirect:/";
-        }
-        //---------------------
-        Chat actualChat = service.readChatId(id); // CHAT A ENVIAR
+            }
+        // CHAT A ENVIAR    
+        Chat actualChat = service.readChatId(id); 
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);
-        User sessionUser = (User) session.getAttribute("user"); // USUARIO PARA ENVIAR MENSAJES
+        // USUARIO PARA ENVIAR MENSAJES
+        User sessionUser = (User) session.getAttribute("user"); 
 
-        Set<User> chatUserList = actualChat.getUsers(); // LISTA DE USUARIOS DEL CHAT
+        // LISTA DE USUARIOS DEL CHAT
+        Set<User> chatUserList = actualChat.getUsers(); 
 
+        //OBTENCION DE LISTADO DE MENSAJES DE CHAT
         try {
+            //OBTENCION DE CONTENIDO DE ARCHIVO JSON Y MAPEADO A LISTADO DE MESSAGES
             String filePath = "data/chats/" + actualChat.getContentURL();
             byte[] bytes = Files.readAllBytes(Paths.get(filePath));
             String jsonContent = new String(bytes);
             ObjectMapper objectMapper = new ObjectMapper();
             List<Message> messageList = objectMapper.readValue(jsonContent, new TypeReference<List<Message>>() {
             });
-            if (messageList.size() == 0) {
+            
+            if (messageList.size() == 0) { //CONDICION SI LA LISTA DE MENSAJES ESTA VACIA
                 messageList = new ArrayList<>();
             }
             model.addAttribute("messages", messageList);
             model.addAttribute("usersession", sessionUser);
 
             model.addAttribute("chat", actualChat);
-            if (actualChat.getChatType() == 2) {
+            if (actualChat.getChatType() == 2) { //CONDICION SI EL CHAT ES DE TIPO 2
+                //AÑADIDO A MODELO DE EL NOMBRE DEL CHAT Y LISTA DE USUARIOS
                 model.addAttribute("chatName", actualChat.getName());
                 Set<User> userList = actualChat.getUsers();
                 model.addAttribute("userList", userList);
             }else{
                 for (User user : actualChat.getUsers()) {
                     if(!sessionUser.getId().equals(user.getId())){
+                        //AÑADIDO DE USUARIO A MODELO
                         model.addAttribute("otherUser", user);
                     }
                 }
+                //AÑADIDO DE LISTA DE INTERESES
                 List<User> userList = new ArrayList<>(chatUserList);
                 model.addAttribute("interestsList", getCommonInterests(sessionUser, userList.get(0)));
             }
@@ -315,9 +346,10 @@ public class ChatController {
         if (!sessionN) {
             return "redirect:/";
         }
-        //---------------------
+        //OBTENCION DE CHAT Y USUARIO
         Chat actualChat = service.readChatId(chatId);
         User sessionUser = userService.readUserId(userId);
+        //BORRADO DE USUARIO DE CHAT Y CHAT DE USUARIO
         actualChat.getUsers().remove(sessionUser);
         service.createChat(actualChat);
         sessionUser.getChats().removeIf(chat -> chat.getId().equals(actualChat.getId()));
@@ -329,6 +361,7 @@ public class ChatController {
     @MessageMapping("/messages")
     @SendTo("/topic/messages")
     public Message send(MessageRequest message) throws Exception {
+        //CHAT EN EL QUE GUARDAR MENSAJE
         Chat chat = service.readChatId(message.getId());
         saveMessage(message.getUser(), message.getMessage(), chat);
         return new Message(message.getUser(), message.getMessage());
@@ -336,6 +369,7 @@ public class ChatController {
 
     //GUARDAR MENSAJE EN ARCHIVO JSON
     public void saveMessage(String user, String message, Chat chat) {
+        //GUARDADO DE MENSAJE EN CHAT
         uploadService.saveChatMessage(user, message, chat);
     }
 }

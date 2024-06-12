@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 public class PageController {
     
-        // Pagina de inicio
+        //PAGINA DE INICIO
         @GetMapping({ "/" , ""})
         public String redirect(Model model) {
             return "index";

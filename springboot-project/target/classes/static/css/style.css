@@ -93,7 +93,6 @@ footer {
     width: 300px;
     height: 200px;
     perspective: 1000px;
-    /* Remove this if you don't want the 3D effect */
   }
 
   /* This container is needed to position the front and back side */
@@ -307,6 +306,23 @@ border-radius: var(--scroll-thumb-radius, var(--scroll-radius));
 
   animation: backInLeft;
   animation-duration: 3s;
+}
+
+/*ANIMATIONS*/
+header .nav-link{
+  display: table;
+}
+ header .nav-link::after{
+  content: "";
+  display: block;
+  height: 3px;
+  background-color: var(--secondary-color);
+  transform: scale(0,1);
+  transform-origin: center;
+  transition: transform .25s;
+}
+header .nav-link:hover::after{
+  transform: scale(1,1);
 }
 
 /*PANTALLA PEQUEÑA*/

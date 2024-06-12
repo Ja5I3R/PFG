@@ -17,6 +17,7 @@ import com.pfg.models.User;
 @Controller
 public class CustomErrorController implements ErrorController {
 
+    //OBTENER USUARIO DE SESION
     public User getSessionUser() {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);

@@ -43,15 +43,20 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 @RequestMapping("/events")
 public class EventController {
+
+    //SERVICIO DE EVENTOS
     @Autowired
     private IEventService service;
 
+    //SERVICIO DE INTERESES
     @Autowired
     private IInterestService intService;
 
+    //SERVICIO DE DATOS DE USUARIO
     @Autowired
     private IUserService userService;
 
+    //SERVICIO DE SUBIDA DE ARCHIVOS
     @Autowired
     private UploadFileService uploadService;
 
@@ -64,6 +69,7 @@ public class EventController {
         return attr.getRequest().getSession(false);
     }
 
+    //OBTENER USUARIO DE SESION
     public User getSessionUser() {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);
@@ -74,7 +80,9 @@ public class EventController {
     //CREAR EVENTO
     @GetMapping("/new")
     public String gotoeventCreation(Model model) {
+        //CREACION DE NUEVO EVENTO
         Event EV = new Event();
+        //AÑADIDO DE DATOS AL MODELO
         model.addAttribute("event", EV);
         model.addAttribute("interestList", intService.listAllInterest());
         model.addAttribute("user", getSessionUser());
@@ -89,21 +97,24 @@ public class EventController {
         if (!sessionN) {
             return "redirect:/";
         }
-        //---------------------
+        //USUARIO DE LA SESION
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder .currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);
         User actualUser = (User) session.getAttribute("user");
 
+        //GUARDADO DE LA FOTO DEL USUARIO EN LOCAL
         uploadService.saveEventImage(file);
+        //ASIGNACION DE DATOS AL EVENTO
         event.setImage_url(file.getOriginalFilename());
         event.setIdCreator(actualUser.getId());
         Interest it = intService.getInterestById(interest);
         event.setInterest(it);
 
+        //ACTUALIZACION DE EVENTOS DEL USUARIO
         Set<Event> events = actualUser.getEvents();
         events.add(event);
         actualUser.setEvents(events);
-        
+        //GUARDADO DE EVENTO
         service.createEvent(event);
         
         userService.createUser(actualUser);
@@ -119,13 +130,14 @@ public class EventController {
         if (!sessionN) {
             return "redirect:/";
         }
-        //---------------------
+        //OBTENCION DE DATOS PARA LA WEB
         Event actualEvent = service.readEventId(id);
         Set<User> userList = actualEvent.getUsers();
         User author = userService.readUserId(actualEvent.getIdCreator());
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);
         User actualUser = (User) session.getAttribute("user");
+        //AÑADIDO DE ELEMENTOS A MODELO
         model.addAttribute("userS", actualUser);
         model.addAttribute("event", actualEvent);
         model.addAttribute("author", author);
@@ -143,7 +155,7 @@ public class EventController {
         if (!sessionN) {
             return "redirect:/";
         }
-        //---------------------
+        //AÑADIDO DE DATOS AL MODELO
         Event actualEvent = service.readEventId(id);
         model.addAttribute("event", actualEvent);
         model.addAttribute("userS", getSessionUser());
@@ -158,7 +170,7 @@ public class EventController {
         if (!sessionN) {
             return "redirect:/";
         }
-        //---------------------
+        //ACTUALIZACION DE EVENTO EXISTENTE CON EVENTO ENVIADO
         Event actualEvent = service.readEventId(event.getId());
         actualEvent.setName(event.getName());
         actualEvent.setInitialDate(event.getInitialDate());
@@ -166,6 +178,7 @@ public class EventController {
         actualEvent.setLocation(event.getLocation());
         actualEvent.setDescription(event.getDescription());
         actualEvent.setInterest(event.getInterest());
+        //GUARDADO DEL EVENTO
         service.createEvent(actualEvent);
         return "redirect:/events/view/" + actualEvent.getId();
     }
@@ -178,7 +191,7 @@ public class EventController {
         if (!sessionN) {
             return "redirect:/";
         }
-        //---------------------
+        //AÑADIDO DE DATOS A MODELO
         List<Event> eventList = service.listEventsByList(getSessionUser().getUserData().getInterests());
         model.addAttribute("interestList", intService.listAllInterest());
         model.addAttribute("eventList", eventList);
@@ -191,10 +204,13 @@ public class EventController {
     public ResponseEntity<String> handleInterest(@Valid @RequestBody Map<String, String> payload) {
         String interestValue = payload.get("value");
         Long id = Long.parseLong(interestValue); //ID RECOGIDO
+        //INTERES EN BASE AL ID
         Interest interest = intService.getInterestById(id);
+        //LISTA DE EVENTOS EN BASE A INTERES
         Set<Event> list = interest.getOnlyEvent(); 
         List<Event> list2 = new ArrayList<>(list);
         ObjectMapper objectMapper = new ObjectMapper();
+        //MAPEADO DE LISTA DE EVENTOS A JSON
         try {
             String jsonEvents = objectMapper.writeValueAsString(list2);
             return ResponseEntity.ok().body(jsonEvents);
@@ -212,7 +228,7 @@ public class EventController {
         if (!sessionN) {
             return "redirect:/";
         }
-        //---------------------
+        //AÑADIDO DE DATOS A MODELO
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);
         User actualUser = (User) session.getAttribute("user");
@@ -233,12 +249,13 @@ public class EventController {
         if (!sessionN) {
             return "redirect:/";
         }
-        //---------------------
+        //DATOS PARA EL BORRADO
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);
         User actualUser = (User) session.getAttribute("user");
         Event actualEvent = service.readEventId(id);
 
+        //BORRADO DE USUARIO DE EVENTO Y BORRADO DE EVENTO DE USUARIO
         actualUser.getEvents().removeIf(event -> event.getId().equals(actualEvent.getId()));
         userService.createUser(actualUser);
         actualEvent.getUsers().removeIf(user -> user.getId().equals(userService.readUserId(actualUser.getId()).getId()));
@@ -254,15 +271,17 @@ public class EventController {
         if (!sessionN) {
             return "redirect:/";
         }
-        //---------------------
+        //DATOS PARA RETIRADA
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);
         User actualUser = (User) session.getAttribute("user");
         Event actualEvent = service.readEventId(id);
+        //ACTUALIZACION DE USUARIOS QUITANDO EVENTO
         for (User user : actualEvent.getUsers()) {
             user.getEvents().removeIf(event -> event.getId().equals(actualEvent.getId()));
             userService.createUser(user);
         }
+        //ELIMINACION DE EVENTO
         service.deleteEvent(id);
         return "redirect:/home/userpage/" + actualUser.getId();
     }
