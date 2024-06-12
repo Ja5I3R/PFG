@@ -17,17 +17,20 @@ public class InterestService implements IInterestService{
     @Autowired
 	private IInterest repository;
 
+	//METODO PARA CONSEGUIR UN INTERES POR ID
 	@Override
 	public Interest getInterestById(Long id){
 		return repository.getById(id);
 	}
 
+	//METODO PARA CONSEGUIR LISTA DE TODOS LOS INTERESES
     @Override
 	@Transactional(readOnly = true)
 	public List<Interest> listAllInterest() {
 		return repository.findAll();
 	}
 
+	//METODO PARA CONSEGUIR LISTA DE INTERESES EN BASE A UNA LISTA DE IDS
 	@Override
 	@Transactional(readOnly = true)
 	public List<Interest>listByIndexes(List<Long> list){

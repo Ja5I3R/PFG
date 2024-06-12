@@ -21,12 +21,14 @@ public class EventService implements IEventService{
     @Autowired
 	private IEvent repository;
 
+    //METODO PARA CONSEGUIR TODOS LOS EVENTOS
     @Override
     @Transactional(readOnly = true)
     public List<Event>listAllEvents(){
         return repository.findAll();
     }
 
+    //METODO PARA CONSEGUIR TODOS LOS EVENTOS EN BASE A UNOS INTERESES
     @Override
     @Transactional(readOnly = true)
     public List<Event>listEventsByList(Set<Interest> interests){
@@ -41,6 +43,7 @@ public class EventService implements IEventService{
         return recomendedList;
     }
 
+    //METODO PATRA CREAR EVENTO
     @Override
     @Transactional
 	public Event createEvent(Event event){
@@ -51,18 +54,21 @@ public class EventService implements IEventService{
         return repository.save(event);
     }
 	
+    //METODO PARA ENCONTRAR EVENTO POR ID
     @Override
     @Transactional(readOnly = true)
 	public Event readEventId(Long id){
         return repository.findById(id).get();
     }
 	
+    //METODO PARA BORRAR EVENTO
     @Override
     @Transactional
 	public void deleteEvent(Long id){
         repository.deleteById(id);
     }
 
+    //METODO PARA CONSEGUIR LISTA DE EVENTOS POR LISTA DE IDS
     @Override
     @Transactional(readOnly = true)
 	public List<Event>listByIndexes(List<Long> list){

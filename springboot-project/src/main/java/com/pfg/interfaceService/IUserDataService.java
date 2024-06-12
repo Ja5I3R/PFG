@@ -7,10 +7,10 @@ import com.pfg.models.UserData;
 
 public interface IUserDataService {
 
-    // OTRA MANERA - public void saveUserPreferences(Long userID, Long intID1, Long intID2, Long intID3, Long intID4, Long intID5);
-
+    //METODO PARA GUARDAR LAS PREFERENCIAS DE UN USUARIO
     public UserData saveUserPreferences(UserData UD);
 
+    //METODO PARA CONSEGUIR LA LISTA DE INTERESES EN BASE A UN USUARIO
     public List<Long> getInterestList(User user);
 
 }

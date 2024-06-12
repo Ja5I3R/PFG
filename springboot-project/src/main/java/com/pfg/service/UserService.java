@@ -37,7 +37,7 @@ public class UserService implements IUserService {
 	@Autowired
 	private IUserData userDataRepository;
 
-	// OBTENER AMIGOS
+	//METODO PARA CONSEGUIR UNA LISTA DE USUARIOS AMIGOS
 	public Set<User> getFriends(User currentUser, Set<Chat> chats) {
 		Set<User> friends = new HashSet<>();
 
@@ -55,6 +55,7 @@ public class UserService implements IUserService {
 		return friends;
 	}
 
+	//METODO PARA CONSEGUIR LISTA DE USUARIOS EN BASE A UNA LISTA DE INTERESES
 	public List<User> findUsersByInterests(List<Interest> interests) {
 		Map<User, Integer> userInterestCountMap = new HashMap<>();
 
@@ -81,6 +82,7 @@ public class UserService implements IUserService {
 				.collect(Collectors.toList());
 	}
 
+	//METODO PARA CREAR UN USUARIO
 	@Override
 	@Transactional
 	public User createUser(User user) {
@@ -103,18 +105,21 @@ public class UserService implements IUserService {
 		return repository.save(user);
 	}
 
+	//METODO PARA CONSEGUIR TODOS LOS USUARIOS
 	@Override
 	@Transactional(readOnly = true)
 	public List<User> listAllUsers() {
 		return repository.findAll();
 	}
 
+	//METODO PARA CONSEGUIR UN USUARIO POR ID
 	@Override
 	@Transactional(readOnly = true)
 	public User readUserId(Long id) {
 		return repository.findById(id).get();
 	}
 
+	//METODO PARA CONSEGUIR UN USUARIO POR NOMBRE
 	@Override
 	@Transactional(readOnly = true)
 	public User readUserName(String name) {
@@ -128,6 +133,7 @@ public class UserService implements IUserService {
 		return result;
 	}
 
+	//METODO PARA CONSEGUIR UN USUARIO POR EMAIL
 	@Override
 	@Transactional(readOnly = true)
 	public User readEmail(String email) {
@@ -141,12 +147,14 @@ public class UserService implements IUserService {
 		return result;
 	}
 
+	//METODO PARA ACTUALIZAR UN USUARIO
 	@Override
 	@Transactional
 	public User updateUser(User user) {
 		return repository.save(user);
 	}
 
+	//METODO PARA BORRAR UN USUARIO
 	@Override
 	@Transactional
 	public void deleteUser(Long id) {
@@ -156,6 +164,7 @@ public class UserService implements IUserService {
 		}
 	}
 
+	//METODO PARA CONSEGUIR UNA LISTA DE USUARIOS POR UNA LISTA DE IDS
 	@Override
 	@Transactional(readOnly = true)
 	public List<User> getUserList(List<Long> idList) {
@@ -170,6 +179,7 @@ public class UserService implements IUserService {
 		return list;
 	}
 
+	//METODO PARA CONSEGUIR LISTA DE EVENTOS DE UN USUARIO
 	@Override
 	@Transactional(readOnly = true)
 	public List<Event> getEventList(User user) {

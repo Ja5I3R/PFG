@@ -30,6 +30,7 @@ public class CustomErrorController implements ErrorController {
     public String errorPage(HttpServletRequest request, Model model){
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
 
+        //AÑADIDO DE DATOS A MODELO
         model.addAttribute("error", status);
         model.addAttribute("date", new Date());
         model.addAttribute("usersession", getSessionUser());

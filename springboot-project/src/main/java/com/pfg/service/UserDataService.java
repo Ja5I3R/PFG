@@ -20,12 +20,14 @@ public class UserDataService implements IUserDataService {
     @Autowired
     private IUserData repository;
 
+    //METODO PARA GUARDAR LAS PREFERENCIAS DE UN USUARIO
     @Override
     @Transactional
     public UserData saveUserPreferences(UserData UD) {
         return repository.save(UD);
     }
 
+    //METODO PARA CONSEGUIR LA LISTA DE INTERESES EN BASE A UN USUARIO
     @Override
     @Transactional(readOnly = true)
     public List<Long> getInterestList(User user) {

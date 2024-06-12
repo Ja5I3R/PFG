@@ -58,7 +58,7 @@
 							<div class="form-group">
 								<label>Contraseña nueva:</label> <input type="password" name="password"
 									th:field="*{password}" class="form-control" placeholder="Escriba una nueva contraseña o deje vacio para mantener"
-									required>
+									>
 								<p typeth:if="${#fields.hasErrors('password')}" th:errors="*{password}"
 									class="alert alert-danger"></p>
 							</div>

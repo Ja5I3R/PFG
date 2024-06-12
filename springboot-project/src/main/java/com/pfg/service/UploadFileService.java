@@ -26,7 +26,9 @@ import com.pfg.models.Message;
 @Service
 public class UploadFileService {
 
+    //GUARDAR IMAGEN DE USUARIO
     public void saveUserImage(MultipartFile file){
+        //LECTURA DE IMAGEN Y GUARDADO EN CARPETA DE IMAGEN DE USUARIOS
         try{
             byte[] bytesImg = file.getBytes();
             Path completePath = Paths.get("src/main/resources/static/img/usersImg" + "/" + file.getOriginalFilename());
@@ -36,8 +38,9 @@ public class UploadFileService {
             e.printStackTrace();
         }
     }
-
+    //GUARDAR IMAGEN DE EVENTO
     public void saveEventImage(MultipartFile file){
+        //LECTURA DE IMAGEN Y GUARDADO EN CARPETA DE IMAGEN DE EVENTOS
         try{
             byte[] bytesImg = file.getBytes();
             Path completePath = Paths.get("src/main/resources/static/img/eventsImg" + "/" + file.getOriginalFilename());
@@ -47,17 +50,22 @@ public class UploadFileService {
             e.printStackTrace();
         }
     }
-
+    //GUARDAR MENSAJE EN CHAT
     public void saveChatMessage(String user, String message, Chat actualChat){
+        //LECTURA DE ARCHIVO CON EXTRACCION DEL CONTENIDO Y ACTUALIZACION DEL MISMO
         try{
+            //OBTENCION DEL CONTENIDO
             String filePath = "data/chats/" + actualChat.getContentURL();
             byte[] bytes = Files.readAllBytes(Paths.get(filePath));
             String jsonContent = new String(bytes);
+            //MAPEO DEL CONTENIDO A LISTA DE MENSAJES
             ObjectMapper objectMapper = new ObjectMapper();
             List<Message> messageList = objectMapper.readValue(jsonContent, new TypeReference<List<Message>>() {});
             
+            //AÑADIDO DE NUEVO MENSAJE
             Message newMessage = new Message(user, message);
             messageList.add(newMessage);
+            //GUARDADO DE LISTA ACTUALIZADA
             String jsonString = objectMapper.writeValueAsString(messageList); //CONVERTIR A JSON STRING PARA ARCHIVO
             Path path = Paths.get(filePath);
             BufferedWriter writer = Files.newBufferedWriter(path);

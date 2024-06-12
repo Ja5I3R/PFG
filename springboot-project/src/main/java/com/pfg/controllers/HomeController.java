@@ -119,13 +119,16 @@ public class HomeController {
         //RETIRADA DE USUARIO DE LA SESION DE LA LISTA
         matchedUsers.remove(user);
 
+        //NUMERO DE USUARIOS RECOMENDADOS
         List<User> topMatchedUsers = matchedUsers.subList(0, Math.min(3, matchedUsers.size()));
         List<String> interestNumberMatch = new ArrayList<>();
 
+        //LISTA DE INTERESES EN COMUN ENTRE USUARIOS
         for (User userExist : topMatchedUsers) {
             interestNumberMatch.add(getCommonInterestsFraction(userExist, user));
         }
 
+        //AÑADIDO DE DATOS A MODELO
         model.addAttribute("matchedUsers", topMatchedUsers);
         model.addAttribute("interestNumber", interestNumberMatch);
         model.addAttribute("interestList", intService.listAllInterest());
@@ -141,8 +144,7 @@ public class HomeController {
         if (!sessionN) {
             return "redirect:/";
         }
-        //---------------------
-
+        //AÑADIDO DE DATOS A MODELO
         model.addAttribute("matchedUsers", service.listAllUsers());
         model.addAttribute("interestList", intService.listAllInterest());
         model.addAttribute("usersession", getSessionUser());
@@ -154,10 +156,11 @@ public class HomeController {
     public Set<User> getFriends(User currentUser, Set<Chat> chats) {
         Set<User> friends = new HashSet<>();
 
+        //lISTADO DE CHATS CON OTROS USUARIOS
         for (Chat chat : chats) {
             Set<User> chatUsers = chat.getUsers();
             for (User user : chatUsers) {
-                if (!user.equals(currentUser)) {
+                if (!user.equals(currentUser)) { //CONDICION SI EL USUARIO ES DIFERENTE DEL USUARIO DE LA SESION
                     friends.add(user);
                 }
             }
@@ -176,6 +179,7 @@ public class HomeController {
     public String logout(Model model) {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);
+        //CIERRE DE LA SESION
         session.invalidate();
         return "redirect:/";
     }
@@ -183,25 +187,29 @@ public class HomeController {
     //FILTRADO DE USUARIOS
     @PostMapping("/filter")
     public ResponseEntity<String> viewUsersByFilter(@Valid @RequestBody Map<String, String> payload) {
+        //RECOGIDA DEL INTERES SELECCIONADO
         String interestValue = payload.get("value");
-        Long id = Long.parseLong(interestValue); // ID RECOGIDO
+        Long id = Long.parseLong(interestValue);
         Interest interest = intService.getInterestById(id);
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);
         User sessionUser = (User) session.getAttribute("user");
+        //OBTENCION DE LOS USUARIOS DEL INTERES SELECCIONADO
         Set<UserData> users = interest.getUserDatas();
         List<User> listUsers = new ArrayList<>();
         for (UserData user : users) {
-            if (!user.getUser().getRol().isAdministrator() && sessionUser.getId() != user.getUser().getId()) {
+            if (!user.getUser().getRol().isAdministrator() && sessionUser.getId() != user.getUser().getId()) { //CONDICION SI EL USUARIO NO ES ADMINISTRADOR Y ES DIFERENTE DEL USUARIO DE LA SESION
                 listUsers.add(user.getUser());
             }
         }
+        //VACIADO DE DATOS INNECESARIOS
         for (User user : listUsers) {
             user.setChats(null);
             user.setEvents(null);
             user.getUserData().setUser(null);
             user.setRol(null);
         }
+        //MAPEO DE LISTADO A JSON
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             String jsonEvents = objectMapper.writeValueAsString(listUsers);
@@ -214,13 +222,13 @@ public class HomeController {
 
     //PAGINA DE USUARIO POR INTERES
     @GetMapping("/view/{id}")
-    public String getMethodName(Model model, @PathVariable Long id) {
+    public String viewUser(Model model, @PathVariable Long id) {
         //COMPROBACION DE SESION
         boolean sessionN = SU.checkSession(getSession());
         if (!sessionN) {
             return "redirect:/";
         }
-        //---------------------
+        //AÑADIDO DE DATOS A MODELO
         User user = service.readUserId(id);
         model.addAttribute("uSession", getSessionUser());
         model.addAttribute("user", user);
@@ -231,10 +239,13 @@ public class HomeController {
 
     //REPORTAR USUARIO
     @GetMapping("/report/{id}")
-    public String getMethodName(@PathVariable Long id) {
+    public String reportUser(@PathVariable Long id) {
+        //USUARIO QUE REPORTA Y USUARIO REPORTADO
         User user = service.readUserId(id);
         UserData userD = user.getUserData();
+        //SUBIDA DE NUMERO DE REPORTES A USUARIO REPORTADO
         userD.setReport_number(userD.getReport_number() + 1);
+        //GUARDADO DE DATOS
         userDataService.saveUserPreferences(userD);
         return "redirect:/home/meet/" + getSessionUser().getId();
     }
@@ -247,7 +258,6 @@ public class HomeController {
         if (!sessionN) {
             return "redirect:/";
         }
-        //---------------------
 
         User userC = new User();
         try {
@@ -255,7 +265,7 @@ public class HomeController {
         } catch (Exception e) {
             return "/error";
         }
-
+        //AÑADIDO DE DATOS A MODELO
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(true);
         session.setAttribute("user", userC);
@@ -265,7 +275,7 @@ public class HomeController {
         model.addAttribute("interestList2", intService.listAllInterest());
         model.addAttribute("chatList", userC.getChats());
         model.addAttribute("friends", getFriends(userC, userC.getChats()));
-        if (userC.getRol().isAdministrator()) {
+        if (userC.getRol().isAdministrator()) { //CONDICION SI ES ADMINISTRADOR
             model.addAttribute("userList", service.listAllUsers());
             model.addAttribute("eventList", eventService.listAllEvents());
         } else {
@@ -277,7 +287,8 @@ public class HomeController {
 
     //CREACION DE NUEVOS USUARIOS
     @GetMapping("/new")
-    public String showRegistration(Model model) {
+    public String newUser(Model model) {
+        //AÑADIDO DE DATOS A MODELO
         User user = new User();
         int[] avatarList = { 1, 2, 3, 4, 5, 6 };
         model.addAttribute("user", user);
@@ -291,18 +302,23 @@ public class HomeController {
     public String createUser(@ModelAttribute("user") User user, BindingResult bindingResult, HttpServletRequest request,
             @RequestParam("profileImage") MultipartFile file) {
         User userCreated = service.readUserName(user.getUsername());
-        if (userCreated == null) {
+        if (userCreated == null) { //CONDICION SI EL USUARIO CREADO NO EXISTE
             userCreated = service.readEmail(user.getEmail());
         }
-        if (userCreated != null) {
+        if (userCreated != null) { //CONDICION SI EL USUARIO SIGUE SIENDO NULO CON EL EMAIL
             return "redirect:/home/new";
         } else {
+            //SUBIDA DE IMAGEN A ARCHIVOS LOCALES
             uploadService.saveUserImage(file);
+            //ASIGNACION DE DATOS AL USUARIO
             user.setImage_url(file.getOriginalFilename());
+            //HASHEO DE CONTRASEÑA DEL USUARIO
             user.setPassword(passwordEncoder.encode(user.getPassword()));
+            //GUARDADO DEL USUARIO
             service.createUser(user);
+            //AÑADIDO DE INTERESES A USUARIO
             String[] interestIds = request.getParameterValues("interests");
-            if (interestIds != null) {
+            if (interestIds != null) { //CONDICION SI LOS INTERESES NO SON NULOS
                 UserData UD = new UserData();
                 UD.setUser(user);
                 Set<Interest> interests = new HashSet<>();
@@ -312,6 +328,7 @@ public class HomeController {
                         interests.add(interest);
                     }
                 }
+                //ACTUALIZACION DE DATOS DEL USUARIO
                 UD.setInterest(interests);
                 UD.setReport_number(0L);
                 userDataService.saveUserPreferences(UD);
@@ -344,18 +361,22 @@ public class HomeController {
         User sessionUser = (User) session.getAttribute("user");
         //ELMINACION DE EVENTOS DONDE SE ES PROPIETARIO
         for(Event event : user.getEvents()){
-            if(event.getIdCreator().equals(user.getId())){
+            if(event.getIdCreator().equals(user.getId())){ //CONDICION SI EL USUARIO ES EL CREADOR
                 for (User userA : event.getUsers()) {
+                    //RETIRADA DE EVENTO DEL USUARIO
                     userA.getEvents().removeIf(eventA -> eventA.getId().equals(event.getId()));
                     service.createUser(userA);
                 }
+                //BORRADO DE EVENTO
                 eventService.deleteEvent(event.getId());
             }
         }
-        if (sessionUser.getRol().isAdministrator() && sessionUser.getId() != user.getId()) {
+        if (sessionUser.getRol().isAdministrator() && sessionUser.getId() != user.getId()) { //CONDICION SI EL USUARIO ES ADMINISTRADOR Y ES DIFERENTE DEL USUARIO BORRADO
+            //BORRADO DE USUARIO
             service.deleteUser(id);
             return "redirect:/home/userpage/" + sessionUser.getId();
         } else {
+            //BORRADOD DE USUARIO
             service.deleteUser(id);
             return "redirect:/";
         }
@@ -363,13 +384,13 @@ public class HomeController {
 
     //ACTUALIZACION DE USUARIOS
     @GetMapping("/edit/{id}")
-    public String showRegistration(@PathVariable Long id, Model model) {
+    public String editUser(@PathVariable Long id, Model model) {
         //COMPROBACION DE SESION
         boolean sessionN = SU.checkSession(getSession());
         if (!sessionN) {
             return "redirect:/";
         }
-        //---------------------
+        //AÑADIDO DE DATOS AL MODELO
         User user = service.readUserId(id);
         model.addAttribute("user", user);
         return "edit_user";
@@ -382,16 +403,19 @@ public class HomeController {
         if (!sessionN) {
             return "redirect:/";
         }
-        //---------------------
+        //ACTUALIZACION DE DATOS DEL USUARIO EXISTENTE CON EL USUARIO ENVIADO
         User existingUser = service.readUserId(user.getId());
         existingUser.setUsername(user.getUsername());
-        existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        if(user.getPassword() != ""){
+            existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         existingUser.setName(user.getName());
         existingUser.setSurname(user.getSurname());
         existingUser.setEmail(user.getEmail());
         existingUser.setAge(user.getAge());
         existingUser.setGender(user.getGender());
         existingUser.setBirthdate(user.getBirthdate());
+        //ACTUALIZACION DEL USUARIO
         service.createUser(existingUser);
 
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
@@ -402,12 +426,15 @@ public class HomeController {
     }
 
     @PostMapping("/interestUpdate")
-    public String postMethodName(@RequestParam(name = "interests", required = false) List<Long> interests, Model model) {
+    public String updateInterest(@RequestParam(name = "interests", required = false) List<Long> interests, Model model) {
+        //DATOS DEL USUARIO
         UserData data = getSessionUser().getUserData();
+        //VACIADO DE LOS INTERESES DEL USUARIO
         data.getInterests().clear();
+        //ASIGNACION DE NUEVOS INTERESES
         for(Long id : interests){
             Interest interest = intService.findById(Long.valueOf(id));
-            if (interest != null) {
+            if (interest != null) { //CONDICION SI EL INTERES EXISTE
                 data.getInterests().add(interest);
             }
         }
@@ -420,10 +447,11 @@ public class HomeController {
     @PostMapping("/checkuser")
     public String checkUser(@ModelAttribute("user") User user, BindingResult bindingResult, Model model) {
         User userC = service.readUserName(user.getUsername());
-        if (bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) { //CONDICION SI LOS DATOS SON ERRONEOS
             return "redirect:/try_session";
         }
-        if (userC != null && passwordEncoder.matches(user.getPassword(), userC.getPassword())) {
+        if (userC != null && passwordEncoder.matches(user.getPassword(), userC.getPassword())) { //CONDICION SI EL USUARIO NO ES NULO Y COINCIDE LA CONTRASEÑA INTRODUCIDA CON LA DEL USUARIO DE LA BBDD
+            //CREACION DE LA SESION
             ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
             HttpSession session = attr.getRequest().getSession(true);
             session.setMaxInactiveInterval(-1);

@@ -13,16 +13,19 @@ public class ChatHandler extends TextWebSocketHandler{
 
     private final CopyOnWriteArrayList<WebSocketSession> sessions = new CopyOnWriteArrayList<WebSocketSession>();
 
+    //ESTABLECER CONEXION WEBSOCKETS
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception{
         sessions.add(session);
     }
     
+    //CERRAR CONEXION WEBSOCKETS
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception{
         sessions.remove(session);
     }
 
+    //ESCRITURA DE MENSAJE RECIBIDO
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception{
         for(WebSocketSession webSocketSession : sessions){

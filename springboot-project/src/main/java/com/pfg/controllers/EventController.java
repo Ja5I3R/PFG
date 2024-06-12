@@ -79,7 +79,7 @@ public class EventController {
 
     //CREAR EVENTO
     @GetMapping("/new")
-    public String gotoeventCreation(Model model) {
+    public String gotoEventCreation(Model model) {
         //CREACION DE NUEVO EVENTO
         Event EV = new Event();
         //AÑADIDO DE DATOS AL MODELO
@@ -90,7 +90,7 @@ public class EventController {
     }
 
     @PostMapping("/create")
-    public String postMethodName(@ModelAttribute("event") Event event, BindingResult bindingResult, HttpServletRequest request, @RequestParam("eventImage") MultipartFile file,
+    public String createEvent(@ModelAttribute("event") Event event, BindingResult bindingResult, HttpServletRequest request, @RequestParam("eventImage") MultipartFile file,
     @RequestParam("interest") Long interest) {
         //COMPROBACION DE SESION
         boolean sessionN = SU.checkSession(getSession());
@@ -149,7 +149,7 @@ public class EventController {
 
     //EDITAR EVENTO
     @GetMapping("/edit/{id}")
-    public String getMethodName(@PathVariable Long id, Model model) {
+    public String editEvent(@PathVariable Long id, Model model) {
         //COMPROBACION DE SESION
         boolean sessionN = SU.checkSession(getSession());
         if (!sessionN) {
@@ -164,7 +164,7 @@ public class EventController {
     }
 
     @PostMapping("/update")
-    public String postMethodName(@ModelAttribute("event") Event event, BindingResult bindingResult) {
+    public String updateEvent(@ModelAttribute("event") Event event, BindingResult bindingResult) {
         //COMPROBACION DE SESION
         boolean sessionN = SU.checkSession(getSession());
         if (!sessionN) {
