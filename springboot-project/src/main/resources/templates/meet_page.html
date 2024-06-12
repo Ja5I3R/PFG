@@ -4,10 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meet</title>
+    <title>Conocer gente</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="icon" type="image/ico" th:href="@{/img/favicon.ico}">
     <!-- CSS Animate-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <!-- Font Awesome -->
@@ -32,7 +33,7 @@
                             $(".users-container").html("<p>No se encontraron usuarios</p>");
                         } else {
                             $.each(result, function (index, user) {
-                                var eventHtml = "<div class='col-md-3 col-xs-12'><div class='card mb-3'><img class='card-img-top' src='/img/avatars/" + user.avatar_id + ".jpg'th:alt='" + user.avatar_id + "'><div class='card-body'><h5 class='card-title'>" + user.username + "</h5><a href='/home/view/" + user.id + "' class='btn btn-info'>Ver más datos</a><a href='/chat/create/"+ user.id +"' class='btn btn-info'>Iniciar chat</a></div></div></div>";
+                                var eventHtml = "<div class='col-md-3 col-xs-12'><div class='card mb-3'><img class='card-img-top' src='/img/avatars/" + user.avatar_id + ".jpg'th:alt='" + user.avatar_id + "'><div class='card-body'><h5 class='card-title'>" + user.username + "</h5><a href='/home/view/" + user.id + "' class='btn btn-info'>Ver más datos</a><a href='/chat/create/" + user.id + "' class='btn btn-info'>Iniciar chat</a></div></div></div>";
                                 $(".users-container").append(eventHtml);
                             });
                         }
@@ -59,93 +60,99 @@
                 </ul>
 
                 <div class="text-end text-center">
-                    <a th:href="@{/home/userpage/{id}(id=${usersession.id})}" class="btn btn-outline-light me-2" id="pulseButton">Volver
+                    <a th:href="@{/home/userpage/{id}(id=${usersession.id})}" class="btn btn-outline-light me-2"
+                        id="pulseButton">Volver
                         a pagina
                         personal</a>
-                    <a th:href="@{/home/logout}" class="btn mt-3" id="btn-signup">Cerrar sesion</a>
+                    <a th:href="@{/home/logout}" class="btn" id="btn-signup">Cerrar sesion</a>
                 </div>
             </div>
         </div>
     </header>
     <br>
     <div class="content">
-    <div class="container">
-        <h2>Recomendaciones de usuarios</h2>
-        <form th:action="@{/home/meet/}" method="GET">
-            <div class="form-group">
-                <div data-mdb-input-init class="form-outline mb-4">
-                    <input type="text" name="name" id="form3Example3" class="form-control form-control-lg"/>
-                    <label class="form-label" for="form3Example3">Buscar por nombre</label>
+        <div class="container">
+            <h2>Recomendaciones de usuarios</h2>
+            <form th:action="@{/home/meet/}" method="GET">
+                <div class="form-group">
+                    <div data-mdb-input-init class="form-outline mb-4">
+                        <input type="text" name="name" id="form3Example3" class="form-control form-control-lg" />
+                        <label class="form-label" for="form3Example3">Buscar por nombre</label>
+                    </div>
+                </div>
+                <br>
+                <div class="box-footer d-inline">
+                    <button type="submit" class="btn btn-success" id="pulseButton">Comprobar</button>
+                </div>
+            </form>
+            <div class="btn-group shadow-0 m-3 container-fluid">
+                <div class="row">
+                    <div th:each="interest : ${interestList}" class="mt-2 col">
+                        <input type="radio" class="btn-check" name="interest" th:id="'interest'+${interest.id}"
+                            th:value="${interest.id}">
+                        <label class="btn btn-secondary" th:for="${'interest' + interest.id}"
+                            th:text="${interest.name}"></label>
+                    </div>
                 </div>
             </div>
-            <br>
-            <div class="box-footer d-inline">
-                <button type="submit" class="btn btn-success" id="pulseButton">Comprobar</button>
-            </div>
-        </form>
-        <div class="btn-group shadow-0 m-3 container-fluid">
-            <div class="row">
-                <div th:each="interest : ${interestList}" class="mt-2 col">
-                    <input type="radio" class="btn-check" name="interest" th:id="'interest'+${interest.id}" th:value="${interest.id}">
-                    <label class="btn btn-secondary" th:for="${'interest' + interest.id}" th:text="${interest.name}"></label>
-                </div>
-            </div>
-        </div>
-        <div th:if="${not #lists.isEmpty(matchedUsers)}">
-            <div class="container-fluid">
-                <div class="row m-3 justify-content-center users-container" th:if="${#strings.isEmpty(param.name)}">
-                    <div th:each="matchedUser, stat : ${matchedUsers}" class="col-md-3 col-xs-12">
-                        <div class="card mb-3">
-                            <img class="card-img-top" th:src="@{/img/avatars/__${matchedUser.avatar_id}__.jpg}"
-                                th:alt="${matchedUser.avatar_id}">
-                            <div class="card-body">
-                                <h5 class="card-title" th:text="${matchedUser.username}"></h5>
-                                <div class="inline">
-                                    <a th:href="@{/home/view/{id}(id=${matchedUser.id})}" class="btn btn-info" id="pulseButton">Ver más
-                                        datos</a>
-                                    <a th:href="@{/chat/create/{id}(id=${matchedUser.id})}" class="btn btn-info mt-2" id="pulseButton">Iniciar
-                                        chat</a>
-                                    <p th:text="${interestNumber[stat.index]}"></p>
+            <div th:if="${not #lists.isEmpty(matchedUsers)}">
+                <div class="container-fluid">
+                    <div class="row m-3 justify-content-center users-container" th:if="${#strings.isEmpty(param.name)}">
+                        <div th:each="matchedUser, stat : ${matchedUsers}" class="col-md-3 col-xs-12">
+                            <div class="card mb-3">
+                                <img class="card-img-top uImage" th:src="@{/img/avatars/__${matchedUser.avatar_id}__.jpg}"
+                                    th:alt="${matchedUser.avatar_id}">
+                                <div class="card-body">
+                                    <h5 class="card-title" th:text="${matchedUser.username}"></h5>
+                                    <div class="inline">
+                                        <a th:href="@{/home/view/{id}(id=${matchedUser.id})}" class="btn btn-info"
+                                            id="pulseButton">Ver más
+                                            datos</a>
+                                        <a th:href="@{/chat/create/{id}(id=${matchedUser.id})}"
+                                            class="btn btn-info mt-2" id="pulseButton">Iniciar
+                                            chat</a>
+                                        <p th:text="${interestNumber[stat.index]}"></p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="row m-3 justify-content-center users-container" th:if="${not #strings.isEmpty(param.name)}">
-                    <div th:each="matchedUser, stat : ${matchedUsers}" class="col-md-3 col-xs-12" th:if="${#strings.containsIgnoreCase(matchedUser.username, param.name)}">
-                        <div class="card mb-3">
-                            <img class="card-img-top" th:src="@{/img/avatars/__${matchedUser.avatar_id}__.jpg}"
-                                th:alt="${matchedUser.avatar_id}">
-                            <div class="card-body">
-                                <h5 class="card-title" th:text="${matchedUser.username}"></h5>
-                                <div class="inline">
-                                    <a th:href="@{/home/view/{id}(id=${matchedUser.id})}" class="btn btn-info">Ver más
-                                        datos</a>
-                                    <a th:href="@{/chat/create/{id}(id=${matchedUser.id})}" class="btn btn-info">Iniciar
-                                        chat</a>
-                                    <!--<p th:text="${interestNumber[stat.index]}"></p> DA ERROR AL BUSCAR-->
+                    <div class="row m-3 justify-content-center users-container"
+                        th:if="${not #strings.isEmpty(param.name)}">
+                        <div th:each="matchedUser, stat : ${matchedUsers}" class="col-md-3 col-xs-12"
+                            th:if="${#strings.containsIgnoreCase(matchedUser.username, param.name)}">
+                            <div class="card mb-3">
+                                <img class="card-img-top" th:src="@{/img/avatars/__${matchedUser.avatar_id}__.jpg}"
+                                    th:alt="${matchedUser.avatar_id}">
+                                <div class="card-body">
+                                    <h5 class="card-title" th:text="${matchedUser.username}"></h5>
+                                    <div class="inline">
+                                        <a th:href="@{/home/view/{id}(id=${matchedUser.id})}" class="btn btn-info">Ver
+                                            más
+                                            datos</a>
+                                        <a th:href="@{/chat/create/{id}(id=${matchedUser.id})}"
+                                            class="btn btn-info">Iniciar
+                                            chat</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div th:if="${#lists.isEmpty(matchedUsers)}">
+                <p>No se encontraron personas.</p>
+            </div>
         </div>
-        <div th:if="${#lists.isEmpty(matchedUsers)}">
-            <p>No se encontraron personas.</p>
-        </div>
-    </div>
     </div>
     <section>
         <footer class="text-center text-white">
-          <div class="container p-3">
+          <div class="container">
             <div class="row">
-              <div class="col-6">
-                <p class="d-flex justify-content-center align-items-center">
-                  <span class="me-3">Proyecto desarrollado por Javier Trujillo, Pilar Soriano y
-                    Luis Miguel Yglesias</span>
-                </p>
+              <div class="col-6 d-flex justify-content-center align-items-center">
+                <p>Proyecto desarrollado por Javier Trujillo, Pilar Soriano y
+                  Luis Miguel Yglesias</p>
               </div>
               <div class="col-6">
                 <p class="d-flex justify-content-center align-items-center">

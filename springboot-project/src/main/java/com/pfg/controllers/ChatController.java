@@ -72,6 +72,12 @@ public class ChatController {
         return attr.getRequest().getSession(false);
     }
 
+    public User getUserSession(){
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpSession session = attr.getRequest().getSession(false);
+        return (User) session.getAttribute("user");
+    }
+
     //INTERESES EN COMUN ENTRE USUARIOS
     private String[] getCommonInterests(User user1, User user2) {
         List<Interest> user1Interests = intService.listByIndexes(udService.getInterestList(user1));
@@ -208,6 +214,15 @@ public class ChatController {
         }
         //---------------------
         User userWith = userService.readUserId(id); // USUARIO CON QUIEN HABLAS
+        for(Chat chat : getUserSession().getChats()){
+            if(chat.getChatType() == 1L){
+                for(User user : chat.getUsers()){
+                    if(user.getId().equals(userWith.getId())){
+                        return "redirect:/chat/view/" + chat.getId();
+                    }
+                }
+            }
+        }
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(false);
         User sessionUser = (User) session.getAttribute("user"); // USUARIO DE SESION

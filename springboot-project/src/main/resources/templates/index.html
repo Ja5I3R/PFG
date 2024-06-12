@@ -7,26 +7,18 @@
     <title>Pallynk</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="icon" type="image/ico" th:href="@{/img/favicon.ico}">
     <!-- CSS Animate-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <!-- Font Awesome -->
-	<link
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-	rel="stylesheet"
-	/>
-	<!-- Google Fonts -->
-	<link
-	href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-	rel="stylesheet"
-	/>
-	<!-- MDB -->
-	<link
-	href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css"
-	rel="stylesheet"
-	/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <!-- MDB -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css" rel="stylesheet" />
 </head>
 
-<body>
+<body>  
     <header class="p-3 text-white">
         <div class="container">
             <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
@@ -36,88 +28,95 @@
                     </a>
                 </a>
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                    <li><a th:href="@{/home/contact}" class="nav-link px-2 text-white">Soporte</a></li>
+                    <li><a th:href="@{/home/support}" class="nav-link px-2 text-white">Soporte</a></li>
                 </ul>
                 <div class="text-end">
                     <a th:href="@{/home/login}" class="btn btn-outline-light me-2" id="pulseButton">Log In</a>
                     <a th:href="@{/home/new}" class="btn btn-warning" id="pulseButton">Sign Up</a>
                 </div>
             </div>
-        </div>  
+        </div>
     </header>
-    <div class="container-fluid content">
-        <div class="row p-5">
-            <div class="col-sm-12 col-md-6">
-                <img src="../static/img/templates/home_2.PNG" alt="" class="shadow mb-5 rounded w-100">
-            </div>
-            <div class="col-sm-12 col-md-6">
-                <h1 class="text-center fst-italic">PalLynk, la red mas sociable</h1>
-                <hr class="hrStilized">
-                <p class="p-3">
-                    Interesado en conocer gente nueva 🙋‍♂️?
-                    Entra desde <a th:href="@{/home/new}" class="h6 fw-bold fst-italic">Aqui</a> y descubre un mundo de posibilidades infinitas. Ya sea que busques hacer nuevos amigos, encontrar compañeros de viaje, conocer a tu alma gemela o simplemente ampliar tu red de contactos profesionales, PalLynk es el lugar perfecto para ti. Únete hoy y empieza a vivir experiencias inolvidables con gente increíble. ¡No esperes más y sé parte de la comunidad más sociable de la web!
-                </p>
-            </div>
-        </div>
-    </div>
-    <div class="container-fluid">
-        <div class="row p-5">
-            <div class="col-sm-12 col-md-6">
-                <h1 class="text-center fst-italic">Nuestro objetivo</h1>
-                <hr class="hrStilized">
-                <p>
-                    Nuestra misión es proporcionar un espacio acogedor donde puedas conocer gente nueva, hacer amigos
-                    auténticos y disfrutar de experiencias significativas juntos. ¡Únete a nuestra vibrante comunidad y
-                    descubre la alegría de tener amigos que realmente te entienden!
-                    En PalLynk, creemos en la importancia de las relaciones humanas verdaderas y profundas. Queremos que cada interacción sea una oportunidad para crecer, aprender y compartir momentos inolvidables. Ya sea que estés buscando una amistad duradera, un compañero de aventuras o simplemente alguien con quien hablar, aquí encontrarás el entorno perfecto para hacerlo.
-                </p>
-            </div>
-            <div class="col-sm-12 col-md-6">
-                <img src="../static/img/templates/friends.jpg" alt="" class="shadow mb-5 rounded w-100">
-            </div>
-        </div>
-    </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <h1 class="text-center fst-italic">Empieza ya a descubrir</h1>
-                <hr class="hrStilized">
-            </div>
-        </div>
-    <div class="container-fluid">
-        <div class="row mx-auto"><!--Row con fotos de las características-->
-            <div class="col-sm-12 col-md-4 p-3">
-                <div class="hstack spa">
-                    <img src="../static/img/templates/avatar.jpg" alt="" class=" mb-5 rounded imageMidWid">
-                    <p>Selecciona tu avatar preferido</p>
+    
+    <div class="content">
+        <div class="container-fluid content">
+            <div class="row p-5">
+                <div class="col-sm-12 col-md-6">
+                    <img src="../static/img/templates/home_2.PNG" alt="" class="shadow mb-5 rounded w-100">
                 </div>
-            </div>
-            <div class="col-sm-12 col-md-4 p-3">
-                <div class="hstack">
-                    <img src="../static/img/templates/intereses.png" alt="" class=" mb-5 rounded imageMidWid">
-                    <p>Selecciona tus intereses</p>
-                </div>
-            </div>
-            <div class="col-sm-12 col-md-4 p-3">
-                <div class="hstack">
-                    <img src="../static/img/templates/check.png" alt="" class=" mb-5 rounded imageMidWid">
-                    <p>Ya estás listo</p>
+                <div class="col-sm-12 col-md-6">
+                    <h1 class="text-center fst-italic">PalLynk, la red mas sociable</h1>
+                    <hr class="hrStilized">
+                    <p class="p-3">
+                        Interesado en conocer gente nueva 🙋‍♂️?
+                        Entra desde <a th:href="@{/home/new}" class="h6 fw-bold fst-italic">Aqui</a> y descubre un mundo de
+                        posibilidades infinitas. Ya sea que busques hacer nuevos amigos, encontrar compañeros de viaje,
+                        conocer a tu alma gemela o simplemente ampliar tu red de contactos profesionales, PalLynk es el
+                        lugar perfecto para ti. Únete hoy y empieza a vivir experiencias inolvidables con gente increíble.
+                        ¡No esperes más y sé parte de la comunidad más sociable de la web!
+                    </p>
                 </div>
             </div>
         </div>
+        <div class="container-fluid">
+            <div class="row p-5">
+                <div class="col-sm-12 col-md-6">
+                    <h1 class="text-center fst-italic">Nuestro objetivo</h1>
+                    <hr class="hrStilized">
+                    <p>
+                        Nuestra misión es proporcionar un espacio acogedor donde puedas conocer gente nueva, hacer amigos
+                        auténticos y disfrutar de experiencias significativas juntos. ¡Únete a nuestra vibrante comunidad y
+                        descubre la alegría de tener amigos que realmente te entienden!
+                        En PalLynk, creemos en la importancia de las relaciones humanas verdaderas y profundas. Queremos que
+                        cada interacción sea una oportunidad para crecer, aprender y compartir momentos inolvidables. Ya sea
+                        que estés buscando una amistad duradera, un compañero de aventuras o simplemente alguien con quien
+                        hablar, aquí encontrarás el entorno perfecto para hacerlo.
+                    </p>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <img src="../static/img/templates/friends.jpg" alt="" class="shadow mb-5 rounded w-100">
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h1 class="text-center fst-italic">Empieza ya a descubrir</h1>
+                    <hr class="hrStilized">
+                </div>
+            </div>
+            <div class="container-fluid">
+                <div class="row mx-auto"><!--Row con fotos de las características-->
+                    <div class="col-sm-12 col-md-4 p-3">
+                        <div class="hstack spa">
+                            <img src="../static/img/templates/select_avatar.jpg" alt="" class=" mb-5 rounded imageMidWid">
+                            <p>Selecciona tu avatar preferido</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-4 p-3">
+                        <div class="hstack">
+                            <img src="../static/img/templates/select_interest.jpg" alt="" class=" mb-5 rounded imageMidWid">
+                            <p>Selecciona tus intereses</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-4 p-3">
+                        <div class="hstack">
+                            <img src="../static/img/templates/ok.jpg" alt="" class=" mb-5 rounded imageMidWid">
+                            <p>Ya estás listo</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-
 
     <section>
         <footer class="text-center text-white">
-            <div class="container p-3">
-                <div class="row">
-                    <div class="col-6">
-                        <p class="d-flex justify-content-center align-items-center">
-                            <span class="me-3">Proyecto desarrollado por Javier Trujillo, Pilar Soriano y
-                                Luis Miguel Yglesias</span>
-                        </p>
+            <div class="container">
+                <div class="row p-2">
+                    <div class="col-6 d-flex justify-content-center align-items-center">
+                        <p>Proyecto desarrollado por Javier Trujillo, Pilar Soriano y
+                            Luis Miguel Yglesias</p>
                     </div>
                     <div class="col-6">
                         <p class="d-flex justify-content-center align-items-center">

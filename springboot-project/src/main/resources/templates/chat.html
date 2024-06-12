@@ -9,26 +9,14 @@
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="icon" type="image/ico" th:href="@{/img/favicon.ico}">
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
     <!-- MDB -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css" rel="stylesheet" />
-</head>
-
-<link rel="stylesheet" th:href="@{/css/style.css}">
-<!-- CSS Animate-->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-<!-- Font Awesome -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
-<!-- MDB -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css" rel="stylesheet" />
+    <!-- CSS Animate-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 </head>
 
 <body>
@@ -43,10 +31,11 @@
                 </ul>
 
                 <div class="text-end text-center">
-                    <a th:href="@{/home/userpage/{id}(id=${usersession.id})}" class="btn btn-outline-light me-2" id="pulseButton">Volver
+                    <a th:href="@{/home/userpage/{id}(id=${usersession.id})}" class="btn btn-outline-light me-2"
+                        id="pulseButton">Volver
                         a pagina
                         personal</a>
-                    <a th:href="@{/home/logout}" class="btn mt-3" id="btn-signup">Cerrar sesion</a>
+                    <a th:href="@{/home/logout}" class="btn" id="btn-signup">Cerrar sesion</a>
                 </div>
             </div>
         </div>
@@ -65,7 +54,7 @@
                                 <div class="m-2" th:each="user : ${userList}">
                                     <img class="img-fluid rounded userPic d-inline"
                                         th:src="@{/img/avatars/__${user.avatar_id}__.jpg}" th:alt="${user.avatar_id}">
-                                    <a class=" m-2 h4 fw-bold fst-italic" th:href="@{/home/view/{id}(id=${user.id})}"
+                                    <a class=" m-2 h5 fw-bold fst-italic" th:href="@{/home/view/{id}(id=${user.id})}"
                                         th:text="${user.username}"></a>
                                 </div>
                             </div>
@@ -108,10 +97,15 @@
                                                 <div class="d-flex justify-content-start"
                                                     th:unless="${message.user == usersession.username}">
                                                     <div class="col-sm-auto col-lg-6">
-                                                        <div class="card mt-lg-5 mb-5 w-lg-75 mt-sm-auto mb-sm-auto w-sm-auto shadow"
-                                                            id="btn-signup">
+                                                        <div
+                                                            class="card mt-lg-5 mb-5 w-lg-75 mt-sm-auto mb-sm-auto w-sm-auto shadow">
                                                             <div class="card-body">
-                                                                <p class="card-text text-left"
+                                                                <p th:if="${chat.chatType == 1}"
+                                                                    class="card-text text-left"
+                                                                    th:text="${message.message}">
+                                                                </p>
+                                                                <p th:if="${chat.chatType == 2}"
+                                                                    class="card-text text-left"
                                                                     th:text="${message.user} + ': ' + ${message.message}">
                                                                 </p>
                                                             </div>
@@ -144,9 +138,34 @@
                                     </button>
                                 </div>
                             </div>
-                            <a name="return" id="return" class="btn btn-danger"
-                                th:href="@{/chat/leave/{idC}/{idU}(idC=${chat.id}, idU=${usersession.id})}"
-                                role="button">Salir de chat</a>
+                            <button type="button" class="btn btn-danger m-3" data-toggle="modal"
+                                data-target="#deleteUser" id="pulseButton">
+                                Salir de chat
+                            </button>
+                            <div class="modal fade" id="deleteUser" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Salir de chat</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Estas a punto de salir de un chat, sin posibilidad de volver a entrar,
+                                            ¿estas seguro?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">No,
+                                                quiero mantener el chat</button>
+                                            <a name="return" id="return" class="btn btn-danger"
+                                                th:href="@{/chat/leave/{idC}/{idU}(idC=${chat.id}, idU=${usersession.id})}"
+                                                role="button">Si, quiero salir del chat</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -155,139 +174,154 @@
     </div>
 
     <section>
-    <footer class="text-center text-white">
-      <div class="container p-3">
-        <div class="row">
-          <div class="col-6">
-            <p class="d-flex justify-content-center align-items-center">
-              <span class="me-3">Proyecto desarrollado por Javier Trujillo, Pilar Soriano y
-                Luis Miguel Yglesias</span>
-            </p>
-          </div>
-          <div class="col-6">
-            <p class="d-flex justify-content-center align-items-center">
-              <span>Licencia Creative Commons</span><img th:src="@{/img/CC.png}" alt="logo">
-            </p>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </section>
+        <footer class="text-center text-white">
+            <div class="container">
+                <div class="row">
+                    <div class="col-6 d-flex justify-content-center align-items-center">
+                        <p>Proyecto desarrollado por Javier Trujillo, Pilar Soriano y
+                            Luis Miguel Yglesias</p>
+                    </div>
+                    <div class="col-6">
+                        <p class="d-flex justify-content-center align-items-center">
+                            <span>Licencia Creative Commons</span><img th:src="@{/img/CC.png}" alt="logo">
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </section>
     <!-- MDB -->
     <script type="text/javascript"
         src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.umd.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
     <script type="text/javascript">
         function enterPressed(e) {
-    if (e.keycode === 13 && !e.shiftKey) {
-        e.preventDefault();
-        document.getElementById("send").click();
-    }
-}
-
-const stompClient = new StompJs.Client({
-    brokerURL: 'ws://localhost:8080/chat'
-});
-
-window.onload = function () {
-    var objDiv = document.getElementById("scrollDiv");
-    objDiv.scrollTop = objDiv.scrollHeight;
-    connect();
-};
-
-stompClient.onConnect = (frame) => {
-    console.log('Connected: ' + frame);
-    stompClient.subscribe('/topic/messages', (messageOutput) => {
-        showMessageOutput(JSON.parse(messageOutput.body));
-    });
-};
-
-stompClient.onWebSocketError = (error) => {
-    console.error('Error with websocket', error);
-};
-
-stompClient.onStompError = (frame) => {
-    console.error('Broker reported error: ' + frame.headers['message']);
-    console.error('Additional details: ' + frame.body);
-};
-
-function connect() {
-    stompClient.activate();
-}
-
-function sendMessage() {
-    var from = document.getElementById('user').value;
-    var text = document.getElementById('message').value;
-    var id = document.getElementById('id').value;
-
-    if (stompClient.connected) {
-        stompClient.publish({
-            destination: "/app/messages",
-            body: JSON.stringify({ 'user': from, 'message': text, 'id': id })
-        });
-    } else {
-        connect();
-    }
-}
-
-function showMessageOutput(messageOutput) {
-    var response = document.getElementById('messagesBody');
-    var from = document.getElementById('user').value;
-    if (from == messageOutput.user) {
-        var htmlString = '<div class="row">' +
-            '<div class="d-flex justify-content-end">' +
-            '<div class="col-sm-auto col-lg-6"></div>' +
-            '<div class="col-sm-auto col-lg-6">' +
-            '<div class="card mt-lg-5 mb-5 w-lg-75 mt-sm-auto mb-sm-auto w-sm-auto bg-info shadow">' +
-            '<div class="card-body">' +
-            '<p class="card-text text-left">' + messageOutput.message + '</p>' +
-            '</div>' +
-            '</div>' +
-            '</div>' +
-            '</div>' +
-            '</div>';
-    }
-    else {
-        var htmlString = '<div class="row">' +
-            '<div class="d-flex justify-content-start">' +
-            '<div class="col-sm-auto col-lg-6">' +
-            '<div class="card mt-lg-5 mb-5 w-lg-75 mt-sm-auto mb-sm-auto w-sm-auto shadow">' +
-            '<div class="card-body">' +
-            '<p class="card-text text-left">' + messageOutput.user + ': ' + messageOutput.message + '</p>' +
-            '</div>' +
-            '</div>' +
-            '</div>' +
-            '<div class="col-sm-auto col-lg-6"></div>' +
-            '</div>' +
-            '</div>';
-    }
-
-    const existingContent = response.innerHTML;
-    response.innerHTML = existingContent + htmlString;
-    document.getElementById('message').value = '';
-    var objDiv = document.getElementById("scrollDiv");
-    objDiv.scrollTop = objDiv.scrollHeight;
-}
-
-function enterPressed(e) {
-    if (e.keycode === 13 && !e.shiftKey) {
-        e.preventDefault();
-        document.getElementById("send").click();
-    }
-}
-
-$(function () {
-    $("#send").click(() => sendMessage());
-    $("#message").keydown((event) => {
-        if (event.keyCode == 13) {
-            sendMessage();
+            if (e.keycode === 13 && !e.shiftKey) {
+                e.preventDefault();
+                document.getElementById("send").click();
+            }
         }
-    });
-});
+
+        const stompClient = new StompJs.Client({
+            brokerURL: 'ws://localhost:8080/chat'
+        });
+
+        window.onload = function () {
+            var objDiv = document.getElementById("scrollDiv");
+            objDiv.scrollTop = objDiv.scrollHeight;
+            connect();
+        };
+
+        stompClient.onConnect = (frame) => {
+            console.log('Connected: ' + frame);
+            stompClient.subscribe('/topic/messages', (messageOutput) => {
+                showMessageOutput(JSON.parse(messageOutput.body));
+            });
+        };
+
+        stompClient.onWebSocketError = (error) => {
+            console.error('Error with websocket', error);
+        };
+
+        stompClient.onStompError = (frame) => {
+            console.error('Broker reported error: ' + frame.headers['message']);
+            console.error('Additional details: ' + frame.body);
+        };
+
+        function connect() {
+            stompClient.activate();
+        }
+
+        function sendMessage() {
+            var from = document.getElementById('user').value;
+            var text = document.getElementById('message').value;
+            var id = document.getElementById('id').value;
+
+            if (stompClient.connected) {
+                stompClient.publish({
+                    destination: "/app/messages",
+                    body: JSON.stringify({ 'user': from, 'message': text, 'id': id })
+                });
+            } else {
+                connect();
+            }
+        }
+
+        function showMessageOutput(messageOutput) {
+            var response = document.getElementById('messagesBody');
+            var from = document.getElementById('user').value;
+            var chatType = '[[${chat.chatType}]]';
+            if (from == messageOutput.user) {
+                var htmlString = '<div class="row">' +
+                    '<div class="d-flex justify-content-end">' +
+                    '<div class="col-sm-auto col-lg-6"></div>' +
+                    '<div class="col-sm-auto col-lg-6">' +
+                    '<div class="card mt-lg-5 mb-5 w-lg-75 mt-sm-auto mb-sm-auto w-sm-auto bg-info shadow">' +
+                    '<div class="card-body">' +
+                    '<p class="card-text text-left">' + messageOutput.message + '</p>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>';
+            }
+            else {
+                if (chatType == "1") {
+                    var htmlString = '<div class="row">' +
+                        '<div class="d-flex justify-content-start">' +
+                        '<div class="col-sm-auto col-lg-6">' +
+                        '<div class="card mt-lg-5 mb-5 w-lg-75 mt-sm-auto mb-sm-auto w-sm-auto shadow">' +
+                        '<div class="card-body">' +
+                        '<p class="card-text text-left">' + messageOutput.message + '</p>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '<div class="col-sm-auto col-lg-6"></div>' +
+                        '</div>' +
+                        '</div>';
+                }
+                else {
+                    var htmlString = '<div class="row">' +
+                        '<div class="d-flex justify-content-start">' +
+                        '<div class="col-sm-auto col-lg-6">' +
+                        '<div class="card mt-lg-5 mb-5 w-lg-75 mt-sm-auto mb-sm-auto w-sm-auto shadow">' +
+                        '<div class="card-body">' +
+                        '<p class="card-text text-left">' + messageOutput.user + ': ' + messageOutput.message + '</p>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '<div class="col-sm-auto col-lg-6"></div>' +
+                        '</div>' +
+                        '</div>';
+                }
+            }
+
+            const existingContent = response.innerHTML;
+            response.innerHTML = existingContent + htmlString;
+            document.getElementById('message').value = '';
+            var objDiv = document.getElementById("scrollDiv");
+            objDiv.scrollTop = objDiv.scrollHeight;
+        }
+
+        function enterPressed(e) {
+            if (e.keycode === 13 && !e.shiftKey) {
+                e.preventDefault();
+                document.getElementById("send").click();
+            }
+        }
+
+        $(function () {
+            $("#send").click(() => sendMessage());
+            $("#message").keydown((event) => {
+                if (event.keyCode == 13) {
+                    sendMessage();
+                }
+            });
+        });
     </script>
 
 </body>

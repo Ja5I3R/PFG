@@ -79,6 +79,12 @@ public class HomeController {
         return "contact";
     }
 
+    //PAGINA DE SOPORTE
+    @GetMapping({ "/support" })
+    public String supportPage(Model model) {
+        return "support";
+    }
+
     //OBTENER SESION ACTUAL
     public HttpSession getSession(){
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();

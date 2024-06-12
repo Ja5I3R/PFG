@@ -32,7 +32,7 @@
                 <div class="text-end text-center">
                     <a th:href="@{/home/userpage/{id}(id=${user.id})}" class="btn btn-outline-light me-2" id="pulseButton">Volver a
                         pagina personal</a>
-                    <a th:href="@{/home/logout}" class="btn mt-3" id="btn-signup">Cerrar sesion</a>
+                    <a th:href="@{/home/logout}" class="btn" id="btn-signup">Cerrar sesion</a>
                 </div>
             </div>
         </div>
@@ -82,13 +82,11 @@
 
     <section>
         <footer class="text-center text-white">
-          <div class="container p-3">
+          <div class="container">
             <div class="row">
-              <div class="col-6">
-                <p class="d-flex justify-content-center align-items-center">
-                  <span class="me-3">Proyecto desarrollado por Javier Trujillo, Pilar Soriano y
-                    Luis Miguel Yglesias</span>
-                </p>
+              <div class="col-6 d-flex justify-content-center align-items-center">
+                <p>Proyecto desarrollado por Javier Trujillo, Pilar Soriano y
+                  Luis Miguel Yglesias</p>
               </div>
               <div class="col-6">
                 <p class="d-flex justify-content-center align-items-center">

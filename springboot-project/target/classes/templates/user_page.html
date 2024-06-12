@@ -29,10 +29,11 @@
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
         </ul>
 
-        <div class="text-end text-center">
-          <a th:href="@{/home/userpage/{id}(id=${user.id})}" class="btn btn-outline-light me-2" id="pulseButton">Volver a pagina
+        <div class="text-end text-center p-">
+          <a th:href="@{/home/userpage/{id}(id=${user.id})}" class="btn btn-outline-light me-2" id="pulseButton">Volver
+            a pagina
             personal</a>
-          <a th:href="@{/home/logout}" class="btn mt-3" id="btn-signup">Cerrar sesion</a>
+          <a th:href="@{/home/logout}" class="btn" id="btn-signup">Cerrar sesion</a>
         </div>
       </div>
     </div>
@@ -79,7 +80,8 @@
           <div class="tab-content" id="v-pills-tabContent">
             <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
               <a th:href="@{/home/edit/{id}(id=${user.id})}" class="btn btn-info mb-3 mt-3" id="pulseButton">Editar</a>
-              <button type="button" class="btn btn-danger m-3" data-toggle="modal" data-target="#deleteUser" id="pulseButton">
+              <button type="button" class="btn btn-danger m-3" data-toggle="modal" data-target="#deleteUser"
+                id="pulseButton">
                 Eliminar cuenta
               </button>
               <div class="modal fade" id="deleteUser" tabindex="-1" role="dialog"
@@ -200,7 +202,7 @@
               <hr class="hr hr-blurry" />
               <div class="container-fluid">
                 <div class="row gx-5 p-4">
-                  <div class="col-md-4 col-xs-12 p-2" th:each="chat : ${chatList}" th:if="${chat.chatType == 1L}">
+                  <div class="col-md-4 col-xs-12 p-2" th:each="chat : ${chatList}" th:if="${chat.chatType == 1L && #lists.size(chat.users) > 1}">
                     <div th:each="userA : ${chat.users}">
                       <div th:unless="${userA.id == user.id}">
                         <div class="card">
@@ -210,7 +212,8 @@
                                 th:src="@{/img/avatars/__${userA.avatar_id}__.jpg}" th:alt="${userA.avatar_id}">
                               <h5 class="card-title d-inline m-2" th:text="${userA.username}"></h5>
                             </div>
-                            <a th:href="@{/chat/view/{id}(id=${chat.id})}" class="btn btn-info" id="flashButton">Entrar a chat</a>
+                            <a th:href="@{/chat/view/{id}(id=${chat.id})}" class="btn btn-info" id="flashButton">Entrar
+                              a chat</a>
                           </div>
                         </div>
                       </div>
@@ -222,7 +225,7 @@
               <hr class="hr hr-blurry" />
               <div class="container-fluid">
                 <div class="row gx-5 p-4">
-                  <div class="col-md-4 col-xs-12 p-2" th:each="chat : ${chatList}" th:if="${chat.chatType == 2L}">
+                  <div class="col-md-4 col-xs-12 p-2" th:each="chat : ${chatList}" th:if="${chat.chatType == 2L && chat.users != null}">
                     <div class="card">
                       <div class="card-body text-center">
                         <div class="hstack">
@@ -280,13 +283,11 @@
 
   <section>
     <footer class="text-center text-white">
-      <div class="container p-3">
+      <div class="container">
         <div class="row">
-          <div class="col-6">
-            <p class="d-flex justify-content-center align-items-center">
-              <span class="me-3">Proyecto desarrollado por Javier Trujillo, Pilar Soriano y
-                Luis Miguel Yglesias</span>
-            </p>
+          <div class="col-6 d-flex justify-content-center align-items-center">
+            <p>Proyecto desarrollado por Javier Trujillo, Pilar Soriano y
+              Luis Miguel Yglesias</p>
           </div>
           <div class="col-6">
             <p class="d-flex justify-content-center align-items-center">

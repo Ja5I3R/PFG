@@ -4,25 +4,18 @@
 <head>
     <meta charset="ISO-8859-1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contacto</title>
+    <title>Soporte</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="icon" type="image/ico" th:href="@{/img/favicon.ico}">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <!-- MDB -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css" rel="stylesheet" />
     <!-- CSS Animate-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-    <style>
-        .stilizedList>li {
-            background-color: white;
-            padding: 5%;
-            border-radius: 10px;
-            margin: 5px;
-            box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px 5px;
-        }
-
-        .stilizedList {
-            list-style: none;
-        }
-    </style>
 </head>
 
 <body>
@@ -53,7 +46,7 @@
                     <h4 class="text-center">Consulte las preguntas frecuentes</h4>
                 </div>
             </div>
-            <div class="row p-5 bg-info">
+            <div class="row p-5 ">
                 <div class="col-12 col-md-6">
                     <h3 class="text-center">Configuración y Gestión de la Cuenta</h3>
                     <ul class="stilizedList">
@@ -89,7 +82,8 @@
                         </li>
                         <li><strong>P6: ¿Cómo inicio conversación con alguien?</strong>
                             <p>Para iniciar conversación con un usuario, visita su perfil y haz clic en el botón
-                                "Iniciar chat". Para dejar de seguir, haz clic en el botón "Cerrar chat" y tu selección</p>
+                                "Iniciar chat". Para dejar de seguir, haz clic en el botón "Cerrar chat" y tu selección
+                            </p>
                         </li>
                         <li><strong>P7: ¿Cómo puedo unirme o crear un grupo?</strong>
                             <p>Para unirte a un grupo, busca el nombre del grupo y haz clic en "Unirse". Para crear un
@@ -103,19 +97,17 @@
     </div>
     <section>
         <footer class="text-center text-white">
-            <div class="container p-3">
-                <div class="row">
-                    <div class="col-6">
-                        <p class="d-flex justify-content-center align-items-center">
-                            <span class="me-3">Proyecto desarrollado por Javier Trujillo, Pilar Soriano y
-                                Luis Miguel Yglesias</span>
-                        </p>
+            <div class="container">
+                <div class="row p-2">
+                    <div class="col-6 d-flex justify-content-center align-items-center">
+                        <p>Proyecto desarrollado por Javier Trujillo, Pilar Soriano y
+                            Luis Miguel Yglesias</p>
                     </div>
                     <div class="col-6">
                         <p class="d-flex justify-content-center align-items-center">
                             <span class="me-3">Registrate gratis</span>
                             <a th:href="@{/home/new}" data-mdb-ripple-init type="button"
-                                class="btn btn-outline-light btn-rounded" id="pulseButton">
+                                class="btn btn-outline-light btn-rounded">
                                 Registro
                             </a>
                         </p>
