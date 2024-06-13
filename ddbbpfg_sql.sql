@@ -93,6 +93,17 @@ CREATE TABLE `t_interest` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
+INSERT INTO `t_interest` (`id`, `name`) VALUES
+(1, 'Animales'),
+(2, 'Salir de fiesta'),
+(3, 'Bares y terrazas'),
+(4, 'Anime'),
+(5, 'Series'),
+(6, 'Paseos por el campo'),
+(7, 'Videojuegos'),
+(8, 'Juegos'),
+(9, 'Futbol'),
+(10, 'Rugby');
 -- --------------------------------------------------------
 
 --
