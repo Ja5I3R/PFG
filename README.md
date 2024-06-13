@@ -21,3 +21,10 @@ Con este proyecto lo que se pretende es crear una red social fuera del interés 
 
 **Server:** Java, SpringBoot
 
+## Descripcion
+Para poder usar esta aplicacion es necesario lo siguiente: 
+- XAMPP para la BBDD (se encuentra el SQL en los archivos del proyecto)
+- Un editor de codigo como VSCode
+
+Teniendo todo el proyecto descargado y la BBDD insetarada en XAMPP (Teniendo Apache y MySql iniciados), solo hay que tener en el VSCode la extension SpringBoot Extension Pack, lo cual pondra una opcion lateral de SpringBoot DashBoard
+Dentro al lado del nombre del proyecto (en muchos casos es demo-3 o parecidos), hay dos botones de "play", pulsando en el primero se ejecutara la aplicacion, la cual se accede a traves de la ruta localhost:8080
