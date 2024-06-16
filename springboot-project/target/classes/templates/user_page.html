@@ -95,7 +95,7 @@
                       </button>
                     </div>
                     <div class="modal-body">
-                      Estas a punto de eliminar tu cuenta con todos sus datos de manera permanente, ¿deseas hacerlo?
+                      Estás a punto de eliminar tu cuenta con todos sus datos de manera permanente, ¿deseas hacerlo?
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-dismiss="modal">No, quiero mantener mi
@@ -133,11 +133,14 @@
                   <h5 class="card-title">Selecciona los 5 intereses por los cuales se quiera cambiar</h5>
                   <form th:action="@{/home/interestUpdate}" method="POST" onsubmit="return validateForm()">
                     <div class="row">
-                      <div class="custom-control custom-checkbox mr-sm-2 col-lg-3"
-                        th:each="interest : ${interestList2}">
-                        <input type="checkbox" name="interests" class="custom-control-input" id="interests"
-                          th:value="${interest.id}">
-                        <label class="custom-control -label" for="interests" th:text="${interest.name}"></label>
+                      <div class="row mt-4 mb-4">
+                        <div th:each="interest : ${interestList2}"
+                          class="custom-control custom-checkbox mr-sm-2 col-lg-3">
+                          <input type="checkbox" name="interests" class="custom-control-input" th:id="${interest.id}"
+                            th:value="${interest.id}">
+                          <label class="custom-control-label" th:for="${interest.id}"
+                            th:text="${interest.name}"></label>
+                        </div>
                       </div>
                     </div>
                     <button type="submit" class="btn btn-success" id="flashButton">Guardar</button>
@@ -202,7 +205,8 @@
               <hr class="hr hr-blurry" />
               <div class="container-fluid">
                 <div class="row gx-5 p-4">
-                  <div class="col-md-4 col-xs-12 p-2" th:each="chat : ${chatList}" th:if="${chat.chatType == 1L && #lists.size(chat.users) > 1}">
+                  <div class="col-md-4 col-xs-12 p-2" th:each="chat : ${chatList}"
+                    th:if="${chat.chatType == 1L && #lists.size(chat.users) > 1}">
                     <div th:each="userA : ${chat.users}">
                       <div th:unless="${userA.id == user.id}">
                         <div class="card">
@@ -225,7 +229,8 @@
               <hr class="hr hr-blurry" />
               <div class="container-fluid">
                 <div class="row gx-5 p-4">
-                  <div class="col-md-4 col-xs-12 p-2" th:each="chat : ${chatList}" th:if="${chat.chatType == 2L && chat.users != null}">
+                  <div class="col-md-4 col-xs-12 p-2" th:each="chat : ${chatList}"
+                    th:if="${chat.chatType == 2L && chat.users != null}">
                     <div class="card">
                       <div class="card-body text-center">
                         <div class="hstack">
@@ -324,7 +329,7 @@
       }
 
       if (checkedCount < 5 || checkedCount > 5) {
-        alert("Debe seleccionar al menos 5 intereses.");
+        alert("Debe seleccionar 5 intereses.");
         return false;
       }
 
