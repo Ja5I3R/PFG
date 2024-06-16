@@ -27,6 +27,15 @@
             width: 101.6%;
             height: 50vh;
         }
+
+        .user-link {
+            color: black;
+            text-decoration: none;
+        }
+
+        .user-link:hover {
+            color: black;
+        }
     </style>
 </head>
 
@@ -60,9 +69,11 @@
                     <div class="mt-4 mb-4">
                         <h5>Participantes</h5>
                         <div class="d-inline" th:each="user : ${userList}">
-                            <img class="img-fluid rounded userPic d-inline"
-                                th:src="@{/img/avatars/__${user.avatar_id}__.jpg}" th:alt="${user.avatar_id}">
-                            <p class="d-inline m-2" th:text="${user.username}"></p>
+                            <a th:href="@{/home/view/{id}(id=${user.id})}">
+                                <img class="img-fluid rounded userPic d-inline"
+                                    th:src="@{/img/avatars/__${user.avatar_id}__.jpg}" th:alt="${user.avatar_id}">
+                            </a>
+                            <a th:href="@{/home/view/{id}(id=${user.id})}" th:text="${user.username}" class="user-link m-2"></a>
                         </div>
                     </div>
                     <div class="mt-4 mb-2">
@@ -142,21 +153,21 @@
 
     <section>
         <footer class="text-center text-white">
-          <div class="container">
-            <div class="row">
-              <div class="col-6 d-flex justify-content-center align-items-center">
-                <p>Proyecto desarrollado por Javier Trujillo, Pilar Soriano y
-                  Luis Miguel Yglesias</p>
-              </div>
-              <div class="col-6">
-                <p class="d-flex justify-content-center align-items-center">
-                  <span>Licencia Creative Commons</span><img th:src="@{/img/CC.png}" alt="logo">
-                </p>
-              </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-6 d-flex justify-content-center align-items-center">
+                        <p>Proyecto desarrollado por Javier Trujillo, Pilar Soriano y
+                            Luis Miguel Yglesias</p>
+                    </div>
+                    <div class="col-6">
+                        <p class="d-flex justify-content-center align-items-center">
+                            <span>Licencia Creative Commons</span><img th:src="@{/img/CC.png}" alt="logo">
+                        </p>
+                    </div>
+                </div>
             </div>
-          </div>
         </footer>
-      </section>
+    </section>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
