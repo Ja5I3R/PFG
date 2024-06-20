@@ -22,7 +22,11 @@ document.addEventListener("DOMContentLoaded", function () {
         var iDate = new Date(initialDate.value);
         var eDate = new Date(endDate.value);
 
-        if (eDate < iDate) {
+        if (eDate < actualDate) {
+            alert("La fecha de finalizacion no puede ser anterior al dia de hoy");
+            endDate.value = '';
+        }
+        else if (eDate < iDate) {
             alert("La fecha de finalizacion no puede ser anterior a la fecha de comienzo");
             endDate.value = '';
         }
