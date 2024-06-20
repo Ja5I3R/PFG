@@ -368,3 +368,7 @@ header .nav-link:hover::after{
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
 }
+
+.errorImg{
+  width: 100%;
+}
