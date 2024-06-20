@@ -82,8 +82,10 @@
                         <p class="text-break" th:text="${event.description}"></p>
                     </div>
 
-                    <a th:if="${#lists.contains(userList.![id], userS.id)}"
-                        th:href="@{/events/leave/{id}(id=${event.id})}" class="btn btn-dark">Salir de evento</a>
+                    <div th:if="${userS.id != author.id}">
+                        <a th:if="${#lists.contains(userList.![id], userS.id)}"
+                            th:href="@{/events/leave/{id}(id=${event.id})}" class="btn btn-dark">Salir de evento</a>
+                    </div>
                     <a th:unless="${#lists.contains(userList.![id], userS.id)}"
                         th:href="@{/events/join/{id}(id=${event.id})}" class="btn btn-dark me-2">Entrar a evento</a>
                     <a th:if="${userS.id == author.id}" class="btn btn-warning mt-3"
